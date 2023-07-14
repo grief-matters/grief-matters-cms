@@ -3,6 +3,7 @@ on:
   push:
     branches:
       # only run on feature branches by excluding main
+      - "feature/**"
       - "!main"
 jobs:
   prepare-dataset:
