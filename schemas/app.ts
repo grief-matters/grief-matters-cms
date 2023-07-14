@@ -1,12 +1,12 @@
 import { defineField, defineType } from "sanity";
 
 export default defineType({
-  title: "Website",
-  name: "website",
+  name: "app",
   type: "document",
+  title: "App",
   fields: [
     defineField({
-      title: "Website Name",
+      title: "Name",
       name: "name",
       type: "string",
     }),
@@ -16,14 +16,19 @@ export default defineType({
       type: "text",
     }),
     defineField({
-      title: "URL",
-      name: "websiteUrl",
+      title: "Resource Details",
+      name: "resourceDetails",
+      type: "resourceBase",
+    }),
+    defineField({
+      title: "Apple App Store",
+      name: "appleUrl",
       type: "url",
     }),
     defineField({
-      title: "Logo",
-      name: "logo",
-      type: "logo",
+      title: "Play Store",
+      name: "playStoreUrl",
+      type: "url",
     }),
   ],
 });

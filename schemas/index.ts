@@ -14,11 +14,21 @@ import story from "./story";
 import crisisResource from "./crisisResource";
 import availability from "./availability";
 import telephoneNumber from "./telephoneNumber";
+import podcastEpisode from "./podcastEpisode";
+import podcast from "./podcast";
+import book from "./book";
+import app from "./app";
+import forum from "./forum";
+import peerSupportResource from "./peerSupportResource";
+import therapyResource from "./therapyResource";
+import memorial from "./memorial";
 
 export const schemaTypes = [
   accessibleImage,
+  app,
   article,
   availability,
+  book,
   blog,
   category,
   coreValue,
@@ -26,10 +36,16 @@ export const schemaTypes = [
   logo,
   organization,
   person,
+  podcast,
+  podcastEpisode,
   population,
   resourceBase,
   resourceCollection,
   story,
   telephoneNumber,
   website,
+  forum,
+  peerSupportResource,
+  therapyResource,
+  memorial,
 ];

@@ -1,29 +1,24 @@
 import { defineField, defineType } from "sanity";
 
 export default defineType({
-  title: "Website",
-  name: "website",
+  name: "forum",
   type: "document",
+  title: "Forum",
   fields: [
     defineField({
-      title: "Website Name",
+      title: "Name",
       name: "name",
       type: "string",
     }),
     defineField({
       title: "Description",
       name: "description",
-      type: "text",
+      type: "string",
     }),
     defineField({
-      title: "URL",
-      name: "websiteUrl",
-      type: "url",
-    }),
-    defineField({
-      title: "Logo",
-      name: "logo",
-      type: "logo",
+      title: "Resource Details",
+      name: "resourceDetails",
+      type: "resourceBase",
     }),
   ],
 });
