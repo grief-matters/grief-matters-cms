@@ -1,0 +1,35 @@
+name: Prepare Sanity Dataset
+on:
+  push:
+    branches:
+      # only run on feature branches by excluding main
+      - "!main"
+jobs:
+  prepare-dataset:
+    runs-on: ubuntu-latest
+    env:
+      # define SANITY_TOKEN and SANITY_PROJECT in GitHub secrets config
+      SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+      SANITY_PROJECT: ${{ secrets.SANITY_PROJECT }}
+    steps:
+      - name: Double-check branch name
+        # branch "feature/production" would trigger this action
+        # so we will cancel the job if that happens
+        run: |
+          if [ ${GITHUB_REF##*/} = "main" ]; then exit 1; fi
+      - name: Delete Existing Dataset
+        # ${GITHUB_REF##*/} extracts everything after the last "/" for the dataset name
+        run: |
+          curl --request DELETE \
+          --url https://api.sanity.io/v2023-07-04/projects/$SANITY_PROJECT/datasets/${GITHUB_REF##*/} \
+          --header 'Authorization: Bearer '$SANITY_TOKEN
+      - name: Clone dataset from production
+        run: |
+          curl --request PUT \
+          --url https://api.sanity.io/v2023-07-04/projects/$SANITY_PROJECT/datasets/production/copy \
+          --header 'Authorization: Bearer '$SANITY_TOKEN \
+          --header 'Content-Type: application/json' \
+          --data '{
+          "targetDataset": "'${GITHUB_REF##*/}'",
+          "skipHistory": true
+          }'

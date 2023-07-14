@@ -1,0 +1,31 @@
+name: Delete Sanity Dataset
+on:
+  # the pull_request_target works in the context of the
+  # pull request base branch, so we can get the branch name
+  pull_request:
+    types:
+      # runs when the PR is closed
+      - closed
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      # define SANITY_TOKEN and SANITY_PROJECT in GitHub secrets config
+      SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+      SANITY_PROJECT: ${{ secrets.SANITY_PROJECT }}
+      # define the branch name differently here
+    steps:
+      - name: Double-check branch name
+        # branch "feature/production" would trigger this action
+        # so we will cancel the job if that happens
+        run: |
+          if [ ${GITHUB_HEAD_REF##*/} = "main" ]; then exit 1; fi
+          echo GITHUB_REF $GITHUB_REF
+          echo GITHUB_REF_NAME $GITHUB_REF_NAME
+          echo GITHUB_HEAD_REF $GITHUB_HEAD_REF
+      - name: Delete Existing Dataset
+        # ${GITHUB_REF##*/} extracts everything after the last "/" for the dataset name
+        run: |
+          curl --request DELETE \
+          --url https://api.sanity.io/v2023-07-04/projects/$SANITY_PROJECT/datasets/${GITHUB_HEAD_REF##*/} \
+          --header 'Authorization: Bearer '$SANITY_TOKEN
