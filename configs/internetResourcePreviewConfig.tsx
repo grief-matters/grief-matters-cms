@@ -3,11 +3,12 @@ import InternetResourcePreview from "../components/InternetResourcePreview";
 
 export const internetResourcePreviewConfig: PreviewConfig = {
   select: {
+    name: "name",
     title: "title",
     validated: "validated",
   },
-  prepare: ({ title, validated }) => ({
-    title: title,
+  prepare: ({ name, title, validated }) => ({
+    title: title ?? name,
     media: () => <InternetResourcePreview validated={validated} />,
   }),
 };
