@@ -1,9 +1,14 @@
 import { defineField, defineType } from "sanity";
+import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
 
 export default defineType({
   name: "podcastEpisode",
   type: "document",
   title: "Podcast Episode",
+  preview: internetResourcePreviewConfig,
+  initialValue: {
+    validated: "false",
+  },
   fields: [
     defineField({
       title: "Title",

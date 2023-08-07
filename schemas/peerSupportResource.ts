@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
 
 const supportTypes = ["One-to-one", "Support group"];
 
@@ -8,6 +9,10 @@ export default defineType({
   name: "peerSupportResource",
   type: "document",
   title: "Peer Support Resource",
+  preview: internetResourcePreviewConfig,
+  initialValue: {
+    validated: "false",
+  },
   fields: [
     defineField({
       title: "Name",
