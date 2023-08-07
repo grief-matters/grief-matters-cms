@@ -12,7 +12,9 @@ const singletonActions = new Set(["publish", "discardChanges", "restore"]);
 
 const singletonTypes = new Set(["organization"]);
 
-const nonSingletonTypes = Array.from(new Set(INTERNET_RESOURCE_TYPES));
+const nonSingletonTypes = schemaTypes
+  .map((x) => x.name)
+  .filter((y) => !singletonTypes.has(y));
 
 export default defineConfig({
   name: "default",
