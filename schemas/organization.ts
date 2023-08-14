@@ -46,9 +46,7 @@ export default defineType({
       title: "Core Values",
       name: "coreValues",
       type: "array",
-      of: [
-        defineArrayMember({ type: "reference", to: [{ type: "coreValue" }] }),
-      ],
+      of: [defineArrayMember({ type: "coreValue" })],
     }),
     defineField({
       title: "Legal",
