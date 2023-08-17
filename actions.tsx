@@ -19,16 +19,21 @@ const apiVersion =
 const resourceNameKeyMap: TypedMap<InternetResourceType> = {
   app: "name",
   article: "title",
-  book: "title",
   blog: "title",
+  book: "title",
+  booklet: "title",
+  brochure: "title",
+  course: "title",
   crisisResource: "name",
+  forum: "name",
+  memorial: "name",
+  peerSupportResource: "name",
   podcast: "name",
   podcastEpisode: "title",
   story: "title",
-  forum: "name",
-  peerSupportResource: "name",
   therapyResource: "name",
-  memorial: "name",
+  video: "title",
+  webinar: "title",
 };
 
 function convertCamelCaseToSentence(value: string) {
