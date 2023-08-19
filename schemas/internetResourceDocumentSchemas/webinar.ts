@@ -1,10 +1,13 @@
 import { defineField, defineType } from "sanity";
+import { PresentationIcon } from "@sanity/icons";
+
 import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "webinar",
   type: "document",
+  name: "webinar",
   title: "Webinar",
+  icon: PresentationIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",

@@ -1,8 +1,10 @@
 import { defineType } from "sanity";
+import { ImageIcon } from "@sanity/icons";
 
 export default defineType({
-  name: "accessibleImage",
   type: "object",
+  name: "accessibleImage",
+  icon: ImageIcon,
   fields: [
     {
       title: "Image",

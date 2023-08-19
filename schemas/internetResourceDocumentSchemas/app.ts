@@ -1,10 +1,13 @@
 import { defineField, defineType } from "sanity";
+import { MobileDeviceIcon } from "@sanity/icons";
+
 import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "app",
   type: "document",
+  name: "app",
   title: "App",
+  icon: MobileDeviceIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",

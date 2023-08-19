@@ -1,11 +1,14 @@
 import { defineField, defineType } from "sanity";
-import { supportFormats } from "./peerSupport";
+import { UsersIcon } from "@sanity/icons";
+
 import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+import { supportFormats } from "./peerSupport";
 
 export default defineType({
-  name: "supportGroup",
   type: "document",
+  name: "supportGroup",
   title: "Support Group",
+  icon: UsersIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",

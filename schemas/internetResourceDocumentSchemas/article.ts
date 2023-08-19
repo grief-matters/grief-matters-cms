@@ -1,10 +1,13 @@
 import { defineField, defineType } from "sanity";
+import { DocumentIcon } from "@sanity/icons";
+
 import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "brochure",
   type: "document",
-  title: "Brochure",
+  name: "article",
+  title: "Article",
+  icon: DocumentIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
@@ -24,6 +27,17 @@ export default defineType({
       title: "Resource Details",
       name: "resourceDetails",
       type: "resourceBase",
+    }),
+    defineField({
+      title: "Parent Blog",
+      name: "parentBlog",
+      type: "reference",
+      to: [{ type: "blog" }],
+    }),
+    defineField({
+      title: "Resource has been checked for errors",
+      name: "validated",
+      type: "boolean",
     }),
   ],
 });

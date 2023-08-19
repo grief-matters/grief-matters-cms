@@ -17,6 +17,7 @@ export const structure: StructureResolver = (S, context) =>
         S.listItem()
           .title(startCase(t.title ?? t.name))
           .id(`${t.type}-singleton`)
+          .icon(t.icon)
           .child(
             S.document().schemaType(t.name).documentId(`${t.type}-singleton`)
           )

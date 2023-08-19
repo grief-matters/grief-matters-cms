@@ -1,12 +1,15 @@
 import { defineField, defineType } from "sanity";
+import { UserIcon } from "@sanity/icons";
+
 import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export const supportFormats = ["In person", "Virtual"];
 
 export default defineType({
-  name: "peerSupport",
   type: "document",
+  name: "peerSupport",
   title: "Peer Support",
+  icon: UserIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
