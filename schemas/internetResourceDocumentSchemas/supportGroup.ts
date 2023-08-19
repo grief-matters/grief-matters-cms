@@ -1,18 +1,19 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { supportFormats } from "./peerSupport";
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "video",
+  name: "supportGroup",
   type: "document",
-  title: "Video",
+  title: "Support Group",
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
   },
   fields: [
     defineField({
-      title: "Title",
-      name: "title",
+      title: "Name",
+      name: "name",
       type: "string",
     }),
     defineField({
@@ -24,6 +25,14 @@ export default defineType({
       title: "Resource Details",
       name: "resourceDetails",
       type: "resourceBase",
+    }),
+    defineField({
+      title: "Format",
+      name: "format",
+      type: "string",
+      options: {
+        list: supportFormats,
+      },
     }),
   ],
 });

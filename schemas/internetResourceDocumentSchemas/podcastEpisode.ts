@@ -1,10 +1,10 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "article",
+  name: "podcastEpisode",
   type: "document",
-  title: "Article",
+  title: "Podcast Episode",
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
@@ -26,15 +26,10 @@ export default defineType({
       type: "resourceBase",
     }),
     defineField({
-      title: "Parent Blog",
-      name: "parentBlog",
+      title: "Podcast",
+      name: "parentPodcast",
       type: "reference",
-      to: [{ type: "blog" }],
-    }),
-    defineField({
-      title: "Resource has been checked for errors",
-      name: "validated",
-      type: "boolean",
+      to: [{ type: "podcast" }],
     }),
   ],
 });

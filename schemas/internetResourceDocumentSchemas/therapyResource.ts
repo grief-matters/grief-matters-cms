@@ -1,18 +1,18 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "booklet",
+  name: "therapyResource",
   type: "document",
-  title: "Booklet",
+  title: "Therapy Resource",
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
   },
   fields: [
     defineField({
-      title: "Title",
-      name: "title",
+      title: "Name",
+      name: "name",
       type: "string",
     }),
     defineField({

@@ -1,6 +1,5 @@
 import { defineField, defineType } from "sanity";
-import TimeInput from "../components/TimeInput";
-import AvailabilityPreview from "../components/AvailabilityPreview";
+import { AvailabilityPreview, TimeInput } from "../../components";
 
 const days = [
   "Monday",

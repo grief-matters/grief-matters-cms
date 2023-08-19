@@ -1,10 +1,10 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "webinar",
+  name: "brochure",
   type: "document",
-  title: "Webinar",
+  title: "Brochure",
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",

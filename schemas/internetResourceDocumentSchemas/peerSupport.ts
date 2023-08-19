@@ -1,10 +1,12 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+
+export const supportFormats = ["In person", "Virtual"];
 
 export default defineType({
-  name: "podcast",
+  name: "peerSupport",
   type: "document",
-  title: "Podcast",
+  title: "Peer Support",
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
@@ -26,14 +28,12 @@ export default defineType({
       type: "resourceBase",
     }),
     defineField({
-      type: "url",
-      name: "spotifyUrl",
-      title: "Spotify",
-    }),
-    defineField({
-      type: "url",
-      name: "appleUrl",
-      title: "Apple",
+      title: "Format",
+      name: "format",
+      type: "string",
+      options: {
+        list: supportFormats,
+      },
     }),
   ],
 });

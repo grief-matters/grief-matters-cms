@@ -9,8 +9,8 @@ import {
 import { Box, Button, Flex, Inline, Select, Stack, Text } from "@sanity/ui";
 import { useRouter } from "sanity/router";
 
-import { INTERNET_RESOURCE_TYPES } from "./constants";
 import { InternetResourceType, TypedMap } from "./types";
+import { INTERNET_RESOURCE_TYPES } from "./schemas";
 
 const apiVersion =
   String(process.env.SANITY_STUDIO_API_VERSION) ||
@@ -24,16 +24,16 @@ const resourceNameKeyMap: TypedMap<InternetResourceType> = {
   booklet: "title",
   brochure: "title",
   course: "title",
-  crisisResource: "name",
   forum: "name",
   memorial: "name",
-  peerSupportResource: "name",
+  peerSupport: "name",
   podcast: "name",
   podcastEpisode: "title",
   story: "title",
   therapyResource: "name",
   video: "title",
   webinar: "title",
+  supportGroup: "name",
 };
 
 function convertCamelCaseToSentence(value: string) {

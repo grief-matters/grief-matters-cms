@@ -1,4 +1,4 @@
-import { INTERNET_RESOURCE_TYPES } from "./constants";
+import { INTERNET_RESOURCE_TYPES } from "./schemas";
 
 export type Map = { [index: string]: string };
 
