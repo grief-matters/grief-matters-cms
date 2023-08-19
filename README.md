@@ -4,7 +4,7 @@ This repository holds the code for Sanity Content Studio, an open source real-ti
 
 ## Getting Started
 
-To get started with Sanity Studio please see the [docs](./docs/)
+To get started with Sanity Studio please see the [docs](./docs/index.md)
 
 ## Environments
 
