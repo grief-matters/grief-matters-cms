@@ -1,22 +1,21 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { BookIcon } from "@sanity/icons";
 
-const supportTypes = ["One-to-one", "Support group"];
-
-const formats = ["In person", "Virtual"];
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "peerSupportResource",
   type: "document",
-  title: "Peer Support Resource",
+  name: "book",
+  title: "Book",
+  icon: BookIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
   },
   fields: [
     defineField({
-      title: "Name",
-      name: "name",
+      title: "Title",
+      name: "title",
       type: "string",
     }),
     defineField({
@@ -30,20 +29,16 @@ export default defineType({
       type: "resourceBase",
     }),
     defineField({
-      title: "Type",
-      name: "type",
+      title: "Author",
+      name: "author",
       type: "string",
-      options: {
-        list: supportTypes,
-      },
     }),
     defineField({
-      title: "Format",
-      name: "format",
+      title: "ISBN",
+      name: "isbn",
       type: "string",
-      options: {
-        list: formats,
-      },
+      validation: (rule) =>
+        rule.min(10).max(13).error("An ISBN is 10 or 13 digits long"),
     }),
   ],
 });

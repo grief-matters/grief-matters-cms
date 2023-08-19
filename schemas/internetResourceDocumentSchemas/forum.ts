@@ -1,24 +1,27 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { UsersIcon } from "@sanity/icons";
+
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "blog",
   type: "document",
-  title: "Blog",
+  name: "forum",
+  title: "Forum",
+  icon: UsersIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
   },
   fields: [
     defineField({
-      title: "Title",
-      name: "title",
+      title: "Name",
+      name: "name",
       type: "string",
     }),
     defineField({
       title: "Description",
       name: "description",
-      type: "text",
+      type: "string",
     }),
     defineField({
       title: "Resource Details",

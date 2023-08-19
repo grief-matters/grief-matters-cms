@@ -1,6 +1,7 @@
 import { defineField, defineType } from "sanity";
-import TimeInput from "../components/TimeInput";
-import AvailabilityPreview from "../components/AvailabilityPreview";
+import { ClockIcon } from "@sanity/icons";
+
+import { AvailabilityPreview, TimeInput } from "../../components";
 
 const days = [
   "Monday",
@@ -15,9 +16,10 @@ const days = [
 const timezones = ["Eastern", "Central", "Mountain", "Pacific"];
 
 export default defineType({
-  name: "availability",
   type: "object",
+  name: "availability",
   title: "Availability",
+  icon: ClockIcon,
   components: { preview: AvailabilityPreview },
   preview: {
     select: {

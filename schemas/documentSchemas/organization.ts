@@ -1,9 +1,11 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { HomeIcon } from "@sanity/icons";
 
 export default defineType({
   name: "organization",
-  type: "document",
   title: "Organization",
+  type: "document",
+  icon: HomeIcon,
   fields: [
     defineField({
       title: "Name",

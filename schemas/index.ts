@@ -1,51 +1,87 @@
-import accessibleImage from "./accessibleImage";
-import article from "./article";
-import category from "./category";
-import coreValue from "./coreValue";
-import organization from "./organization";
-import person from "./person";
-import resourceBase from "./resourceBase";
-import website from "./website";
-import population from "./population";
-import logo from "./logo";
-import blog from "./blog";
-import resourceCollection from "./resourceCollection";
-import story from "./story";
-import crisisResource from "./crisisResource";
-import availability from "./availability";
-import telephoneNumber from "./telephoneNumber";
-import podcastEpisode from "./podcastEpisode";
-import podcast from "./podcast";
-import book from "./book";
-import app from "./app";
-import forum from "./forum";
-import peerSupportResource from "./peerSupportResource";
-import therapyResource from "./therapyResource";
-import memorial from "./memorial";
-
-export const schemaTypes = [
-  accessibleImage,
-  app,
-  article,
-  availability,
-  book,
-  blog,
+import {
   category,
-  coreValue,
   crisisResource,
-  logo,
   organization,
   person,
+  population,
+  website,
+} from "./documentSchemas";
+import {
+  app,
+  article,
+  blog,
+  book,
+  booklet,
+  brochure,
+  course,
+  forum,
+  memorial,
+  peerSupport,
   podcast,
   podcastEpisode,
-  population,
-  resourceBase,
-  resourceCollection,
   story,
-  telephoneNumber,
-  website,
-  forum,
-  peerSupportResource,
+  supportGroup,
   therapyResource,
+  video,
+  webinar,
+} from "./internetResourceDocumentSchemas";
+import {
+  accessibleImage,
+  availability,
+  coreValue,
+  logo,
+  telephoneNumber,
+  resourceBase,
+} from "./objectSchemas";
+
+export const objectTypes = [
+  accessibleImage,
+  availability,
+  coreValue,
+  logo,
+  telephoneNumber,
+  resourceBase,
+];
+
+export const internetResourceDocumentTypes = [
+  app,
+  article,
+  blog,
+  book,
+  booklet,
+  brochure,
+  course,
+  forum,
   memorial,
+  peerSupport,
+  podcast,
+  podcastEpisode,
+  story,
+  supportGroup,
+  therapyResource,
+  video,
+  webinar,
+];
+
+export const INTERNET_RESOURCE_TYPES = internetResourceDocumentTypes.map(
+  (t) => t.name
+);
+
+export const documentTypes = [
+  category,
+  crisisResource,
+  person,
+  population,
+  website,
+];
+
+export const singletonDocumentTypes = [organization];
+
+export const SINGLETON_TYPES = new Set(["organization"]);
+
+export const schemaTypes = [
+  ...singletonDocumentTypes,
+  ...objectTypes,
+  ...internetResourceDocumentTypes,
+  ...documentTypes,
 ];

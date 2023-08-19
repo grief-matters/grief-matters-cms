@@ -1,18 +1,22 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { UsersIcon } from "@sanity/icons";
+
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+import { supportFormats } from "./peerSupport";
 
 export default defineType({
-  name: "article",
   type: "document",
-  title: "Article",
+  name: "supportGroup",
+  title: "Support Group",
+  icon: UsersIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
   },
   fields: [
     defineField({
-      title: "Title",
-      name: "title",
+      title: "Name",
+      name: "name",
       type: "string",
     }),
     defineField({
@@ -26,15 +30,12 @@ export default defineType({
       type: "resourceBase",
     }),
     defineField({
-      title: "Parent Blog",
-      name: "parentBlog",
-      type: "reference",
-      to: [{ type: "blog" }],
-    }),
-    defineField({
-      title: "Resource has been checked for errors",
-      name: "validated",
-      type: "boolean",
+      title: "Format",
+      name: "format",
+      type: "string",
+      options: {
+        list: supportFormats,
+      },
     }),
   ],
 });

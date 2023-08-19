@@ -1,18 +1,23 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { UserIcon } from "@sanity/icons";
+
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+
+export const supportFormats = ["In person", "Virtual"];
 
 export default defineType({
-  name: "story",
   type: "document",
-  title: "Story",
+  name: "peerSupport",
+  title: "Peer Support",
+  icon: UserIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
   },
   fields: [
     defineField({
-      title: "Title",
-      name: "title",
+      title: "Name",
+      name: "name",
       type: "string",
     }),
     defineField({
@@ -26,9 +31,12 @@ export default defineType({
       type: "resourceBase",
     }),
     defineField({
-      title: "Photograph",
-      name: "photo",
-      type: "accessibleImage",
+      title: "Format",
+      name: "format",
+      type: "string",
+      options: {
+        list: supportFormats,
+      },
     }),
   ],
 });

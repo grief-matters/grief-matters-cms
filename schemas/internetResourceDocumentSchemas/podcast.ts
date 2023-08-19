@@ -1,10 +1,13 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { PlayIcon } from "@sanity/icons";
+
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "forum",
   type: "document",
-  title: "Forum",
+  name: "podcast",
+  title: "Podcast",
+  icon: PlayIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
@@ -18,12 +21,22 @@ export default defineType({
     defineField({
       title: "Description",
       name: "description",
-      type: "string",
+      type: "text",
     }),
     defineField({
       title: "Resource Details",
       name: "resourceDetails",
       type: "resourceBase",
+    }),
+    defineField({
+      type: "url",
+      name: "spotifyUrl",
+      title: "Spotify",
+    }),
+    defineField({
+      type: "url",
+      name: "appleUrl",
+      title: "Apple",
     }),
   ],
 });

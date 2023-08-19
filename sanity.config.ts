@@ -1,20 +1,23 @@
 import { defineConfig } from "sanity";
 import { deskTool } from "sanity/desk";
 import { visionTool } from "@sanity/vision";
-import { schemaTypes } from "./schemas";
+import {
+  internetResourceDocumentTypes,
+  schemaTypes,
+  singletonDocumentTypes,
+} from "./schemas";
 import { ConvertAction } from "./actions";
-import { INTERNET_RESOURCE_TYPES } from "./constants";
-import { InternetResourceType } from "./types";
-import { startCase } from "lodash";
-import pluralize from "pluralize";
+import { structure } from "./structure";
+
+const SINGLETON_TYPES: Set<string> = new Set([
+  ...singletonDocumentTypes.map((t) => t.name),
+]);
+
+const INTERNET_RESOURCE_TYPES: Set<string> = new Set([
+  ...internetResourceDocumentTypes.map((t) => t.name),
+]);
 
 const singletonActions = new Set(["publish", "discardChanges", "restore"]);
-
-const singletonTypes = new Set(["organization"]);
-
-const nonSingletonTypes = schemaTypes
-  .map((x) => x.name)
-  .filter((y) => !singletonTypes.has(y));
 
 export default defineConfig({
   name: "default",
@@ -24,40 +27,38 @@ export default defineConfig({
   dataset: process.env.SANITY_STUDIO_DATASET,
   plugins: [
     deskTool({
-      structure: (S) =>
-        S.list()
-          .title("Content")
-          .items([
-            S.listItem()
-              .title("Organization")
-              .id("organization")
-              .child(
-                S.document()
-                  .schemaType("organization")
-                  .documentId("organization")
-              ),
-
-            ...nonSingletonTypes.map((ns) =>
-              S.documentTypeListItem(ns).title(startCase(pluralize(ns)))
-            ),
-          ]),
+      structure,
     }),
     visionTool(),
   ],
   schema: {
     types: schemaTypes,
-    templates: (templates) =>
-      templates.filter(({ schemaType }) => !singletonTypes.has(schemaType)),
+    templates: (templates) => {
+      const nonSingletonTemplates = templates.filter(
+        ({ schemaType }) => !SINGLETON_TYPES.has(schemaType)
+      );
+
+      // const categoryChildTemplate = {
+      //   id: "category-child",
+      //   title: "Category: Child",
+      //   schemaType: "category",
+      //   parameters: [{ name: `parentId`, title: `Parent ID`, type: `string` }],
+      //   // This value will be passed-in from desk structure
+      //   value: ({ parentId }: { parentId: string }) => ({
+      //     parent: { _type: "reference", _ref: parentId },
+      //   }),
+      // };
+
+      return [...nonSingletonTemplates];
+    },
   },
   document: {
     actions: (prev, context) => {
-      const nonSingletonActions = singletonTypes.has(context.schemaType)
+      const nonSingletonActions = SINGLETON_TYPES.has(context.schemaType)
         ? prev.filter(({ action }) => action && singletonActions.has(action))
         : prev;
 
-      return INTERNET_RESOURCE_TYPES.includes(
-        context.schemaType as InternetResourceType
-      )
+      return INTERNET_RESOURCE_TYPES.has(context.schemaType)
         ? [...nonSingletonActions, ConvertAction]
         : nonSingletonActions;
     },

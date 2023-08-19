@@ -1,18 +1,21 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { DocumentPdfIcon } from "@sanity/icons";
+
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  title: "Website",
-  name: "website",
   type: "document",
+  name: "brochure",
+  title: "Brochure",
+  icon: DocumentPdfIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
   },
   fields: [
     defineField({
-      title: "Website Name",
-      name: "name",
+      title: "Title",
+      name: "title",
       type: "string",
     }),
     defineField({
@@ -21,14 +24,9 @@ export default defineType({
       type: "text",
     }),
     defineField({
-      title: "URL",
-      name: "websiteUrl",
-      type: "url",
-    }),
-    defineField({
-      title: "Logo",
-      name: "logo",
-      type: "logo",
+      title: "Resource Details",
+      name: "resourceDetails",
+      type: "resourceBase",
     }),
   ],
 });

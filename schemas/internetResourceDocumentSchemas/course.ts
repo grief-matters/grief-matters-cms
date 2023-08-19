@@ -1,10 +1,13 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { PresentationIcon } from "@sanity/icons";
+
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "podcastEpisode",
   type: "document",
-  title: "Podcast Episode",
+  name: "course",
+  title: "Course",
+  icon: PresentationIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
@@ -24,12 +27,6 @@ export default defineType({
       title: "Resource Details",
       name: "resourceDetails",
       type: "resourceBase",
-    }),
-    defineField({
-      title: "Podcast",
-      name: "parentPodcast",
-      type: "reference",
-      to: [{ type: "podcast" }],
     }),
   ],
 });

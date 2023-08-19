@@ -1,18 +1,21 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../configs/internetResourcePreviewConfig";
+import { DocumentIcon } from "@sanity/icons";
+
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 
 export default defineType({
-  name: "app",
   type: "document",
-  title: "App",
+  name: "article",
+  title: "Article",
+  icon: DocumentIcon,
   preview: internetResourcePreviewConfig,
   initialValue: {
     validated: "false",
   },
   fields: [
     defineField({
-      title: "Name",
-      name: "name",
+      title: "Title",
+      name: "title",
       type: "string",
     }),
     defineField({
@@ -26,14 +29,15 @@ export default defineType({
       type: "resourceBase",
     }),
     defineField({
-      title: "Apple App Store",
-      name: "appleUrl",
-      type: "url",
+      title: "Parent Blog",
+      name: "parentBlog",
+      type: "reference",
+      to: [{ type: "blog" }],
     }),
     defineField({
-      title: "Play Store",
-      name: "playStoreUrl",
-      type: "url",
+      title: "Resource has been checked for errors",
+      name: "validated",
+      type: "boolean",
     }),
   ],
 });
