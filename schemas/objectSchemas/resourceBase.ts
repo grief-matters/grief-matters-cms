@@ -1,4 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import ResourceUrlInput from "../../components/ResourceUrlInput";
 
 export default defineType({
   title: "Resource Details",
@@ -9,6 +10,9 @@ export default defineType({
       title: "URL",
       name: "resourceUrl",
       type: "url",
+      components: {
+        input: ResourceUrlInput,
+      },
     }),
     defineField({
       title: "Source",
