@@ -30,7 +30,7 @@ Once you're all set up with an account, follow these steps to get started:
 4. Run `npm run dev` in the project folder. This will build the studio application and start a local development server.
 5. Once the build is complete, you can head over to http://localhost:3333.
 
-> Note: when you run the server for the first time, you'll be asked to authenticate to Sanity.io
+   > Note: when you run the server for the first time, you'll be asked to authenticate to Sanity.io
 
 You should now see the Sanity Studio running in your browser!
 
