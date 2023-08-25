@@ -2,7 +2,7 @@
 
 Welcome to the Why Grief Matters Sanity Studio! This repository plays host to the content management system(CMS) that backs the Why Grief Matters project.
 
-If you have lost someone and are looking for support, or you're supporting someone else, please visit the website; [https://www.whygriefmatters.com](www.whygriefmatters.org).
+If you have lost someone and are looking for support, or you're supporting someone else, please visit the website; [https://www.whygriefmatters.org](www.whygriefmatters.org).
 
 ## About Sanity Studio
 
