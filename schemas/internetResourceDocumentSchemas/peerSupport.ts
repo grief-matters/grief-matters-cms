@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity";
 import { UserIcon } from "@sanity/icons";
 
 import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+import { validateImportField } from "../fields";
 
 export const supportFormats = ["In person", "Virtual"];
 
@@ -38,5 +39,6 @@ export default defineType({
         list: supportFormats,
       },
     }),
+    validateImportField,
   ],
 });

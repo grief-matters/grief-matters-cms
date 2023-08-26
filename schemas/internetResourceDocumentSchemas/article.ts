@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity";
 import { DocumentIcon } from "@sanity/icons";
 
 import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+import { validateImportField } from "../fields";
 
 export default defineType({
   type: "document",
@@ -34,10 +35,6 @@ export default defineType({
       type: "reference",
       to: [{ type: "blog" }],
     }),
-    defineField({
-      title: "Resource has been checked for errors",
-      name: "validated",
-      type: "boolean",
-    }),
+    validateImportField,
   ],
 });

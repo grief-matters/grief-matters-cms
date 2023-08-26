@@ -1,6 +1,8 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 import { EarthGlobeIcon } from "@sanity/icons";
+import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+import { validateImportField } from "../fields";
+import ResourceUrlInput from "../../components/ResourceUrlInput";
 
 export default defineType({
   name: "website",
@@ -26,11 +28,15 @@ export default defineType({
       title: "URL",
       name: "websiteUrl",
       type: "url",
+      components: {
+        input: ResourceUrlInput,
+      },
     }),
     defineField({
       title: "Logo",
       name: "logo",
       type: "logo",
     }),
+    validateImportField,
   ],
 });
