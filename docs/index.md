@@ -107,3 +107,62 @@ This will delete a document from the CMS - use with care.
 This will allow you to convert certain document types from one type to another - this will help where resources have been created as one type but are later identified as being another.
 
 **_IMPORTANT: Some information may be lost during the conversion process - such as if you convert a 'Book' to an 'Article' - the ISBN and Author fields will be removed_**
+
+# Why Grief Matters Sanity Studio User Guide
+
+Sanity Studio has a simple, intuitive, interface built specifically for our needs.
+
+This user guide aims to take you from zero-knowledge of Sanity Studio to creating and editing content in the shortest possible time.
+
+We have a **"sandbox"** environment available so you can get accustomed to Sanity without affecting live data. Log in using your usual Sanity account at: [https://sanbox--grief-matters-cms.netlify.com](https://sanbox--grief-matters-cms.netlify.com)
+
+Before we jump in to Sanity Studio there is some terminology to be familiar with.
+
+### Documents
+
+In Sanity Studio, a document refers to a piece of content like an article, image, or product. It's a structured unit of data with fields that hold information such as text, images, and dates. Documents are the building blocks managed in Sanity Studio's content system, allowing for flexible customization to fit specific project needs.
+
+### Document Types
+
+A "document type" in Sanity Studio is a blueprint for creating specific types of content. It defines the structure and fields that a document of that type can have. For instance, a "Story" document type includes fields for title, description, photograph etc. Document types provide consistency and organization to the content creation process, ensuring that each piece of content follows a predefined format.
+
+### References
+
+In Sanity Studio, "references" are connections between different documents. They allow us to link one document to another, creating relationships between pieces of content. For example, you can reference a "website" document within an "article" document to attribute its "source". These references enhance content management and enable dynamic updates, as changes to a referenced document automatically reflect in all connected instances.
+
+## Sanity Studio Interface
+
+The screenshot below shows the Sanity Studio interface:
+
+![Alt text](img/ui-overview.png)
+
+#### Navigation Sidebar
+
+Located on the left side of the screen, the navigation sidebar provides quick access to different sections of Sanity Studio. It typically includes links to various document types, tools, and settings.
+
+#### Document List
+
+The central area of the interface displays a list of documents based on the selected document type. Each entry in the list showcases key information, such as titles or preview images, allowing easy identification and selection.
+
+#### Document Editor
+
+When you select a specific document from the list, the document editor appears. It's here that you can view and edit the content within the chosen document type. The editor displays fields and their corresponding data, enabling you to make changes and updates.
+
+When you access a **reference** on a document (i.e. a linked **document**). A second **document editor** will open so that you can conveniently edit the referenced document without navigating away.
+
+When two document editors are open, the left panels automatically collapse. Clicking on the collapsed panels reveals them; this collapses one document editor and vice versa. Panes might also collapse when browser space is limited, but a single click expands them for viewing.
+
+![Multiple open document editors and collapsed navigation panes](img/two-editors.png)
+
+## Creating Documents
+
+To follow along with this guide log in to the **"sandbox"** at [https://sanbox--grief-matters-cms.netlify.com](https://sanbox--grief-matters-cms.netlify.com).
+
+Let's create our first document by adding a "story"
+
+In Sanity Studio you can create a new document in one of two ways:
+
+1. Select the document type you want to create in the navigation sidebar. Then select the **New Document** button at the top of the document list.
+2. Select the "New Document" button in the header, and select the type of document you want to create.
+
+![Create a new document](img/create-doc.png)

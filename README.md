@@ -62,7 +62,7 @@ The format for the deployment URL is `https://branch-name--grief-matters-sanity-
 
 ### Sandbox
 
-We also have a **"Sanbox"** deployment, deployed via the `sandbox` branch. Presently `main` is semi-regularly merged into the `sandbox` branch, but we hope to have this happen automatically soon!
+We also have a **"Sandbox"** deployment, deployed via the `sandbox` branch. Presently `main` is semi-regularly merged into the `sandbox` branch, but we hope to have this happen automatically soon!
 
 The deployment for the `sandbox` can be found at [https://grief-matters-sanity-studio.netlify.app](https://grief-matters-sanity-studio.netlify.app)
 
