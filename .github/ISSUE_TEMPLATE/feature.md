@@ -1,7 +1,7 @@
 ---
 name: Feature
 about: Issue to track new features
-title: "CMS > [Feature]: Title of feature"
+title: "CMS > [Feature] Title of feature"
 labels: feature
 projects: ["grief-matters/1"]
 assignees: ""
