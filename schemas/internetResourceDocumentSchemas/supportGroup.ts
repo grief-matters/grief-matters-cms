@@ -3,6 +3,7 @@ import { UsersIcon } from "@sanity/icons";
 
 import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 import { supportFormats } from "./peerSupport";
+import { validateImportField } from "../fields";
 
 export default defineType({
   type: "document",
@@ -37,5 +38,6 @@ export default defineType({
         list: supportFormats,
       },
     }),
+    validateImportField,
   ],
 });

@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity";
 import { DocumentTextIcon } from "@sanity/icons";
 
 import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+import { validateImportField } from "../fields";
 
 export default defineType({
   type: "document",
@@ -33,5 +34,6 @@ export default defineType({
       name: "photo",
       type: "accessibleImage",
     }),
+    validateImportField,
   ],
 });

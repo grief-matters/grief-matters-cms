@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity";
 import { PlayIcon } from "@sanity/icons";
 
 import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+import { validateImportField } from "../fields";
 
 export default defineType({
   type: "document",
@@ -38,5 +39,6 @@ export default defineType({
       name: "appleUrl",
       title: "Apple",
     }),
+    validateImportField,
   ],
 });
