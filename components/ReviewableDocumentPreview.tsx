@@ -23,7 +23,18 @@ function ReviewableDocumentPreview({
       <ClockIcon style={{ color: "purple" }} />
     </Tooltip>
   ) : (
-    <ClockIcon style={{ color: "#eee" }} />
+    <Tooltip
+      portal
+      content={
+        <Box padding={2}>
+          <Text muted size={1}>
+            No changes to be reviewed
+          </Text>
+        </Box>
+      }
+    >
+      <ClockIcon style={{ color: "#eee" }} />
+    </Tooltip>
   );
 }
 
