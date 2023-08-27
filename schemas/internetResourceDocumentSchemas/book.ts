@@ -1,15 +1,15 @@
 import { defineField, defineType } from "sanity";
 import { BookIcon } from "@sanity/icons";
 
-import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
-import { validateImportField } from "../fields";
+import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { readyForReviewField } from "../fields";
 
 export default defineType({
   type: "document",
   name: "book",
   title: "Book",
   icon: BookIcon,
-  preview: internetResourcePreviewConfig,
+  preview: reviewableDocumentPreviewConfig,
   initialValue: {
     validated: "false",
   },
@@ -41,6 +41,6 @@ export default defineType({
       validation: (rule) =>
         rule.min(10).max(13).error("An ISBN is 10 or 13 digits long"),
     }),
-    validateImportField,
+    readyForReviewField,
   ],
 });

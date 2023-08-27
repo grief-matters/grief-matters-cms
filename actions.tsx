@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDocumentOperation } from "sanity";
+
 import { startCase } from "lodash";
 
 import {
@@ -132,4 +134,27 @@ export function ConvertAction(props: DocumentActionProps) {
         ),
       } as DocumentActionModalDialogProps),
   };
+}
+
+export function setReadyForReviewOnPublishAction(publishAction: any) {
+  const Action = (props: DocumentActionProps) => {
+    const { patch } = useDocumentOperation(props.id, props.type);
+
+    const originalResult = publishAction(props);
+
+    if (props.draft?.readyForReview) {
+      console.log("Marked as ready for review");
+    }
+
+    return {
+      ...originalResult,
+      disabled: !props.draft?.readyForReview,
+      onHandle: () => {
+        patch.execute([{ set: { readyForReview: false } }]);
+        originalResult.onHandle();
+      },
+    };
+  };
+
+  return Action;
 }
