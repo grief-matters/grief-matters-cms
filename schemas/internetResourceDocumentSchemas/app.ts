@@ -1,18 +1,15 @@
 import { defineField, defineType } from "sanity";
 import { MobileDeviceIcon } from "@sanity/icons";
 
-import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
-import { validateImportField } from "../fields";
+import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { readyForReviewField } from "../fields";
 
 export default defineType({
   type: "document",
   name: "app",
   title: "App",
   icon: MobileDeviceIcon,
-  preview: internetResourcePreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
+  preview: reviewableDocumentPreviewConfig,
   fields: [
     defineField({
       title: "Name",
@@ -39,6 +36,6 @@ export default defineType({
       name: "playStoreUrl",
       type: "url",
     }),
-    validateImportField,
+    readyForReviewField,
   ],
 });

@@ -1,18 +1,15 @@
 import { defineField, defineType } from "sanity";
 import { DocumentIcon } from "@sanity/icons";
 
-import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
-import { validateImportField } from "../fields";
+import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { readyForReviewField } from "../fields";
 
 export default defineType({
   type: "document",
   name: "article",
   title: "Article",
   icon: DocumentIcon,
-  preview: internetResourcePreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
+  preview: reviewableDocumentPreviewConfig,
   fields: [
     defineField({
       title: "Title",
@@ -35,6 +32,6 @@ export default defineType({
       type: "reference",
       to: [{ type: "blog" }],
     }),
-    validateImportField,
+    readyForReviewField,
   ],
 });
