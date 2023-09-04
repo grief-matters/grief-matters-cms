@@ -3,15 +3,15 @@ import { deskTool } from "sanity/desk";
 import { visionTool } from "@sanity/vision";
 import { dashboardTool } from "@sanity/dashboard";
 
-import { structure } from "./structure";
+import { documentListWidget } from "sanity-plugin-dashboard-widget-document-list";
 
+import { structure } from "./structure";
 import {
   internetResourceDocumentTypes,
   schemaTypes,
   singletonDocumentTypes,
 } from "./schemas";
 import { ConvertAction, setReadyForReviewOnPublishAction } from "./actions";
-import { documentListWidget } from "sanity-plugin-dashboard-widget-document-list";
 
 const SINGLETON_TYPES: Set<string> = new Set([
   ...singletonDocumentTypes.map((t) => t.name),
@@ -65,7 +65,9 @@ export default defineConfig({
       return INTERNET_RESOURCE_TYPES.has(context.schemaType)
         ? [
             ...nonSingletonActions.map((a) =>
-              a.action === "publish" ? setReadyForReviewOnPublishAction(a) : a
+              a.action === "publish"
+                ? setReadyForReviewOnPublishAction(a, context)
+                : a
             ),
             ConvertAction,
           ]
