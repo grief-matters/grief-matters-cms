@@ -11,9 +11,6 @@ export default defineType({
   title: "Support Group",
   icon: UsersIcon,
   preview: reviewableDocumentPreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
   fields: [
     defineField({
       title: "Name",

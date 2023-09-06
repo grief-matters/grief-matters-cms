@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useDocumentOperation } from "sanity";
 
 import { startCase } from "lodash";
 
@@ -11,8 +10,8 @@ import {
 import { Box, Button, Flex, Inline, Select, Stack, Text } from "@sanity/ui";
 import { useRouter } from "sanity/router";
 
-import { InternetResourceType, TypedMap } from "./types";
-import { INTERNET_RESOURCE_TYPES } from "./schemas";
+import { InternetResourceType, TypedMap } from "../types";
+import { INTERNET_RESOURCE_TYPES } from "../schemas";
 
 const apiVersion =
   String(process.env.SANITY_STUDIO_API_VERSION) ||
@@ -134,27 +133,4 @@ export function ConvertAction(props: DocumentActionProps) {
         ),
       } as DocumentActionModalDialogProps),
   };
-}
-
-export function setReadyForReviewOnPublishAction(publishAction: any) {
-  const Action = (props: DocumentActionProps) => {
-    const { patch } = useDocumentOperation(props.id, props.type);
-
-    const originalResult = publishAction(props);
-
-    if (props.draft?.readyForReview) {
-      console.log("Marked as ready for review");
-    }
-
-    return {
-      ...originalResult,
-      disabled: !props.draft?.readyForReview,
-      onHandle: () => {
-        patch.execute([{ set: { readyForReview: false } }]);
-        originalResult.onHandle();
-      },
-    };
-  };
-
-  return Action;
 }

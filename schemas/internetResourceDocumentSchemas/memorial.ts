@@ -10,9 +10,6 @@ export default defineType({
   title: "Memorial",
   icon: DocumentIcon,
   preview: reviewableDocumentPreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
   fields: [
     defineField({
       title: "Name",
