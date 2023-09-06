@@ -1,17 +1,15 @@
 import { defineField, defineType } from "sanity";
 import { PlayIcon } from "@sanity/icons";
 
-import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { readyForReviewField } from "../fields";
 
 export default defineType({
   type: "document",
   name: "podcast",
   title: "Podcast",
   icon: PlayIcon,
-  preview: internetResourcePreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
+  preview: reviewableDocumentPreviewConfig,
   fields: [
     defineField({
       title: "Name",
@@ -38,5 +36,6 @@ export default defineType({
       name: "appleUrl",
       title: "Apple",
     }),
+    readyForReviewField,
   ],
 });

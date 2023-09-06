@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { startCase } from "lodash";
 
 import {
@@ -9,8 +10,8 @@ import {
 import { Box, Button, Flex, Inline, Select, Stack, Text } from "@sanity/ui";
 import { useRouter } from "sanity/router";
 
-import { InternetResourceType, TypedMap } from "./types";
-import { INTERNET_RESOURCE_TYPES } from "./schemas";
+import { InternetResourceType, TypedMap } from "../types";
+import { INTERNET_RESOURCE_TYPES } from "../schemas";
 
 const apiVersion =
   String(process.env.SANITY_STUDIO_API_VERSION) ||

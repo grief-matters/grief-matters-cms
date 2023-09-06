@@ -1,16 +1,16 @@
 import { defineField, defineType } from "sanity";
-import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
 import { EarthGlobeIcon } from "@sanity/icons";
+
+import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { readyForReviewField } from "../fields";
+import ResourceUrlInput from "../../components/ResourceUrlInput";
 
 export default defineType({
   name: "website",
   title: "Website",
   type: "document",
   icon: EarthGlobeIcon,
-  preview: internetResourcePreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
+  preview: reviewableDocumentPreviewConfig,
   fields: [
     defineField({
       title: "Website Name",
@@ -26,11 +26,15 @@ export default defineType({
       title: "URL",
       name: "websiteUrl",
       type: "url",
+      components: {
+        input: ResourceUrlInput,
+      },
     }),
     defineField({
       title: "Logo",
       name: "logo",
       type: "logo",
     }),
+    readyForReviewField,
   ],
 });

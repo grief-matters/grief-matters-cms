@@ -1,18 +1,16 @@
 import { defineField, defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
 
-import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 import { supportFormats } from "./peerSupport";
+import { readyForReviewField } from "../fields";
 
 export default defineType({
   type: "document",
   name: "supportGroup",
   title: "Support Group",
   icon: UsersIcon,
-  preview: internetResourcePreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
+  preview: reviewableDocumentPreviewConfig,
   fields: [
     defineField({
       title: "Name",
@@ -37,5 +35,6 @@ export default defineType({
         list: supportFormats,
       },
     }),
+    readyForReviewField,
   ],
 });

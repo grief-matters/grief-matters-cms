@@ -1,17 +1,15 @@
 import { defineField, defineType } from "sanity";
 import { DocumentTextIcon } from "@sanity/icons";
 
-import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { readyForReviewField } from "../fields";
 
 export default defineType({
   type: "document",
   name: "story",
   title: "Story",
   icon: DocumentTextIcon,
-  preview: internetResourcePreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
+  preview: reviewableDocumentPreviewConfig,
   fields: [
     defineField({
       title: "Title",
@@ -33,5 +31,6 @@ export default defineType({
       name: "photo",
       type: "accessibleImage",
     }),
+    readyForReviewField,
   ],
 });

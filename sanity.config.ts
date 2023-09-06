@@ -1,13 +1,17 @@
 import { defineConfig } from "sanity";
 import { deskTool } from "sanity/desk";
 import { visionTool } from "@sanity/vision";
+import { dashboardTool } from "@sanity/dashboard";
+
+import { documentListWidget } from "sanity-plugin-dashboard-widget-document-list";
+
+import { structure } from "./structure";
 import {
   internetResourceDocumentTypes,
   schemaTypes,
   singletonDocumentTypes,
 } from "./schemas";
-import { ConvertAction } from "./actions";
-import { structure } from "./structure";
+import { ConvertAction, setReadyForReviewOnPublishAction } from "./actions";
 
 const SINGLETON_TYPES: Set<string> = new Set([
   ...singletonDocumentTypes.map((t) => t.name),
@@ -22,12 +26,23 @@ const singletonActions = new Set(["publish", "discardChanges", "restore"]);
 export default defineConfig({
   name: "default",
   title: "grief-matters-cms",
-  projectId: "vg3sb730",
-  // @ts-ignore
-  dataset: process.env.SANITY_STUDIO_DATASET,
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID!,
+  dataset: process.env.SANITY_STUDIO_DATASET!,
   plugins: [
     deskTool({
       structure,
+    }),
+    dashboardTool({
+      widgets: [
+        documentListWidget({
+          apiVersion: process.env.SANITY_STUDIO_API_VERSION,
+          title: "Documents Awaiting Review",
+          query: "*[readyForReview == true]",
+          layout: {
+            width: "small",
+          },
+        }),
+      ],
     }),
     visionTool(),
   ],
@@ -37,17 +52,6 @@ export default defineConfig({
       const nonSingletonTemplates = templates.filter(
         ({ schemaType }) => !SINGLETON_TYPES.has(schemaType)
       );
-
-      // const categoryChildTemplate = {
-      //   id: "category-child",
-      //   title: "Category: Child",
-      //   schemaType: "category",
-      //   parameters: [{ name: `parentId`, title: `Parent ID`, type: `string` }],
-      //   // This value will be passed-in from desk structure
-      //   value: ({ parentId }: { parentId: string }) => ({
-      //     parent: { _type: "reference", _ref: parentId },
-      //   }),
-      // };
 
       return [...nonSingletonTemplates];
     },
@@ -59,7 +63,14 @@ export default defineConfig({
         : prev;
 
       return INTERNET_RESOURCE_TYPES.has(context.schemaType)
-        ? [...nonSingletonActions, ConvertAction]
+        ? [
+            ...nonSingletonActions.map((a) =>
+              a.action === "publish"
+                ? setReadyForReviewOnPublishAction(a, context)
+                : a
+            ),
+            ConvertAction,
+          ]
         : nonSingletonActions;
     },
   },

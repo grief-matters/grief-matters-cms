@@ -1,7 +1,7 @@
 ---
 name: Docs
 about: Issue to track documentation improvements
-title: "CMS > [Docs]: Descriptive title"
+title: "CMS > [Docs] Descriptive title"
 labels: docs
 projects: ["grief-matters/1"]
 assignees: ""

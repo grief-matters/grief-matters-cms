@@ -1,7 +1,8 @@
 import { defineField, defineType } from "sanity";
 import { UserIcon } from "@sanity/icons";
 
-import { internetResourcePreviewConfig } from "../../configs/internetResourcePreviewConfig";
+import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { readyForReviewField } from "../fields";
 
 export const supportFormats = ["In person", "Virtual"];
 
@@ -10,10 +11,7 @@ export default defineType({
   name: "peerSupport",
   title: "Peer Support",
   icon: UserIcon,
-  preview: internetResourcePreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
+  preview: reviewableDocumentPreviewConfig,
   fields: [
     defineField({
       title: "Name",
@@ -38,5 +36,6 @@ export default defineType({
         list: supportFormats,
       },
     }),
+    readyForReviewField,
   ],
 });
