@@ -10,9 +10,6 @@ export default defineType({
   title: "Therapy Resource",
   icon: UsersIcon,
   preview: reviewableDocumentPreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
   fields: [
     defineField({
       title: "Name",

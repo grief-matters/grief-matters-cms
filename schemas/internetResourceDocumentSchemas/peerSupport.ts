@@ -12,9 +12,6 @@ export default defineType({
   title: "Peer Support",
   icon: UserIcon,
   preview: reviewableDocumentPreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
   fields: [
     defineField({
       title: "Name",

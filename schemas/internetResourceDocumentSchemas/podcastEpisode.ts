@@ -10,9 +10,6 @@ export default defineType({
   title: "Podcast Episode",
   icon: PlayIcon,
   preview: reviewableDocumentPreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
   fields: [
     defineField({
       title: "Title",

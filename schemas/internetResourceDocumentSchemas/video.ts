@@ -10,9 +10,6 @@ export default defineType({
   title: "Video",
   icon: DocumentVideoIcon,
   preview: reviewableDocumentPreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
   fields: [
     defineField({
       title: "Title",

@@ -10,9 +10,6 @@ export default defineType({
   title: "Course",
   icon: PresentationIcon,
   preview: reviewableDocumentPreviewConfig,
-  initialValue: {
-    validated: "false",
-  },
   fields: [
     defineField({
       title: "Title",
