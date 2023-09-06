@@ -1,3 +1,6 @@
+/**
+ * Script needs to be run with sanity exec and --withUserToken flag
+ */
 import { getCliClient } from "sanity/cli";
 import { MapObject } from "../types";
 

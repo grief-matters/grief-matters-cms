@@ -1,3 +1,6 @@
+/**
+ * Script needs to be run with sanity exec and --withUserToken flag
+ */
 import { getCliClient } from "sanity/cli";
 
 // Check to see if this is a --dry-run
