@@ -1,4 +1,4 @@
-# Why Grief Matters Content Management System (CMS)
+<!-- # Why Grief Matters Content Management System (CMS)
 
 ## Getting Started (Content Editors)
 
@@ -108,6 +108,19 @@ This will allow you to convert certain document types from one type to another -
 
 **_IMPORTANT: Some information may be lost during the conversion process - such as if you convert a 'Book' to an 'Article' - the ISBN and Author fields will be removed_**
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Why Grief Matters Sanity Studio User Guide
 
 Sanity Studio has a simple, intuitive, interface built specifically for our needs.
@@ -165,4 +178,74 @@ In Sanity Studio you can create a new document in one of two ways:
 1. Select the document type you want to create in the navigation sidebar. Then select the **New Document** button at the top of the document list.
 2. Select the "New Document" button in the header, and select the type of document you want to create.
 
+![Create a new document](img/create-doc.png) -->
+
+# Why Grief Matter Content Management System
+
+This guide will help you get started using the **Why Grief Matters Content Management System (CMS)**. The CMS is an implementation of [Sanity Studio](https://www.sanity.io/studio).
+
+Sanity is a modern headless CMS (Content Management System). Sanity uses structured content to endlessly re-use content across any channel and a composable approach to help businesses connect to any third-party technology, data source, and front end framework.
+
+Before we jump in to Sanity Studio there is some terminology to be familiar with.
+
+#### Documents
+
+In Sanity Studio, a document refers to a piece of content like an article, image, or product. It's a structured unit of data with fields that hold information such as text, images, and dates. Documents are the building blocks managed in Sanity Studio's content system, allowing for flexible customization to fit specific project needs.
+
+#### Document Types
+
+A "document type" in Sanity Studio is a blueprint for creating specific types of content. It defines the structure and fields that a document of that type can have. For instance, a "Story" document type includes fields for title, description, photograph etc. Document types provide consistency and organization to the content creation process, ensuring that each piece of content follows a predefined format.
+
+#### References
+
+In Sanity Studio, "references" are connections between different documents. They allow us to link one document to another, creating relationships between pieces of content. For example, you can reference a "website" document within an "article" document to attribute its "source". These references enhance content management and enable dynamic updates, as changes to a referenced document automatically reflect in all connected instances.
+
+## Sanity Studio Interface
+
+The screenshot below shows the Sanity Studio interface:
+
+![Alt text](img/ui-overview.png)
+
+#### Navigation Sidebar
+
+Located on the left side of the screen, the navigation sidebar provides quick access to different sections of Sanity Studio. It typically includes links to various document types, tools, and settings.
+
+#### Document List
+
+The central area of the interface displays a list of documents based on the selected document type. Each entry in the list showcases key information, such as titles or preview images, allowing easy identification and selection.
+
+#### Document Editor
+
+When you select a specific document from the list, the document editor appears. It's here that you can view and edit the content within the chosen document type. The editor displays fields and their corresponding data, enabling you to make changes and updates.
+
+## Creating Documents
+
+To follow along with this guide log in to the **"sandbox"** at [https://sandbox--grief-matters-sanity-studio.netlify.com](https://sandbox--grief-matters-sanity-studio.netlify.com).
+
+Let's create our first document by adding a "story"
+
+In Sanity Studio you can create a new document in one of two ways:
+
+You can either, select the document type you want to create in the navigation sidebar. Then select the **New Document** button at the top of the document list (_see #1 in the screenshot below_).
+
+Or, select the "New Document" button in the header, and select the type of document you want to create (_see #2 in the screenshot below_).
+
 ![Create a new document](img/create-doc.png)
+
+You'll be presented with an empty document editor as below:
+
+![Empty document editor](img/new-document@2x.png)
+
+The screenshot below shows a few pointers on what the various elements mean:
+
+![Creating a document in the editor](img/new-doc-editing.png)
+
+When you create a new document directly from a **reference field**. A second **document editor** will open so that you can conveniently create the referenced document without navigating away.
+
+When two document editors are open, the left panels automatically collapse. Clicking on the collapsed panels reveals them; this collapses one document editor and vice versa. Panes might also collapse when browser space is limited, but a single click expands them for viewing.
+
+![Multiple open document editors and collapsed navigation panes](img/two-editors.png)
+
+Reference fields are **dependent** on the documents they reference, as such you will not be able to publish a document with a reference field unless the document it references is also published.
+
+When you first create a document it will be created as a **draft** and will not show on our website until it has been **published**. The various document states are discussed in the nest section.
