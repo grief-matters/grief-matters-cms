@@ -249,3 +249,55 @@ When two document editors are open, the left panels automatically collapse. Clic
 Reference fields are **dependent** on the documents they reference, as such you will not be able to publish a document with a reference field unless the document it references is also published.
 
 When you first create a document it will be created as a **draft** and will not show on our website until it has been **published**. The various document states are discussed in the nest section.
+
+## Document States
+
+Documents in Sanity can be in various states depending on what stage of the content editing lifecycle they are at.
+
+#### Draft
+
+When a document is first created it will be in the **draft** state. A document that is in **draft** does not yet show on our website until it is published. All changes are saved automatically so a document can go through several revisions before it is published.
+
+A document will also move to **draft** when changes have been made to a **published** document. The previously published version will remain visible on our website until the draft changes have been reviewed and published.
+
+#### Ready for Review
+
+A document in **draft** must be marked as **ready for review** once the changes are ready to publish. This toggle is only available on new draft documents or previously published documents with changes.
+
+#### Published
+
+Documents that have been marked as **ready for review** are then able to be **published**. This provides an extra step of protection to ensure that changes are approved before being published to the website.
+
+Only authorized Sanity accounts are able to publish documents.
+
+## Editing Documents
+
+To get to an existing document to make edits there are two options. Either select the relevant type in the navigation sidebar, then select the document from the list (or search the list using the document list search), or using the header search bar you can search by title or any other attribute of a document to find what you are looking for.
+
+Making changes is exactly the same as creating a new document. Just edit the fields you need to change and a new draft will be created. Previously published documents will remain the same until the draft changes are published much the same as a new document.
+
+## Document Revisions
+
+You can view and restore previous versions of a document. You can see the version you are currently viewing in the upper-right of the document editor.
+
+By clicking the current document version you can inspect previous versions as well as restore to a previous version.
+
+Just above this control, the ellipsis will also allow you to review changes between versions to give a better impression of how a document has changed over time.
+
+## Document Actions
+
+In the bottom right of the document editor there are a number of **document actions** available based on the state or type of the current document. You may see some or all of these options in specific scenarios.
+
+![Document actions](img/unpublish-discard@2x.png)
+
+**1. Unpublish:** allows you to unpublish a document - this will remove it from the next build of the Grief Matters website.
+
+**2. Discard Changes:** allows you to discard any changes made since the last published version of the document (in essence, deleting the current draft)
+
+**3. Duplicate:** [[TODO - any control over the output?]]
+
+**4. Delete:** this will delete the current document.
+
+**5. Convert Resource:** will allow you to convert certain document types from one type to another - this will help where resources have been created as one type but are later identified as being another.
+
+**_IMPORTANT: Some information may be lost during the conversion process - such as if you convert a 'Book' to an 'Article' - the ISBN and Author fields will be removed_**
