@@ -1,4 +1,4 @@
-## Getting Started for Developers
+# Getting Started for Developers
 
 If you're a developer looking to get started. Read on!
 
