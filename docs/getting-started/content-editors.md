@@ -1,9 +1,10 @@
 ---
 title: Content Editors
 layout: home
+parent: Getting Started
 ---
 
-# Getting Started for Content Editors
+# Content Editors
 
 This guide will help you get started using the **Why Grief Matters Content Management System (CMS)**. The CMS is an implementation of [Sanity Studio](https://www.sanity.io/studio).
 
@@ -11,15 +12,15 @@ Sanity is a modern headless CMS (Content Management System). Sanity uses structu
 
 Before we jump in to Sanity Studio there is some terminology to be familiar with.
 
-#### Documents
+### Documents
 
 In Sanity Studio, a document refers to a piece of content like an article, image, or product. It's a structured unit of data with fields that hold information such as text, images, and dates. Documents are the building blocks managed in Sanity Studio's content system, allowing for flexible customization to fit specific project needs.
 
-#### Document Types
+### Document Types
 
 A "document type" in Sanity Studio is a blueprint for creating specific types of content. It defines the structure and fields that a document of that type can have. For instance, a "Story" document type includes fields for title, description, photograph etc. Document types provide consistency and organization to the content creation process, ensuring that each piece of content follows a predefined format.
 
-#### References
+### References
 
 In Sanity Studio, "references" are connections between different documents. They allow us to link one document to another, creating relationships between pieces of content. For example, you can reference a "website" document within an "article" document to attribute its "source". These references enhance content management and enable dynamic updates, as changes to a referenced document automatically reflect in all connected instances.
 
@@ -27,19 +28,19 @@ In Sanity Studio, "references" are connections between different documents. They
 
 The screenshot below shows the Sanity Studio interface:
 
-![Alt text](img/ui-overview.png)
+![Alt text](../img/ui-overview.png)
 
-#### Navigation Sidebar
+### Navigation Sidebar
 
 Located on the left side of the screen, the navigation sidebar provides quick access to different sections of Sanity Studio. It typically includes links to various document types, tools, and settings.
 
 you'll mostly use this to navigate to collections of different document types, such as articles or stories.
 
-#### Document List
+### Document List
 
 The central area of the interface displays a list of documents based on the selected document type. Each entry in the list showcases key information, such as titles or preview images, allowing easy identification and selection.
 
-#### Document Editor
+### Document Editor
 
 When you select a specific document from the list, the document editor appears. It's here that you can view and edit the content within the chosen document type. The editor displays fields and their corresponding data, enabling you to make changes and updates.
 
@@ -57,21 +58,21 @@ You can either, select the document type you want to create in the navigation si
 
 Or, select the "New Document" button in the header, and select the type of document you want to create (_see #2 in the screenshot below_).
 
-![Create a new document](img/create-doc.png)
+![Create a new document](../img/create-doc.png)
 
 You'll be presented with an empty document editor as below:
 
-![Empty document editor](img/new-document@2x.png)
+![Empty document editor](../img/new-document@2x.png)
 
 The screenshot below shows a few pointers on what the various elements mean:
 
-![Creating a document in the editor](img/new-doc-editing.png)
+![Creating a document in the editor](../img/new-doc-editing.png)
 
 When you create a new document directly from a **reference field**. A second **document editor** will open so that you can conveniently create the referenced document without navigating away.
 
 When two document editors are open, the left panels automatically collapse. Clicking on the collapsed panels reveals them; this collapses one document editor and vice versa. Panes might also collapse when browser space is limited, but a single click expands them for viewing.
 
-![Multiple open document editors and collapsed navigation panes](img/two-editors.png)
+![Multiple open document editors and collapsed navigation panes](../img/two-editors.png)
 
 Reference fields are **dependent** on the documents they reference, as such you will not be able to publish a document with a reference field unless the document it references is also published.
 
@@ -83,7 +84,7 @@ Documents in Sanity can be in various states depending on what stage of the cont
 
 The states are indicated in both the document list view as well as in the document editor.
 
-#### Draft
+### Draft
 
 When a document is first created it will be in the **draft** state. A document that is in **draft** does not yet show on our website until it is published. All changes are saved automatically so a document can go through several revisions before it is published.
 
@@ -91,22 +92,22 @@ A document will also move to **draft** when changes have been made to a **publis
 
 The **draft** state is generally indicated by a yellow pencil:
 
-![Alt text](img/draft.png)
+![Alt text](../img/draft.png)
 
-#### Ready for Review
+### Ready for Review
 
 A document in **draft** must be marked as **ready for review** once the changes are ready to publish. This toggle is only available on new draft documents or previously published documents with changes.
 
 The **pending review** state is generally indicated by a purple clock:
 
-![Alt text](img/pending-review.png)
+![Alt text](../img/pending-review.png)
 
 To move a document into the ready for review state, you can activate the toggle on the document:
 
-![Alt text](img/publish-unavailable.png)
-![Alt text](img/publish-ready.png)
+![Alt text](../img/publish-unavailable.png)
+![Alt text](../img/publish-ready.png)
 
-#### Published
+### Published
 
 Documents that have been marked as **ready for review** are then able to be **published**. This provides an extra step of protection to ensure that changes are approved before being published to the website.
 
@@ -114,7 +115,7 @@ Only authorized Sanity accounts are able to publish documents.
 
 The **published** state is indicated by a green up arrow icon:
 
-![Alt text](img/status-published@2x.png)
+![Alt text](../img/status-published@2x.png)
 
 ## Editing Documents
 
@@ -128,9 +129,9 @@ Changes made to Sanity documents are saved on the fly (or autosaved). This has t
 
 You can see where other team members are working by the appearance of their user avatar.
 
-![Alt text](img/live-editing-1.png)
+![Alt text](../img/live-editing-1.png)
 
-![Alt text](img/live-editing-2.png)
+![Alt text](../img/live-editing-2.png)
 
 ## Document Revisions
 
@@ -140,13 +141,13 @@ By clicking the current document version you can inspect previous versions as we
 
 Just above this control, the ellipsis will also allow you to review changes between versions to give a better impression of how a document has changed over time.
 
-![Alt text](img/restore-document.png)
+![Alt text](../img/restore-document.png)
 
 ## Document Actions
 
 In the bottom right of the document editor there are a number of **document actions** available based on the state or type of the current document. You may see some or all of these options in specific scenarios.
 
-![Document actions](img/unpublish-discard@2x.png)
+![Document actions](../img/unpublish-discard@2x.png)
 
 **1. Unpublish:** allows you to unpublish a document - this will remove it from the next build of the Grief Matters website.
 
@@ -158,4 +159,5 @@ In the bottom right of the document editor there are a number of **document acti
 
 **5. Convert Resource:** will allow you to convert certain document types from one type to another - this will help where resources have been created as one type but are later identified as being another.
 
-**_IMPORTANT: Some information may be lost during the conversion process - such as if you convert a 'Book' to an 'Article' - the ISBN and Author fields will be removed_**
+{: .warning}
+Some information may be lost during the conversion process - such as if you convert a 'Book' to an 'Article' - the ISBN and Author fields will be removed

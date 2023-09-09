@@ -1,6 +1,7 @@
 ---
+layout: default
 title: Home
-layout: home
+nav_order: 0
 ---
 
 # Why Grief Matter Content Management System

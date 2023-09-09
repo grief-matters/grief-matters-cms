@@ -1,6 +1,7 @@
 ---
 title: Developers
 layout: home
+parent: Getting Started
 ---
 
 # Getting Started for Developers

@@ -1,8 +1,13 @@
-title: Just the Docs Template
-description: A starter template for a Jeykll site using the Just the Docs theme!
+title: Why Grief Matters CMS Docs
+description: Documentation for the Why Gief Matters CMS project.
 theme: just-the-docs
 
-url: https://just-the-docs.github.io
+url: https://grief-matters.github.io/grief-matters-cms/
 
 aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-template
+  "Why Grief Matters CMS on GitHub": https://github.com/https://github.com/grief-matters/grief-matters-cms
+
+callouts:
+  warning:
+    title: Warning
+    color: red
