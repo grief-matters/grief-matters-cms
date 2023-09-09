@@ -29,6 +29,8 @@ In Sanity Studio, "references" are connections between different documents. They
 
 The screenshot below shows the Sanity Studio interface:
 
+![Alt text]({{site.baseurl}}/assets/images/ui-overview.png)
+
 ![Alt text](/assets/images/ui-overview.png)
 
 ### Navigation Sidebar
