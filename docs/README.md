@@ -1,4 +1,12 @@
-# just-the-docs-template
+# Docs Site for Grief Matters CMS
+
+Documentation for Grief Matters CMS - Jekyll site using 'just-the-docs' template - deployed to GitHub pages with GitHub Actions.
+
+README to follow
+
+Site deployed to: https://grief-matters.github.io/grief-matters-cms/
+
+<!-- # just-the-docs-template
 
 This is a *bare-minimum* template to create a [Jekyll] site that:
 
@@ -171,4 +179,4 @@ The deployment GitHub Actions workflow is heavily based on GitHub's mixed-party 
 [`jekyll-seo-tag`]: https://jekyll.github.io/jekyll-seo-tag
 [MIT License]: https://en.wikipedia.org/wiki/MIT_License
 [starter workflows]: https://github.com/actions/starter-workflows/blob/main/pages/jekyll.yml
-[actions/starter-workflows]: https://github.com/actions/starter-workflows/blob/main/LICENSE
+[actions/starter-workflows]: https://github.com/actions/starter-workflows/blob/main/LICENSE -->

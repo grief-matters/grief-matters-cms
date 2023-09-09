@@ -2,6 +2,7 @@
 title: Content Editors
 layout: home
 parent: Getting Started
+permalink: /getting-started/content-editors/
 ---
 
 # Content Editors
