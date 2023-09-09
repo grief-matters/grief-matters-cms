@@ -12,8 +12,8 @@ Sanity Studio offers an intuitive interface for real-time editing. Collaborative
 
 ## Getting Started (Content Editors)
 
-If you're a content editor looking to dive into how to use the system, please check out the [Quickstart for Content Editors]({{site.baseurl}}/getting-started/content-editors/). This guide offers step-by-step instructions and insights tailored specifically for content creators. Get ready to unlock the full potential of our content management system!
+If you're a content editor looking to dive into how to use the system, please check out the [Quickstart for Content Editors]({{site.baseurl}}/getting-started/content-editors). This guide offers step-by-step instructions and insights tailored specifically for content creators. Get ready to unlock the full potential of our content management system!
 
 ## Getting Started (Content Editors)
 
-If you're a developer looking to contribute, please checkout the [Quickstart for Developers]({{site.baseurl}}/getting-started/developers/). This guide offers information on developing the Studio application as well info on deployment.
+If you're a developer looking to contribute, please checkout the [Quickstart for Developers]({{site.baseurl}}/getting-started/developers). This guide offers information on developing the Studio application as well info on deployment.
