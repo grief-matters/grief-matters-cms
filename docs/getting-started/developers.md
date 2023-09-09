@@ -2,7 +2,7 @@
 title: Developers
 layout: home
 parent: Getting Started
-permalink: /getting-started/developers/
+# permalink: /getting-started/developers/
 ---
 
 # Getting Started for Developers
