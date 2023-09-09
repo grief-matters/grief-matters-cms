@@ -2,10 +2,10 @@ title: Why Grief Matters CMS Docs
 description: Documentation for the Why Gief Matters CMS project.
 theme: just-the-docs
 
-url: https://grief-matters.github.io/grief-matters-cms/
+url: https://grief-matters.github.io/grief-matters-cms
 
 aux_links:
-  "Why Grief Matters CMS on GitHub": https://github.com/https://github.com/grief-matters/grief-matters-cms
+  "Why Grief Matters CMS on GitHub": https://github.com/grief-matters/grief-matters-cms
 
 callouts:
   warning:
