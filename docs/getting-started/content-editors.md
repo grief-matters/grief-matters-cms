@@ -29,7 +29,7 @@ In Sanity Studio, "references" are connections between different documents. They
 
 The screenshot below shows the Sanity Studio interface:
 
-![Alt text](../img/ui-overview.png)
+![Alt text]({{site.baseUrl}}/assets/images/ui-overview.png)
 
 ### Navigation Sidebar
 
@@ -59,21 +59,21 @@ You can either, select the document type you want to create in the navigation si
 
 Or, select the "New Document" button in the header, and select the type of document you want to create (_see #2 in the screenshot below_).
 
-![Create a new document](../img/create-doc.png)
+![Create a new document]({{site.baseUrl}}/assets/images/create-doc.png)
 
 You'll be presented with an empty document editor as below:
 
-![Empty document editor](../img/new-document@2x.png)
+![Empty document editor]({{site.baseUrl}}/assets/images/new-document@2x.png)
 
 The screenshot below shows a few pointers on what the various elements mean:
 
-![Creating a document in the editor](../img/new-doc-editing.png)
+![Creating a document in the editor]({{site.baseUrl}}/assets/images/new-doc-editing.png)
 
 When you create a new document directly from a **reference field**. A second **document editor** will open so that you can conveniently create the referenced document without navigating away.
 
 When two document editors are open, the left panels automatically collapse. Clicking on the collapsed panels reveals them; this collapses one document editor and vice versa. Panes might also collapse when browser space is limited, but a single click expands them for viewing.
 
-![Multiple open document editors and collapsed navigation panes](../img/two-editors.png)
+![Multiple open document editors and collapsed navigation panes]({{site.baseUrl}}/assets/images/two-editors.png)
 
 Reference fields are **dependent** on the documents they reference, as such you will not be able to publish a document with a reference field unless the document it references is also published.
 
@@ -93,7 +93,7 @@ A document will also move to **draft** when changes have been made to a **publis
 
 The **draft** state is generally indicated by a yellow pencil:
 
-![Alt text](../img/draft.png)
+![Alt text]({{site.baseUrl{{site.baseUrl}}/assets/images/draft.png)
 
 ### Ready for Review
 
@@ -101,12 +101,12 @@ A document in **draft** must be marked as **ready for review** once the changes 
 
 The **pending review** state is generally indicated by a purple clock:
 
-![Alt text](../img/pending-review.png)
+![Alt text]({{site.baseUrl}}/assets/images/pending-review.png)
 
 To move a document into the ready for review state, you can activate the toggle on the document:
 
-![Alt text](../img/publish-unavailable.png)
-![Alt text](../img/publish-ready.png)
+![Alt text]({{site.baseUrl}}/assets/images/publish-unavailable.png)
+![Alt text]({{site.baseUrl}}/assets/images/publish-ready.png)
 
 ### Published
 
@@ -116,7 +116,7 @@ Only authorized Sanity accounts are able to publish documents.
 
 The **published** state is indicated by a green up arrow icon:
 
-![Alt text](../img/status-published@2x.png)
+![Alt text]({{site.baseUrl}}/assets/images/status-published@2x.png)
 
 ## Editing Documents
 
@@ -130,9 +130,9 @@ Changes made to Sanity documents are saved on the fly (or autosaved). This has t
 
 You can see where other team members are working by the appearance of their user avatar.
 
-![Alt text](../img/live-editing-1.png)
+![Alt text]({{site.baseUrl}}/assets/images/live-editing-1.png)
 
-![Alt text](../img/live-editing-2.png)
+![Alt text]({{site.baseUrl}}/assets/images/live-editing-2.png)
 
 ## Document Revisions
 
@@ -142,13 +142,13 @@ By clicking the current document version you can inspect previous versions as we
 
 Just above this control, the ellipsis will also allow you to review changes between versions to give a better impression of how a document has changed over time.
 
-![Alt text](../img/restore-document.png)
+![Alt text]({{site.baseUrl}}/assets/images/restore-document.png)
 
 ## Document Actions
 
 In the bottom right of the document editor there are a number of **document actions** available based on the state or type of the current document. You may see some or all of these options in specific scenarios.
 
-![Document actions](../img/unpublish-discard@2x.png)
+![Document actions]({{site.baseUrl}}/assets/images/unpublish-discard@2x.png)
 
 **1. Unpublish:** allows you to unpublish a document - this will remove it from the next build of the Grief Matters website.
 
