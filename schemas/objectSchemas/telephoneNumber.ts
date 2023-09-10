@@ -10,6 +10,7 @@ const types = [
 export default defineType({
   type: "object",
   name: "telephoneNumber",
+  title: "Telephone Number",
   fields: [
     defineField({
       type: "string",
