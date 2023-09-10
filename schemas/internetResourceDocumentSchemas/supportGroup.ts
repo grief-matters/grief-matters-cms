@@ -1,9 +1,15 @@
 import { defineField, defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
 
+import {
+  categoriesField,
+  populationsField,
+  readyForReviewField,
+  urlField,
+  websiteReferenceField,
+} from "../fields";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 import { supportFormats } from "./peerSupport";
-import { readyForReviewField } from "../fields";
 
 export default defineType({
   type: "document",
@@ -22,11 +28,10 @@ export default defineType({
       name: "description",
       type: "text",
     }),
-    defineField({
-      title: "Resource Details",
-      name: "resourceDetails",
-      type: "resourceBase",
-    }),
+    urlField,
+    websiteReferenceField,
+    categoriesField,
+    populationsField,
     defineField({
       title: "Format",
       name: "format",
