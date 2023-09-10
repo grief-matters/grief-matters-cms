@@ -31,7 +31,6 @@ import {
   coreValue,
   logo,
   telephoneNumber,
-  resourceBase,
 } from "./objectSchemas";
 
 export const objectTypes = [
@@ -40,7 +39,6 @@ export const objectTypes = [
   coreValue,
   logo,
   telephoneNumber,
-  resourceBase,
 ];
 
 export const internetResourceDocumentTypes = [
