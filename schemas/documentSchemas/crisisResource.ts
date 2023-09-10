@@ -15,9 +15,15 @@ export default defineType({
       title: "Name",
     }),
     defineField({
-      type: "text",
-      name: "description",
       title: "Description",
+      name: "description",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "block",
+          styles: [{ title: "Normal", value: "normal" }],
+        }),
+      ],
     }),
     urlField,
     defineField({
