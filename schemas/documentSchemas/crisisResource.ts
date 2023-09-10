@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-import { readyForReviewField } from "../fields";
+import { readyForReviewField, urlField } from "../fields";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 
 export default defineType({
@@ -19,6 +19,7 @@ export default defineType({
       name: "description",
       title: "Description",
     }),
+    urlField,
     defineField({
       type: "reference",
       name: "website",
