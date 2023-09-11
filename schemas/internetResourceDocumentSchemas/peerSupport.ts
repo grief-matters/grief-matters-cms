@@ -1,8 +1,15 @@
 import { defineField, defineType } from "sanity";
 import { UserIcon } from "@sanity/icons";
 
+import {
+  categoriesField,
+  populationsField,
+  readyForReviewField,
+  simpleDescriptionField,
+  urlField,
+  websiteReferenceField,
+} from "../fields";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
-import { readyForReviewField } from "../fields";
 
 export const supportFormats = ["In person", "Virtual"];
 
@@ -18,16 +25,11 @@ export default defineType({
       name: "name",
       type: "string",
     }),
-    defineField({
-      title: "Description",
-      name: "description",
-      type: "text",
-    }),
-    defineField({
-      title: "Resource Details",
-      name: "resourceDetails",
-      type: "resourceBase",
-    }),
+    simpleDescriptionField,
+    urlField,
+    websiteReferenceField,
+    categoriesField,
+    populationsField,
     defineField({
       title: "Format",
       name: "format",
