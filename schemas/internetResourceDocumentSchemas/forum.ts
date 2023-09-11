@@ -6,7 +6,8 @@ import {
   categoriesField,
   populationsField,
   readyForReviewField,
-  urlField,
+  requiredUrlField,
+  simpleDescriptionField,
   websiteReferenceField,
 } from "../fields";
 
@@ -22,12 +23,8 @@ export default defineType({
       name: "name",
       type: "string",
     }),
-    defineField({
-      title: "Description",
-      name: "description",
-      type: "string",
-    }),
-    urlField,
+    simpleDescriptionField,
+    requiredUrlField,
     websiteReferenceField,
     categoriesField,
     populationsField,

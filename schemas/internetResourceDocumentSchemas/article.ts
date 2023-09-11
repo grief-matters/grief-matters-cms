@@ -9,6 +9,7 @@ import {
   titleField,
   requiredUrlField,
   websiteReferenceField,
+  simpleDescriptionField,
 } from "../fields";
 
 export default defineType({
@@ -19,11 +20,7 @@ export default defineType({
   preview: reviewableDocumentPreviewConfig,
   fields: [
     titleField,
-    defineField({
-      title: "Description",
-      name: "description",
-      type: "text",
-    }),
+    simpleDescriptionField,
     requiredUrlField,
     websiteReferenceField,
     categoriesField,

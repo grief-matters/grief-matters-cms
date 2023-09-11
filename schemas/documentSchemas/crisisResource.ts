@@ -1,6 +1,11 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-import { readyForReviewField, urlField } from "../fields";
+import {
+  categoriesField,
+  populationsField,
+  readyForReviewField,
+  urlField,
+} from "../fields";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 
 export default defineType({
@@ -32,6 +37,7 @@ export default defineType({
       title: "Website",
       to: [{ type: "website" }],
     }),
+    { ...categoriesField, validation: undefined },
     defineField({
       type: "array",
       name: "populations",
