@@ -4,6 +4,7 @@ import { ImageIcon } from "@sanity/icons";
 export default defineType({
   type: "object",
   name: "accessibleImage",
+  title: "Image",
   icon: ImageIcon,
   fields: [
     {
@@ -18,18 +19,12 @@ export default defineType({
       description: "Alternative text is required.",
       hidden: ({ parent }) => !parent?.image,
       validation: (Rule) => [Rule.required()],
-      options: {
-        isHighlighted: true,
-      },
     },
     {
       name: "caption",
       type: "string",
       title: "Caption",
       hidden: ({ parent }) => !parent?.image,
-      options: {
-        isHighlighted: true,
-      },
     },
   ],
 });

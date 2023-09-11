@@ -6,6 +6,7 @@ import {
   categoriesField,
   populationsField,
   readyForReviewField,
+  simpleDescriptionField,
   urlField,
 } from "../fields";
 
@@ -21,11 +22,7 @@ export default defineType({
       name: "name",
       type: "string",
     }),
-    defineField({
-      title: "Description",
-      name: "description",
-      type: "text",
-    }),
+    simpleDescriptionField,
     urlField,
     defineField({
       title: "Logo",

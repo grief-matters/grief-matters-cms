@@ -5,7 +5,8 @@ import {
   categoriesField,
   populationsField,
   readyForReviewField,
-  urlField,
+  requiredUrlField,
+  simpleDescriptionField,
   websiteReferenceField,
 } from "../fields";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
@@ -22,12 +23,8 @@ export default defineType({
       name: "name",
       type: "string",
     }),
-    defineField({
-      title: "Description",
-      name: "description",
-      type: "text",
-    }),
-    urlField,
+    simpleDescriptionField,
+    requiredUrlField,
     websiteReferenceField,
     categoriesField,
     populationsField,
