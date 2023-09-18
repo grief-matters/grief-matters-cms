@@ -3,6 +3,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 import {
   categoriesField,
   populationsField,
+  portableTextDescriptionField,
   readyForReviewField,
   urlField,
 } from "../fields";
@@ -18,37 +19,20 @@ export default defineType({
       type: "string",
       name: "name",
       title: "Name",
+      description:
+        "The name of the crisis resource (this might be different from the website name)",
     }),
-    defineField({
-      title: "Description",
-      name: "description",
-      type: "array",
-      of: [
-        defineArrayMember({
-          type: "block",
-          styles: [{ title: "Normal", value: "normal" }],
-        }),
-      ],
-    }),
+    portableTextDescriptionField,
     urlField,
     defineField({
       type: "reference",
       name: "website",
       title: "Website",
+      description: "The source website for the crisis resource (if we have it)",
       to: [{ type: "website" }],
     }),
     { ...categoriesField, validation: undefined },
-    defineField({
-      type: "array",
-      name: "populations",
-      title: "Populations",
-      of: [
-        defineArrayMember({
-          type: "reference",
-          to: [{ type: "population" }],
-        }),
-      ],
-    }),
+    populationsField,
     defineField({
       type: "array",
       name: "availabilities",
@@ -72,7 +56,14 @@ export default defineType({
     defineField({
       type: "email",
       name: "email",
+      description: "An email address to get crisis support (if available)",
       title: "Email",
+    }),
+    defineField({
+      name: "liveChatUrl",
+      title: "Live Chat",
+      description: "The URL at which live chat help can be found",
+      type: "url",
     }),
     defineField({
       type: "array",
