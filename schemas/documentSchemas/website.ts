@@ -23,6 +23,13 @@ export default defineType({
       type: "string",
     }),
     simpleDescriptionField,
+    defineField({
+      name: "directlyQuoted",
+      title: "Description text quoted directly",
+      description: `Some or all of the description text was taken directly from the source wesbite`,
+      type: "boolean",
+      initialValue: false,
+    }),
     urlField,
     defineField({
       title: "Logo",
