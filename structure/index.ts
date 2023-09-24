@@ -16,10 +16,10 @@ export const structure: StructureResolver = (S, context) =>
       ...singletonDocumentTypes.map((t) =>
         S.listItem()
           .title(startCase(t.title ?? t.name))
-          .id(`${t.type}-singleton`)
+          .id(`${t.name}-singleton`)
           .icon(t.icon)
           .child(
-            S.document().schemaType(t.name).documentId(`${t.type}-singleton`)
+            S.document().schemaType(t.name).documentId(`${t.name}-singleton`)
           )
       ),
       S.divider(),
