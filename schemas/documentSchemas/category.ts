@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
 import { categoryPreviewConfig } from "../../configs/categoryPreviewConfig";
 import CategoryPreview from "../../components/CategoryPreview";
+import { featuredResourcesField } from "../fields";
 
 export default defineType({
   name: "category",
@@ -30,5 +31,7 @@ export default defineType({
       type: "reference",
       to: [{ type: "category" }],
     }),
+    featuredResourcesField("article"),
+    featuredResourcesField("story"),
   ],
 });
