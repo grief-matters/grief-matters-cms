@@ -4,6 +4,7 @@ import { PlayIcon } from "@sanity/icons";
 import {
   categoriesField,
   populationsField,
+  ratingField,
   readyForReviewField,
   simpleDescriptionField,
   titleField,
@@ -31,6 +32,7 @@ export default defineType({
       type: "reference",
       to: [{ type: "podcast" }],
     }),
+    ratingField,
     readyForReviewField,
   ],
 });

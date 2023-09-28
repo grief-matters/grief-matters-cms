@@ -4,6 +4,7 @@ import { UserIcon } from "@sanity/icons";
 import {
   categoriesField,
   populationsField,
+  ratingField,
   readyForReviewField,
   simpleDescriptionField,
   urlField,
@@ -38,6 +39,7 @@ export default defineType({
         list: supportFormats,
       },
     }),
+    ratingField,
     readyForReviewField,
   ],
 });

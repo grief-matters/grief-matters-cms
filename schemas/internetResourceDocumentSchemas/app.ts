@@ -4,6 +4,7 @@ import { MobileDeviceIcon } from "@sanity/icons";
 import {
   categoriesField,
   populationsField,
+  ratingField,
   readyForReviewField,
   simpleDescriptionField,
   urlField,
@@ -64,6 +65,7 @@ export default defineType({
             : `Google Play Store links start with 'https://play.google.com/store/apps/'`;
         }),
     }),
+    ratingField,
     readyForReviewField,
   ],
 });

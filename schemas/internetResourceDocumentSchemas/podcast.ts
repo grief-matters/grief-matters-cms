@@ -4,6 +4,7 @@ import { PlayIcon } from "@sanity/icons";
 import {
   categoriesField,
   populationsField,
+  ratingField,
   readyForReviewField,
   simpleDescriptionField,
   urlField,
@@ -38,6 +39,7 @@ export default defineType({
       name: "appleUrl",
       title: "Apple",
     }),
+    ratingField,
     readyForReviewField,
   ],
 });

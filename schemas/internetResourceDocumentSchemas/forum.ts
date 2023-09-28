@@ -5,6 +5,7 @@ import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumen
 import {
   categoriesField,
   populationsField,
+  ratingField,
   readyForReviewField,
   requiredUrlField,
   simpleDescriptionField,
@@ -28,6 +29,7 @@ export default defineType({
     websiteReferenceField,
     categoriesField,
     populationsField,
+    ratingField,
     readyForReviewField,
   ],
 });

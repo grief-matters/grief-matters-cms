@@ -10,6 +10,7 @@ import {
   requiredUrlField,
   websiteReferenceField,
   simpleDescriptionField,
+  ratingField,
 } from "../fields";
 
 export default defineType({
@@ -31,6 +32,7 @@ export default defineType({
       type: "reference",
       to: [{ type: "blog" }],
     }),
+    ratingField,
     readyForReviewField,
   ],
 });
