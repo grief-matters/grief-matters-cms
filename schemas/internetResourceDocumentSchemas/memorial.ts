@@ -4,6 +4,7 @@ import { DocumentIcon } from "@sanity/icons";
 import {
   categoriesField,
   populationsField,
+  ratingField,
   readyForReviewField,
   requiredUrlField,
   simpleDescriptionField,
@@ -28,6 +29,7 @@ export default defineType({
     websiteReferenceField,
     categoriesField,
     populationsField,
+    ratingField,
     readyForReviewField,
   ],
 });

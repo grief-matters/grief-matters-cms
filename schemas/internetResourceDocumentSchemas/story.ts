@@ -4,6 +4,7 @@ import { DocumentTextIcon } from "@sanity/icons";
 import {
   categoriesField,
   populationsField,
+  ratingField,
   readyForReviewField,
   requiredUrlField,
   simpleDescriptionField,
@@ -30,6 +31,7 @@ export default defineType({
       name: "photo",
       type: "accessibleImage",
     }),
+    ratingField,
     readyForReviewField,
   ],
 });

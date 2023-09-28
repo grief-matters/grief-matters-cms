@@ -4,6 +4,7 @@ import { BookIcon } from "@sanity/icons";
 import {
   categoriesField,
   populationsField,
+  ratingField,
   readyForReviewField,
   simpleDescriptionField,
   titleField,
@@ -37,6 +38,7 @@ export default defineType({
       validation: (rule) =>
         rule.min(10).max(13).error("An ISBN is 10 or 13 digits long"),
     }),
+    ratingField,
     readyForReviewField,
   ],
 });

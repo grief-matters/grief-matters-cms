@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineType } from "sanity";
 import { DocumentVideoIcon } from "@sanity/icons";
 
 import {
@@ -9,6 +9,7 @@ import {
   requiredUrlField,
   websiteReferenceField,
   simpleDescriptionField,
+  ratingField,
 } from "../fields";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 
@@ -25,6 +26,7 @@ export default defineType({
     websiteReferenceField,
     categoriesField,
     populationsField,
+    ratingField,
     readyForReviewField,
   ],
 });
