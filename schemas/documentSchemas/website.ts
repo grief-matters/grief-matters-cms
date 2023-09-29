@@ -25,8 +25,7 @@ export default defineType({
     simpleDescriptionField,
     defineField({
       name: "directlyQuoted",
-      title: "Description text quoted directly",
-      description: `Some or all of the description text was taken directly from the source wesbite`,
+      title: "Description quoted from website.",
       type: "boolean",
       initialValue: false,
     }),
