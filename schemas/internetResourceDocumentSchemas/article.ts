@@ -22,6 +22,12 @@ export default defineType({
   fields: [
     titleField,
     simpleDescriptionField,
+    defineField({
+      title: "Available in Spanish",
+      name: "hasSpanishVersion",
+      type: "boolean",
+      initialValue: false,
+    }),
     requiredUrlField,
     websiteReferenceField,
     categoriesField,
