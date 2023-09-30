@@ -10,6 +10,11 @@ The Why Grief Matters Sanity Studio Content Management System (CMS) is built wit
 
 Sanity Studio offers an intuitive interface for real-time editing. Collaborative and efficient, it ensures data consistency and accuracy, allowing creators to effortlessly craft, edit, and organize content. Sanity Studio optimizes productivity and enhances the content creation journey.
 
+## Documentation
+
+The project documentation can be found at this website:
+[https://grief-matters.github.io/grief-matters-cms/](https://grief-matters.github.io/grief-matters-cms/)
+
 ---
 
 ## Wanting to Contribute?
