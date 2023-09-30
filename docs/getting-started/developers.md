@@ -17,11 +17,14 @@ Once you're all set up with an account, follow these steps to get started:
 2. `cd` into the project
 3. Create a file named `.env` in the root of your project and add to it the following environment variables:
    ```
+   SANITY_STUDIO_PROJECT_ID="vg3sb730"
    SANITY_STUDIO_DATASET="dev"
    SANITY_STUDIO_API_VERSION="2023-07-16"
    ```
-4. Run `npm run dev` in the project folder. This will build the studio application and start a local development server.
-5. Once the build is complete, you can head over to http://localhost:3333.
+   Our Sanity project has a public API - so these environment variables do not need to be treated as secrets.
+4. Run `npm install` at the root of the project to install all dependencies.
+5. Run `npm run dev` at the root of the project folder. This will build the studio application and start a local development server.
+6. Once the build is complete, you can head over to http://localhost:3333.
 
    > Note: when you run the server for the first time, you'll be asked to authenticate to Sanity.io
 
