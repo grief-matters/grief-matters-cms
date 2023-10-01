@@ -2,6 +2,7 @@ import {
   category,
   crisisResource,
   organization,
+  featuredTopics,
   person,
   population,
   website,
@@ -29,6 +30,7 @@ import {
   accessibleImage,
   availability,
   coreValue,
+  customResourceCollection,
   logo,
   telephoneNumber,
 } from "./objectSchemas";
@@ -39,6 +41,7 @@ export const objectTypes = [
   coreValue,
   logo,
   telephoneNumber,
+  customResourceCollection,
 ];
 
 export const internetResourceDocumentTypes = [
@@ -73,9 +76,9 @@ export const documentTypes = [
   website,
 ];
 
-export const singletonDocumentTypes = [organization];
+export const singletonDocumentTypes = [organization, featuredTopics];
 
-export const SINGLETON_TYPES = new Set(["organization"]);
+export const SINGLETON_TYPES = new Set(["organization", "featuredTopics"]);
 
 export const schemaTypes = [
   ...singletonDocumentTypes,
