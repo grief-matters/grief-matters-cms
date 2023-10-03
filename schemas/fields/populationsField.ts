@@ -1,5 +1,4 @@
 import { defineArrayMember, defineField } from "sanity";
-import { duplicateReferenceValidator } from "../fields";
 
 export default defineField({
   name: "populations",
@@ -12,7 +11,5 @@ export default defineField({
       to: [{ type: "population" }],
     }),
   ],
-  validation: (Rule) =>
-    /* @ts-ignore */
-    Rule.custom(duplicateReferenceValidator),
+  validation: (Rule) => Rule.unique(),
 });

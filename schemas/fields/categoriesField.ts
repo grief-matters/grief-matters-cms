@@ -6,7 +6,7 @@ export default defineField({
   type: "array",
   description: "One or more categories that apply to this resource",
   of: [defineArrayMember({ type: "reference", to: [{ type: "category" }] })],
-  validation: (Rule) =>
+  validation: (Rule) => [
     Rule.custom((categories, context) => {
       if (
         typeof categories === "undefined" &&
@@ -17,4 +17,6 @@ export default defineField({
 
       return true;
     }),
+    Rule.unique(),
+  ],
 });
