@@ -7,7 +7,17 @@ import {
   DocumentActionProps,
   useClient,
 } from "sanity";
-import { Box, Button, Flex, Inline, Select, Stack, Text } from "@sanity/ui";
+import {
+  Box,
+  Button,
+  Card,
+  Flex,
+  Inline,
+  Select,
+  Stack,
+  Text,
+  useToast,
+} from "@sanity/ui";
 import { useRouter } from "sanity/router";
 
 import { InternetResourceType, TypedMap } from "../types";
@@ -44,6 +54,7 @@ function convertCamelCaseToSentence(value: string) {
 }
 
 export function ConvertAction(props: DocumentActionProps) {
+  const toast = useToast();
   const client = useClient({ apiVersion: apiVersion });
   const router = useRouter();
 
@@ -51,30 +62,62 @@ export function ConvertAction(props: DocumentActionProps) {
 
   const [newType, setNewType] = useState<InternetResourceType>(options[0]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [converting, setConverting] = useState(false);
 
   const handleConvert = () => {
-    if (!newType || !props.published) return;
+    setConverting(true);
 
     const currentTypeNameKey =
       resourceNameKeyMap[props.type as InternetResourceType];
 
     const newTypeNameKey = resourceNameKeyMap[newType];
 
+    // we don't have a published document if we get this far - so draft has to be defined
     const doc = {
+      _id: "drafts.",
       _type: newType,
-      [newTypeNameKey]: props.published[currentTypeNameKey],
-      description: props.published.description,
-      resourceDetails: props.published.resourceDetails,
+      [newTypeNameKey]: props.draft![currentTypeNameKey],
+      description: props.draft?.description,
+      categories: props.draft?.categories,
+      populations: props.draft?.populations,
+      resourceUrl: props.draft?.resourceUrl,
+      sourceWebsite: props.draft?.sourceWebsite,
+      rating: props.draft?.rating,
     };
 
-    client.create(doc).then((doc) => {
-      client.delete(props.id).then(() => {
-        props.onComplete();
+    client
+      .create(doc)
+      .then((doc) => {
+        toast.push({
+          status: "success",
+          title: `Successfully created new ${doc._type}!`,
+        });
+        client
+          .delete(`drafts.${props.id}`)
+          .then(() => {
+            toast.push({
+              status: "success",
+              title: `Successfully deleted old ${props.type}!`,
+            });
 
-        const path = `/desk/${newType};${doc._id}`;
-        router.navigateUrl({ path });
+            props.onComplete();
+
+            const path = `/desk/${newType};${doc._id}`;
+            router.navigateUrl({ path });
+          })
+          .catch(() => {
+            toast.push({
+              status: "error",
+              title: `Problem deleting old ${props.type}! You may need to delete the old resource manually`,
+            });
+          });
+      })
+      .catch(() => {
+        toast.push({
+          status: "error",
+          title: `Could not create ${doc._id}! Try again or create the document manually`,
+        });
       });
-    });
   };
 
   return {
@@ -92,42 +135,67 @@ export function ConvertAction(props: DocumentActionProps) {
         content: (
           <Box padding={4}>
             <Stack space={5}>
-              <Text>
-                Please select the type of resource that you wish to convert this{" "}
-                <strong>{props.type}</strong> to:
-              </Text>
+              {props.published ? (
+                <>
+                  <Text>
+                    The resource must be <strong>Unpublished</strong> before you
+                    can convert it.
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Text>
+                    Please select the type of resource that you wish to convert
+                    this <strong>{props.type}</strong> to:
+                  </Text>
 
-              <Select
-                value={newType}
-                onChange={(e) =>
-                  setNewType(
-                    (e.target as HTMLSelectElement)
-                      .value as InternetResourceType
-                  )
-                }
-              >
-                {options.map((option, i) => (
-                  <option key={`${i}--${option}`} value={option}>
-                    {convertCamelCaseToSentence(option)}
-                  </option>
-                ))}
-              </Select>
-              <Flex justify="flex-end">
-                <Inline space={[3, 3, 4]}>
-                  <Button
-                    mode="ghost"
-                    padding={[2, 2, 3]}
-                    text="Cancel"
-                    onClick={props.onComplete}
-                  />
-                  <Button
-                    padding={[2, 2, 3]}
-                    text={`Convert to ${startCase(newType)}`}
-                    tone="primary"
-                    onClick={handleConvert}
-                  />
-                </Inline>
-              </Flex>
+                  <Select
+                    value={newType}
+                    onChange={(e) =>
+                      setNewType(
+                        (e.target as HTMLSelectElement)
+                          .value as InternetResourceType
+                      )
+                    }
+                  >
+                    {options.map((option, i) => (
+                      <option key={`${i}--${option}`} value={option}>
+                        {convertCamelCaseToSentence(option)}
+                      </option>
+                    ))}
+                  </Select>
+                  <Card
+                    padding={[3, 3, 4]}
+                    radius={2}
+                    shadow={1}
+                    tone="caution"
+                  >
+                    <Text>
+                      Only fields common to all resource types will be copied
+                      across. For example, if you are converting a <em>book</em>{" "}
+                      to an <em>article</em> you may lose information such as{" "}
+                      <em>ISBN</em> and <em>author</em>
+                    </Text>
+                  </Card>
+                  <Flex justify="flex-end">
+                    <Inline space={[3, 3, 4]}>
+                      <Button
+                        mode="ghost"
+                        padding={[2, 2, 3]}
+                        text="Cancel"
+                        onClick={props.onComplete}
+                      />
+                      <Button
+                        padding={[2, 2, 3]}
+                        text={`Convert to ${startCase(newType)}`}
+                        tone="primary"
+                        onClick={handleConvert}
+                        disabled={converting}
+                      />
+                    </Inline>
+                  </Flex>
+                </>
+              )}
             </Stack>
           </Box>
         ),
