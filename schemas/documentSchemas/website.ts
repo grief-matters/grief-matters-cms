@@ -4,6 +4,7 @@ import { EarthGlobeIcon } from "@sanity/icons";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 import {
   categoriesField,
+  hasSpanishVersionField,
   populationsField,
   readyForReviewField,
   simpleDescriptionField,
@@ -23,6 +24,7 @@ export default defineType({
       type: "string",
     }),
     simpleDescriptionField,
+    hasSpanishVersionField,
     defineField({
       name: "directlyQuoted",
       title: "Description quoted from website.",

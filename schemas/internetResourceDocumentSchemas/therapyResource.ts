@@ -3,6 +3,7 @@ import { UsersIcon } from "@sanity/icons";
 
 import {
   categoriesField,
+  hasSpanishVersionField,
   populationsField,
   ratingField,
   readyForReviewField,
@@ -25,6 +26,7 @@ export default defineType({
       type: "string",
     }),
     simpleDescriptionField,
+    hasSpanishVersionField,
     urlField,
     websiteReferenceField,
     categoriesField,
