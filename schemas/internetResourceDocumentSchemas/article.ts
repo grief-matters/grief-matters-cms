@@ -11,6 +11,7 @@ import {
   websiteReferenceField,
   simpleDescriptionField,
   ratingField,
+  hasSpanishVersionField,
 } from "../fields";
 
 export default defineType({
@@ -22,12 +23,7 @@ export default defineType({
   fields: [
     titleField,
     simpleDescriptionField,
-    defineField({
-      title: "Available in Spanish",
-      name: "hasSpanishVersion",
-      type: "boolean",
-      initialValue: false,
-    }),
+    hasSpanishVersionField,
     requiredUrlField,
     websiteReferenceField,
     categoriesField,
