@@ -10,5 +10,3 @@ export { default as urlField, requiredUrlField } from "./urlField";
 export { default as websiteReferenceField } from "./websiteReferenceField";
 
 export { default as featuredResourcesField } from "./featuredResourcesField";
-
-export { default as duplicateReferenceValidator } from "./duplicateReferenceValidator";
