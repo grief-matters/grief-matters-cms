@@ -6,6 +6,7 @@ import {
   person,
   population,
   website,
+  smartCategory,
 } from "./documentSchemas";
 import {
   app,
@@ -70,6 +71,7 @@ export const INTERNET_RESOURCE_TYPES = internetResourceDocumentTypes.map(
 
 export const documentTypes = [
   category,
+  smartCategory,
   crisisResource,
   person,
   population,

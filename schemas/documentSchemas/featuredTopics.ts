@@ -24,10 +24,7 @@ export default defineType({
       of: [
         defineArrayMember({
           type: "reference",
-          to: [{ type: "category" }],
-        }),
-        defineArrayMember({
-          type: "customResourceCollection",
+          to: [{ type: "category" }, { type: "smartCategory" }],
         }),
       ],
     }),
