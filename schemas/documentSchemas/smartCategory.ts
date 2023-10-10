@@ -1,7 +1,7 @@
 import { defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
 import { FilterOperatorField } from "../../components";
-import { featuredResourcesField } from "../fields";
+import { featuredResourcesField, slugField } from "../fields";
 
 export default defineType({
   name: "smartCategory",
@@ -16,6 +16,7 @@ export default defineType({
       type: "string",
       description: "A custom label for the smart-category",
     }),
+    slugField,
     defineField({
       name: "description",
       title: "Description",

@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
 import { categoryPreviewConfig } from "../../configs/categoryPreviewConfig";
 import CategoryPreview from "../../components/CategoryPreview";
-import { featuredResourcesField } from "../fields";
+import { featuredResourcesField, slugField } from "../fields";
 
 export default defineType({
   name: "category",
@@ -17,6 +17,7 @@ export default defineType({
       name: "title",
       type: "string",
     }),
+    slugField,
     defineField({
       name: "description",
       description:
