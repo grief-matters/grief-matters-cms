@@ -7,6 +7,7 @@ export { default as readyForReviewField } from "./readyForReviewField";
 export { default as simpleDescriptionField } from "./simpleDescriptionField";
 export { default as slugField } from "./slugField";
 export { default as titleField } from "./titleField";
+export { default as typeFilterField } from "./typeFilterField";
 export { default as urlField, requiredUrlField } from "./urlField";
 export { default as websiteReferenceField } from "./websiteReferenceField";
 

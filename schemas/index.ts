@@ -1,6 +1,8 @@
 import {
   category,
   crisisResource,
+  featurePanel,
+  homePage,
   organization,
   featuredTopics,
   person,
@@ -8,6 +10,7 @@ import {
   website,
   smartCategory,
 } from "./documentSchemas";
+
 import {
   app,
   article,
@@ -27,22 +30,33 @@ import {
   video,
   webinar,
 } from "./internetResourceDocumentSchemas";
+
 import {
   accessibleImage,
   availability,
+  categoryLink,
+  categoryLinks,
   coreValue,
   customResourceCollection,
+  link,
   logo,
+  resourceLinks,
+  rowOfThree,
   telephoneNumber,
 } from "./objectSchemas";
 
 export const objectTypes = [
   accessibleImage,
   availability,
+  categoryLink,
+  categoryLinks,
   coreValue,
-  logo,
-  telephoneNumber,
   customResourceCollection,
+  link,
+  logo,
+  resourceLinks,
+  rowOfThree,
+  telephoneNumber,
 ];
 
 export const internetResourceDocumentTypes = [
@@ -73,14 +87,19 @@ export const documentTypes = [
   category,
   smartCategory,
   crisisResource,
-  person,
   population,
   website,
+  featurePanel,
+  person,
 ];
 
-export const singletonDocumentTypes = [organization, featuredTopics];
+export const singletonDocumentTypes = [organization, featuredTopics, homePage];
 
-export const SINGLETON_TYPES = new Set(["organization", "featuredTopics"]);
+export const SINGLETON_TYPES = new Set([
+  "organization",
+  "featuredTopics",
+  "homePage",
+]);
 
 export const schemaTypes = [
   ...singletonDocumentTypes,
