@@ -5,11 +5,21 @@ export default defineType({
   name: "coreValue",
   type: "object",
   fields: [
-    defineField({ name: "value", type: "string", title: "Core Value" }),
+    defineField({
+      name: "value",
+      type: "string",
+      title: "Core Value",
+    }),
     defineField({
       name: "description",
       type: "text",
       title: "Core Value Description",
     }),
   ],
+  preview: {
+    select: {
+      title: "value",
+      subtitle: "description",
+    },
+  },
 });
