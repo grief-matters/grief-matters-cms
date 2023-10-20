@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
 
 import {
+  broadFocusToggleField,
   categoriesField,
   populationsField,
   ratingField,
@@ -28,11 +29,13 @@ export default defineType({
     simpleDescriptionField,
     urlField,
     websiteReferenceField,
+    broadFocusToggleField,
     categoriesField,
     populationsField,
     defineField({
       title: "Format",
       name: "format",
+      description: "Mark the format of the support group if relevant",
       type: "string",
       options: {
         list: supportFormats,
