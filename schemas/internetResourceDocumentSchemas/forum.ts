@@ -3,6 +3,7 @@ import { UsersIcon } from "@sanity/icons";
 
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 import {
+  broadFocusToggleField,
   categoriesField,
   populationsField,
   ratingField,
@@ -27,6 +28,7 @@ export default defineType({
     simpleDescriptionField,
     requiredUrlField,
     websiteReferenceField,
+    broadFocusToggleField,
     categoriesField,
     populationsField,
     ratingField,

@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity";
 import { UserIcon } from "@sanity/icons";
 
 import {
+  broadFocusToggleField,
   categoriesField,
   populationsField,
   ratingField,
@@ -29,6 +30,7 @@ export default defineType({
     simpleDescriptionField,
     urlField,
     websiteReferenceField,
+    broadFocusToggleField,
     categoriesField,
     populationsField,
     defineField({
