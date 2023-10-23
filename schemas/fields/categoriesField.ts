@@ -9,6 +9,7 @@ export default defineField({
   validation: (Rule) => [
     Rule.custom((categories, context) => {
       if (
+        !context.document?.hasBroadFocus &&
         typeof categories === "undefined" &&
         typeof context.document?.populations === "undefined"
       ) {
