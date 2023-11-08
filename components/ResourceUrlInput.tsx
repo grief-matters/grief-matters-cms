@@ -14,7 +14,7 @@ function ResourceUrlInput(props: UrlInputProps) {
         <Flex justify={"flex-end"} paddingRight={2}>
           <Text size={2}>
             <a href={`${props.value}`} target="blank" rel="noopener">
-              Go to resource <ArrowRightIcon />
+              Go to URL <ArrowRightIcon />
             </a>
           </Text>
         </Flex>

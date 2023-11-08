@@ -23,6 +23,13 @@ export default defineType({
   fields: [
     titleField,
     simpleDescriptionField,
+    defineField({
+      name: "image",
+      title: "Article Image",
+      type: "accessibleImage",
+      description:
+        "An image to be shown alongside the Article if it has been Featured",
+    }),
     hasSpanishVersionField,
     requiredUrlField,
     websiteReferenceField,

@@ -70,6 +70,42 @@ export default (
         },
       }),
     ],
-    validation: (Rule) => [Rule.max(3), Rule.unique()],
+    validation: (Rule) => [
+      Rule.max(3),
+      Rule.unique(),
+      Rule.custom(async (resources, context) => {
+        if (typeof resources === "undefined" || resources.length < 1) {
+          return true;
+        }
+
+        const queryParts = resources.map((r: any) => `_id == "${r._ref}"`);
+        const query = `*[${queryParts.join(" || ")}]`;
+        console.log(query);
+
+        const client = context.getClient({
+          apiVersion: process.env.SANITY_STUDIO_API_VERSION!,
+        });
+
+        try {
+          const docs = await client.fetch(query);
+
+          if (Array.isArray(docs)) {
+            const resourcesWithoutImages = docs
+              .filter((doc) => typeof doc?.image?.asset === "undefined")
+              .map((doc) => doc.title.substring(0, 15) + "...");
+
+            return resourcesWithoutImages.length > 0
+              ? `"${resourcesWithoutImages.join(
+                  `", "`
+                )}" do not have Images - fallbacks will be used`
+              : true;
+          }
+
+          return true;
+        } catch (error) {
+          return "Error validating this field";
+        }
+      }).warning(),
+    ],
   });
 };
