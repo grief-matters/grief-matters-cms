@@ -11,11 +11,11 @@ const urlField = defineField({
     Rule.custom((resourceUrl) => {
       const pattern = new RegExp("http[s]*://[^/]+(/.+)");
       if (pattern.test(resourceUrl)) {
-        return "Warning: URL Contains A Path";
+        return "Warning: URL Contains A Path. Consider that this may point to a resource rather than a website.";
       } else {
         return true;
       }
-    }),
+    }).warning(),
   components: {
     input: ResourceUrlInput,
   },
