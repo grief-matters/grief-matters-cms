@@ -22,15 +22,17 @@ export default defineType({
   fields: [
     titleField,
     simpleDescriptionField,
+    defineField({
+      name: "image",
+      title: "Story Image",
+      type: "accessibleImage",
+      description:
+        "An image to be shown alongside the Story if it has been Featured",
+    }),
     requiredUrlField,
     websiteReferenceField,
     categoriesField,
     populationsField,
-    defineField({
-      title: "Photograph",
-      name: "photo",
-      type: "accessibleImage",
-    }),
     ratingField,
     readyForReviewField,
   ],

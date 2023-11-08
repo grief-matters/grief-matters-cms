@@ -3,6 +3,7 @@ export { default as crisisResource } from "./crisisResource";
 export { default as featurePanel } from "./featurePanel";
 export { default as featuredTopics } from "./featuredTopics";
 export { default as homePage } from "./homePage";
+export { default as imageSource } from "./imageSource";
 export { default as organization } from "./organization";
 export { default as person } from "./person";
 export { default as population } from "./population";

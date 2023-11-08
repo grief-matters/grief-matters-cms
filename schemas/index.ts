@@ -3,6 +3,7 @@ import {
   crisisResource,
   featurePanel,
   homePage,
+  imageSource,
   organization,
   featuredTopics,
   person,
@@ -90,6 +91,7 @@ export const documentTypes = [
   population,
   website,
   featurePanel,
+  imageSource,
   person,
 ];
 

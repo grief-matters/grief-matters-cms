@@ -62,6 +62,12 @@ export default defineType({
         field: FilterOperatorField,
       },
     }),
+    defineField({
+      name: "image",
+      title: "Category Cover Image",
+      type: "accessibleImage",
+      description: "A cover image to associate with this category",
+    }),
     featuredResourcesField("article", true),
     featuredResourcesField("story", true),
   ],
