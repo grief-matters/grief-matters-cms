@@ -1,8 +1,9 @@
 export { default as category } from "./category";
 export { default as crisisResource } from "./crisisResource";
-export { default as featurePanel } from "./featurePanel";
+export { default as featuredContent } from "./featuredContent";
 export { default as featuredTopics } from "./featuredTopics";
 export { default as homePage } from "./homePage";
+export { default as imageCollection } from "./imageCollection";
 export { default as imageSource } from "./imageSource";
 export { default as organization } from "./organization";
 export { default as person } from "./person";

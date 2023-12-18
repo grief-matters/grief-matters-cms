@@ -13,11 +13,11 @@ import {
 } from "./schemas";
 import { ConvertAction, setReadyForReviewOnPublishAction } from "./actions";
 
-const SINGLETON_TYPES: Set<string> = new Set([
+const singletonTypes: Set<string> = new Set([
   ...singletonDocumentTypes.map((t) => t.name),
 ]);
 
-const INTERNET_RESOURCE_TYPES: Set<string> = new Set([
+const internetResourceTypes: Set<string> = new Set([
   ...internetResourceDocumentTypes.map((t) => t.name),
 ]);
 
@@ -50,7 +50,7 @@ export default defineConfig({
     types: schemaTypes,
     templates: (templates) => {
       const nonSingletonTemplates = templates.filter(
-        ({ schemaType }) => !SINGLETON_TYPES.has(schemaType)
+        ({ schemaType }) => !singletonTypes.has(schemaType)
       );
 
       return [...nonSingletonTemplates];
@@ -58,11 +58,11 @@ export default defineConfig({
   },
   document: {
     actions: (prev, context) => {
-      const nonSingletonActions = SINGLETON_TYPES.has(context.schemaType)
+      const nonSingletonActions = singletonTypes.has(context.schemaType)
         ? prev.filter(({ action }) => action && singletonActions.has(action))
         : prev;
 
-      return INTERNET_RESOURCE_TYPES.has(context.schemaType)
+      return internetResourceTypes.has(context.schemaType)
         ? [
             ...nonSingletonActions.map((a) =>
               a.action === "publish"

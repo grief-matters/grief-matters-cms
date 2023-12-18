@@ -9,7 +9,8 @@ export default defineType({
       name: "featurePanels",
       title: "Feature Panels",
       type: "array",
-      of: [{ type: "reference", to: [{ type: "featurePanel" }] }],
+      of: [{ type: "reference", to: [{ type: "featuredContent" }] }],
+      validation: (Rule) => Rule.required(),
     }),
   ],
 });

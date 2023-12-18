@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
+import { slugField } from "../fields";
 
 export default defineType({
   name: "population",
@@ -12,6 +13,12 @@ export default defineType({
       name: "name",
       type: "string",
     }),
+    {
+      ...slugField,
+      options: {
+        source: "name",
+      },
+    },
     defineField({
       title: "Description",
       name: "description",

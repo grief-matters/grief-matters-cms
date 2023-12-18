@@ -1,8 +1,9 @@
 import {
   category,
   crisisResource,
-  featurePanel,
+  featuredContent,
   homePage,
+  imageCollection,
   imageSource,
   organization,
   featuredTopics,
@@ -35,13 +36,14 @@ import {
 import {
   accessibleImage,
   availability,
-  categoryLink,
-  categoryLinks,
   coreValue,
   customResourceCollection,
   link,
   logo,
   resourceLinks,
+  resourcePageLink,
+  resourcePageLinks,
+  richTextContentBlock,
   rowOfThree,
   telephoneNumber,
 } from "./objectSchemas";
@@ -49,13 +51,14 @@ import {
 export const objectTypes = [
   accessibleImage,
   availability,
-  categoryLink,
-  categoryLinks,
   coreValue,
   customResourceCollection,
   link,
   logo,
   resourceLinks,
+  resourcePageLink,
+  resourcePageLinks,
+  richTextContentBlock,
   rowOfThree,
   telephoneNumber,
 ];
@@ -80,18 +83,15 @@ export const internetResourceDocumentTypes = [
   webinar,
 ];
 
-export const INTERNET_RESOURCE_TYPES = internetResourceDocumentTypes.map(
-  (t) => t.name
-);
-
 export const documentTypes = [
   category,
   smartCategory,
   crisisResource,
   population,
   website,
-  featurePanel,
+  featuredContent,
   imageSource,
+  imageCollection,
   person,
 ];
 

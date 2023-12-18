@@ -21,7 +21,7 @@ import {
 import { useRouter } from "sanity/router";
 
 import { InternetResourceType, TypedMap } from "../types";
-import { INTERNET_RESOURCE_TYPES } from "../schemas";
+import { INTERNET_RESOURCE_TYPES } from "../constants";
 
 const apiVersion =
   String(process.env.SANITY_STUDIO_API_VERSION) ||
