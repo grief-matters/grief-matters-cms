@@ -31,7 +31,20 @@ export default defineType({
       type: "boolean",
       initialValue: false,
     }),
-    urlField,
+    defineField({
+      ...urlField,
+      validation: (Rule) =>
+        Rule.custom((resourceUrl) => {
+          const pattern = new RegExp("http[s]*://[^/]+(/.+)");
+          if (typeof resourceUrl === "undefined") {
+            return true;
+          } else if (pattern.test(resourceUrl)) {
+            return "Warning: It is more likely that this URL points to a resource rather than a website.";
+          } else {
+            return true;
+          }
+        }).warning(),
+    }),
     defineField({
       title: "Logo",
       name: "logo",
