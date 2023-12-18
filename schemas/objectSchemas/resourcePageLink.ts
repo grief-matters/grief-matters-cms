@@ -45,6 +45,10 @@ export default defineType({
             value: resourceType,
             title: startCase(resourceType),
           })),
+          {
+            value: "website",
+            title: "Website",
+          },
         ],
       },
       fieldset: "filters",
