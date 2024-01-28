@@ -1,4 +1,5 @@
 import {
+  aboutPage,
   category,
   crisisResource,
   featuredContent,
@@ -95,12 +96,18 @@ export const documentTypes = [
   person,
 ];
 
-export const singletonDocumentTypes = [organization, featuredTopics, homePage];
+export const singletonDocumentTypes = [
+  organization,
+  featuredTopics,
+  homePage,
+  aboutPage,
+];
 
 export const SINGLETON_TYPES = new Set([
   "organization",
   "featuredTopics",
   "homePage",
+  "aboutPage",
 ]);
 
 export const schemaTypes = [

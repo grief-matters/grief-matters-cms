@@ -1,3 +1,4 @@
+export { default as aboutPage } from "./aboutPage";
 export { default as category } from "./category";
 export { default as crisisResource } from "./crisisResource";
 export { default as featuredContent } from "./featuredContent";

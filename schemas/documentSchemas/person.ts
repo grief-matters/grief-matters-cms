@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
 
 export default defineType({
@@ -21,9 +21,20 @@ export default defineType({
       },
     }),
     defineField({
+      name: "role",
+      title: "Role",
+      type: "string",
+    }),
+    defineField({
       name: "bio",
       title: "Bio",
-      type: "text",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "block",
+          styles: [{ title: "Normal", value: "normal" }],
+        }),
+      ],
     }),
   ],
 });

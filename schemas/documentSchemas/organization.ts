@@ -34,11 +34,6 @@ export default defineType({
         }),
       ],
     }),
-    // defineField({
-    //   title: "Mission Statement",
-    //   name: "mission",
-    //   type: "text",
-    // }),
     defineField({
       title: "Mission Statement",
       name: "mission",
@@ -63,17 +58,6 @@ export default defineType({
       of: [defineArrayMember({ type: "coreValue" })],
     }),
     defineField({
-      title: "Our Story",
-      name: "ourStory",
-      type: "array",
-      of: [
-        defineArrayMember({
-          type: "block",
-          styles: [{ title: "Normal", value: "normal" }],
-        }),
-      ],
-    }),
-    defineField({
       title: "Small Print",
       description:
         "All the text that usually appears in the footer including legal information, disclaimers etc.",
@@ -86,18 +70,6 @@ export default defineType({
           lists: [],
         }),
       ],
-    }),
-    defineField({
-      title: "Team",
-      name: "team",
-      type: "array",
-      of: [defineArrayMember({ type: "reference", to: [{ type: "person" }] })],
-    }),
-    defineField({
-      title: "Acknowledgements",
-      name: "acknowledgements",
-      type: "array",
-      of: [defineArrayMember({ type: "reference", to: [{ type: "person" }] })],
     }),
   ],
 });
