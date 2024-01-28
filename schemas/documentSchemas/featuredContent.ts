@@ -23,6 +23,7 @@ export default defineType({
         { type: "resourceLinks" },
         { type: "resourcePageLinks" },
       ],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "featuredContentFooterLink",

@@ -34,10 +34,22 @@ export default defineType({
         }),
       ],
     }),
+    // defineField({
+    //   title: "Mission Statement",
+    //   name: "mission",
+    //   type: "text",
+    // }),
     defineField({
       title: "Mission Statement",
       name: "mission",
-      type: "text",
+      type: "array",
+      description: "Organization mission statement",
+      of: [
+        defineArrayMember({
+          type: "block",
+          styles: [{ title: "Normal", value: "normal" }],
+        }),
+      ],
     }),
     defineField({
       title: "Slogan",

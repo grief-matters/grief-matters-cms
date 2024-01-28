@@ -6,6 +6,11 @@ export default defineType({
   type: "document",
   fields: [
     defineField({
+      name: "heroImage",
+      title: "Hero Image",
+      type: "accessibleImage",
+    }),
+    defineField({
       name: "featurePanels",
       title: "Feature Panels",
       type: "array",

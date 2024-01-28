@@ -28,7 +28,7 @@ export default defineType({
         "This is for accessibility (for example, a screen reader may read this description aloud to a sight-impaired user).",
       hidden: ({ parent }) => !parent?.image,
       validation: (Rule) => [
-        Rule.required().warning(),
+        Rule.required(),
         Rule.custom((altText: string) => {
           if (typeof altText === "undefined") {
             return true; // Allow undefined values
