@@ -1,9 +1,11 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { INTERNET_RESOURCE_TYPES } from "../../constants";
+import { resourceLinksPreviewConfig } from "../../configs/resourceLinksPreviewConfig";
 
 export default defineType({
   type: "object",
   name: "resourceLinks",
+  preview: resourceLinksPreviewConfig,
   fields: [
     defineField({
       name: "resources",

@@ -1,9 +1,12 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
+import { rowOfThreePreviewConfig } from "../../configs/rowOfThreePreviewConfig";
+
 export default defineType({
   type: "object",
   name: "rowOfThree",
   title: "Image Row (3)",
+  preview: rowOfThreePreviewConfig,
   fields: [
     defineField({
       name: "images",

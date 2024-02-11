@@ -1,8 +1,10 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { richTextContentBlockPreviewConfig } from "../../configs/richTextContentBlockPreviewConfig";
 
 export default defineType({
   type: "object",
   name: "richTextContentBlock",
+  preview: richTextContentBlockPreviewConfig,
   description:
     "Rich Text content block. Supports links and other rich text formatting",
   fields: [
