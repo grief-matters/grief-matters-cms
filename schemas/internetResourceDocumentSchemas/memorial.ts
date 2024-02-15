@@ -1,35 +1,19 @@
-import { defineField, defineType } from "sanity";
 import { DocumentIcon } from "@sanity/icons";
-
-import {
-  categoriesField,
-  populationsField,
-  ratingField,
-  readyForReviewField,
-  requiredUrlField,
-  simpleDescriptionField,
-  websiteReferenceField,
-} from "../fields";
+import { defineType } from "sanity";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { createBaseInternetResourceSchema } from "../helpers";
 
-export default defineType({
-  type: "document",
+const base = createBaseInternetResourceSchema({
   name: "memorial",
   title: "Memorial",
   icon: DocumentIcon,
-  preview: reviewableDocumentPreviewConfig,
-  fields: [
-    defineField({
-      title: "Name",
-      name: "name",
-      type: "string",
-    }),
-    simpleDescriptionField,
-    requiredUrlField,
-    websiteReferenceField,
-    categoriesField,
-    populationsField,
-    ratingField,
-    readyForReviewField,
-  ],
+  isUrlRequired: true,
 });
+
+// TODO - migrate 'name' to 'title'
+const memorialSchema = defineType({
+  ...base,
+  preview: reviewableDocumentPreviewConfig,
+});
+
+export default memorialSchema;

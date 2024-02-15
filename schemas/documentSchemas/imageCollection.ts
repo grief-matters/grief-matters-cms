@@ -20,6 +20,7 @@ export default defineType({
           type: "accessibleImage",
         },
       ],
+      validation: (rule) => rule.required(),
     }),
   ],
 });

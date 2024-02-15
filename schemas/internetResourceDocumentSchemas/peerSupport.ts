@@ -1,47 +1,21 @@
-import { defineField, defineType } from "sanity";
 import { UserIcon } from "@sanity/icons";
-
-import {
-  broadFocusToggleField,
-  categoriesField,
-  populationsField,
-  ratingField,
-  readyForReviewField,
-  simpleDescriptionField,
-  urlField,
-  websiteReferenceField,
-} from "../fields";
+import { defineType } from "sanity";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { broadFocusToggleField, supportFormatField } from "../fields";
+import { createBaseInternetResourceSchema } from "../helpers";
 
-export const supportFormats = ["In person", "Virtual"];
-
-export default defineType({
-  type: "document",
+const base = createBaseInternetResourceSchema({
   name: "peerSupport",
   title: "Peer Support",
   icon: UserIcon,
-  preview: reviewableDocumentPreviewConfig,
-  fields: [
-    defineField({
-      title: "Name",
-      name: "name",
-      type: "string",
-    }),
-    simpleDescriptionField,
-    urlField,
-    websiteReferenceField,
-    broadFocusToggleField,
-    categoriesField,
-    populationsField,
-    defineField({
-      title: "Format",
-      name: "format",
-      type: "string",
-      options: {
-        list: supportFormats,
-      },
-    }),
-    ratingField,
-    readyForReviewField,
-  ],
+  isUrlRequired: true,
 });
+
+// TODO - migrate 'name' to 'title'
+const peerSupportSchema = defineType({
+  ...base,
+  fields: [...base.fields, broadFocusToggleField, supportFormatField],
+  preview: reviewableDocumentPreviewConfig,
+});
+
+export default peerSupportSchema;

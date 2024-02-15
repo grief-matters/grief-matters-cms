@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
 import { categoryPreviewConfig } from "../../configs/categoryPreviewConfig";
 import CategoryPreview from "../../components/CategoryPreview";
-import { featuredResourcesField, slugField } from "../fields";
+import { featuredResourcesField, slugField, titleField } from "../fields";
 
 export default defineType({
   name: "category",
@@ -13,16 +13,15 @@ export default defineType({
   preview: categoryPreviewConfig,
   components: { preview: CategoryPreview },
   fields: [
-    defineField({
-      name: "title",
-      type: "string",
-    }),
+    titleField,
     slugField,
     defineField({
       name: "description",
-      description:
-        "Describes the kinds of resources that would qualify for this category",
+      title: "Description",
       type: "string",
+      description:
+        "A short description for the category (may appear on the website)",
+      validation: (rule) => rule.max(255),
     }),
     defineField({
       title: "Parent Category",

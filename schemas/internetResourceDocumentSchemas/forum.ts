@@ -1,37 +1,21 @@
-import { defineField, defineType } from "sanity";
+import { defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
-
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
-import {
-  broadFocusToggleField,
-  categoriesField,
-  populationsField,
-  ratingField,
-  readyForReviewField,
-  requiredUrlField,
-  simpleDescriptionField,
-  websiteReferenceField,
-} from "../fields";
+import { broadFocusToggleField } from "../fields";
+import { createBaseInternetResourceSchema } from "../helpers";
 
-export default defineType({
-  type: "document",
+const base = createBaseInternetResourceSchema({
   name: "forum",
   title: "Forum",
   icon: UsersIcon,
-  preview: reviewableDocumentPreviewConfig,
-  fields: [
-    defineField({
-      title: "Name",
-      name: "name",
-      type: "string",
-    }),
-    simpleDescriptionField,
-    requiredUrlField,
-    websiteReferenceField,
-    broadFocusToggleField,
-    categoriesField,
-    populationsField,
-    ratingField,
-    readyForReviewField,
-  ],
+  isUrlRequired: true,
 });
+
+// TODO - migrate 'name' to 'title'
+const forumSchema = defineType({
+  ...base,
+  fields: [...base.fields, broadFocusToggleField],
+  preview: reviewableDocumentPreviewConfig,
+});
+
+export default forumSchema;

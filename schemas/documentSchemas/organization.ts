@@ -11,6 +11,7 @@ export default defineType({
       title: "Name",
       name: "name",
       type: "string",
+      validation: (rule) => rule.required(),
     }),
     defineField({
       title: "Logos",
@@ -33,6 +34,7 @@ export default defineType({
           ],
         }),
       ],
+      validation: (rule) => rule.required(),
     }),
     defineField({
       title: "Mission Statement",
@@ -45,17 +47,20 @@ export default defineType({
           styles: [{ title: "Normal", value: "normal" }],
         }),
       ],
+      validation: (rule) => rule.required(),
     }),
     defineField({
       title: "Slogan",
       name: "slogan",
       type: "string",
+      validation: (rule) => rule.required(),
     }),
     defineField({
       title: "Core Values",
       name: "coreValues",
       type: "array",
       of: [defineArrayMember({ type: "coreValue" })],
+      validation: (rule) => rule.required(),
     }),
     defineField({
       title: "Small Print",
@@ -70,6 +75,7 @@ export default defineType({
           lists: [],
         }),
       ],
+      validation: (rule) => rule.required(),
     }),
   ],
 });

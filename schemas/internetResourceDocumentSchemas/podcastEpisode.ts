@@ -1,38 +1,27 @@
-import { defineField, defineType } from "sanity";
 import { PlayIcon } from "@sanity/icons";
-
-import {
-  categoriesField,
-  populationsField,
-  ratingField,
-  readyForReviewField,
-  simpleDescriptionField,
-  titleField,
-  urlField,
-  websiteReferenceField,
-} from "../fields";
+import { defineType, defineField } from "sanity";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { createBaseInternetResourceSchema } from "../helpers";
 
-export default defineType({
-  type: "document",
+const base = createBaseInternetResourceSchema({
   name: "podcastEpisode",
   title: "Podcast Episode",
   icon: PlayIcon,
-  preview: reviewableDocumentPreviewConfig,
+  isUrlRequired: true,
+});
+
+const podcastEpSchema = defineType({
+  ...base,
   fields: [
-    titleField,
-    simpleDescriptionField,
-    urlField,
-    websiteReferenceField,
-    categoriesField,
-    populationsField,
+    ...base.fields,
     defineField({
       title: "Podcast",
       name: "parentPodcast",
       type: "reference",
       to: [{ type: "podcast" }],
     }),
-    ratingField,
-    readyForReviewField,
   ],
+  preview: reviewableDocumentPreviewConfig,
 });
+
+export default podcastEpSchema;

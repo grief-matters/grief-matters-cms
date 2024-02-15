@@ -49,6 +49,7 @@ export default defineType({
       title: "Name",
       type: "string",
       description: "The name of the Image Source",
+      validation: (rule) => rule.required(),
     }),
     defineField({
       ...requiredUrlField,
