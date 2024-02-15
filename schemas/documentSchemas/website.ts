@@ -22,6 +22,7 @@ export default defineType({
       title: "Website Name",
       name: "name",
       type: "string",
+      validation: (rule) => rule.required(),
     }),
     simpleDescriptionField,
     hasSpanishVersionField,
@@ -33,17 +34,19 @@ export default defineType({
     }),
     defineField({
       ...urlField,
-      validation: (Rule) =>
+      validation: (Rule) => [
         Rule.custom((resourceUrl) => {
           const pattern = new RegExp("http[s]*://[^/]+(/.+)");
           if (typeof resourceUrl === "undefined") {
             return true;
           } else if (pattern.test(resourceUrl)) {
-            return "Warning: It is more likely that this URL points to a resource rather than a website.";
+            return "Based on the URL entered, this is more likely to be a resource than a website.";
           } else {
             return true;
           }
         }).warning(),
+        Rule.required(),
+      ],
     }),
     defineField({
       title: "Logo",

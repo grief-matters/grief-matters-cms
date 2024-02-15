@@ -7,6 +7,13 @@ export default defineType({
   fieldsets: [{ name: "team", title: "Meet the Team" }],
   fields: [
     defineField({
+      name: "title",
+      type: "string",
+      initialValue: "About Page",
+      readOnly: true,
+      hidden: true,
+    }),
+    defineField({
       name: "ourStory",
       title: "Our Story",
       description: `This will appear under "Our Story" on the "About Us" page`,
@@ -30,6 +37,7 @@ export default defineType({
           to: [{ type: "person" }],
         }),
       ],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "teamIntro",
@@ -43,6 +51,7 @@ export default defineType({
         }),
       ],
       fieldset: "team",
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "teamMembers",
@@ -56,6 +65,7 @@ export default defineType({
         }),
       ],
       fieldset: "team",
+      validation: (Rule) => Rule.required(),
     }),
   ],
 });

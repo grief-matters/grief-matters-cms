@@ -1,32 +1,18 @@
-import { defineType } from "sanity";
 import { DocumentPdfIcon } from "@sanity/icons";
-
-import {
-  categoriesField,
-  populationsField,
-  readyForReviewField,
-  titleField,
-  requiredUrlField,
-  websiteReferenceField,
-  simpleDescriptionField,
-  ratingField,
-} from "../fields";
+import { defineType } from "sanity";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { createBaseInternetResourceSchema } from "../helpers";
 
-export default defineType({
-  type: "document",
+const base = createBaseInternetResourceSchema({
   name: "brochure",
   title: "Brochure",
   icon: DocumentPdfIcon,
-  preview: reviewableDocumentPreviewConfig,
-  fields: [
-    titleField,
-    simpleDescriptionField,
-    requiredUrlField,
-    websiteReferenceField,
-    categoriesField,
-    populationsField,
-    ratingField,
-    readyForReviewField,
-  ],
+  isUrlRequired: true,
 });
+
+const brochureSchema = defineType({
+  ...base,
+  preview: reviewableDocumentPreviewConfig,
+});
+
+export default brochureSchema;

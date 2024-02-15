@@ -1,34 +1,22 @@
 import { defineField, defineType } from "sanity";
 import { MobileDeviceIcon } from "@sanity/icons";
 
-import {
-  categoriesField,
-  populationsField,
-  ratingField,
-  readyForReviewField,
-  simpleDescriptionField,
-  urlField,
-  websiteReferenceField,
-} from "../fields";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { createBaseInternetResourceSchema } from "../helpers";
 
-export default defineType({
-  type: "document",
+const base = createBaseInternetResourceSchema({
   name: "app",
   title: "App",
   icon: MobileDeviceIcon,
+  isUrlRequired: false,
+});
+
+// TODO - we'll need to migrate the 'name' field to 'title'
+const appSchema = defineType({
+  ...base,
   preview: reviewableDocumentPreviewConfig,
   fields: [
-    defineField({
-      title: "Name",
-      name: "name",
-      type: "string",
-    }),
-    simpleDescriptionField,
-    urlField,
-    websiteReferenceField,
-    categoriesField,
-    populationsField,
+    ...base.fields,
     defineField({
       title: "Apple App Store",
       name: "appleUrl",
@@ -65,7 +53,22 @@ export default defineType({
             : `Google Play Store links start with 'https://play.google.com/store/apps/'`;
         }),
     }),
-    ratingField,
-    readyForReviewField,
   ],
+  validation: (rule) =>
+    rule.custom((fields) => {
+      if (typeof fields === "undefined") {
+        return true;
+      }
+
+      const hasAtLeastOneUrl =
+        typeof fields?.resourceUrl !== "undefined" ||
+        typeof fields?.appleUrl !== "undefined" ||
+        typeof fields?.playStoreUrl !== "undefined";
+
+      return hasAtLeastOneUrl
+        ? true
+        : `You must specify either a "URL", "Play Store" or "Apple App Store" link`;
+    }),
 });
+
+export default appSchema;

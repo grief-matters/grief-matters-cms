@@ -15,6 +15,7 @@ export default defineType({
       title: "Title",
       type: "string",
       description: "A custom label for the smart-category",
+      validation: (rule) => rule.required(),
     }),
     slugField,
     defineField({

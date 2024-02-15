@@ -11,6 +11,7 @@ export default defineType({
       name: "fullName",
       title: "Full Name",
       type: "string",
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "avatar",
@@ -35,6 +36,7 @@ export default defineType({
           styles: [{ title: "Normal", value: "normal" }],
         }),
       ],
+      validation: (rule) => rule.required(),
     }),
   ],
 });

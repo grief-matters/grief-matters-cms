@@ -9,6 +9,7 @@ export default defineType({
     defineField({
       ...titleField,
       description: "A heading for the feature panel",
+      validation: (Rule) => Rule.required(),
     }),
     portableTextDescriptionField,
     defineField({

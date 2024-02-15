@@ -1,37 +1,21 @@
-import { defineField, defineType } from "sanity";
+import { defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
-
-import {
-  categoriesField,
-  hasSpanishVersionField,
-  populationsField,
-  ratingField,
-  readyForReviewField,
-  simpleDescriptionField,
-  urlField,
-  websiteReferenceField,
-} from "../fields";
+import { hasSpanishVersionField } from "../fields";
 import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+import { createBaseInternetResourceSchema } from "../helpers";
 
-export default defineType({
-  type: "document",
+const base = createBaseInternetResourceSchema({
   name: "therapyResource",
   title: "Therapy Resource",
   icon: UsersIcon,
-  preview: reviewableDocumentPreviewConfig,
-  fields: [
-    defineField({
-      title: "Name",
-      name: "name",
-      type: "string",
-    }),
-    simpleDescriptionField,
-    hasSpanishVersionField,
-    urlField,
-    websiteReferenceField,
-    categoriesField,
-    populationsField,
-    ratingField,
-    readyForReviewField,
-  ],
+  isUrlRequired: true,
 });
+
+// TODO - migrate 'name' to 'title' field
+const therapyResourceSchema = defineType({
+  ...base,
+  fields: [...base.fields, hasSpanishVersionField],
+  preview: reviewableDocumentPreviewConfig,
+});
+
+export default therapyResourceSchema;
