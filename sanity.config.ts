@@ -1,5 +1,5 @@
-import { defineConfig } from "sanity";
-import { deskTool } from "sanity/desk";
+import { DocumentActionComponent, defineConfig } from "sanity";
+import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { dashboardTool } from "@sanity/dashboard";
 
@@ -29,7 +29,7 @@ export default defineConfig({
   projectId: process.env.SANITY_STUDIO_PROJECT_ID!,
   dataset: process.env.SANITY_STUDIO_DATASET!,
   plugins: [
-    deskTool({
+    structureTool({
       structure,
     }),
     dashboardTool({
@@ -63,14 +63,14 @@ export default defineConfig({
         : prev;
 
       return internetResourceTypes.has(context.schemaType)
-        ? [
+        ? ([
             ...nonSingletonActions.map((a) =>
               a.action === "publish"
                 ? setReadyForReviewOnPublishAction(a, context)
                 : a
             ),
             ConvertAction,
-          ]
+          ] as DocumentActionComponent[])
         : nonSingletonActions;
     },
   },
