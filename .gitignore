@@ -32,3 +32,6 @@
 
 # Dataset artifacts
 /datasets
+
+# Reports
+/reports
