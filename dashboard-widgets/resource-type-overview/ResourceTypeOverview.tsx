@@ -15,7 +15,7 @@ type Overview = {
 export interface ResourceTypeOverviewProps {}
 
 function ResourceTypeOverview(props: ResourceTypeOverviewProps) {
-  const queryStringParts = INTERNET_RESOURCE_TYPES.map(
+  const queryStringParts = [...INTERNET_RESOURCE_TYPES, "website"].map(
     (type) => `{
     "type": "${type}",
     "total": count(*[_type == "${type}"]),
