@@ -3,8 +3,6 @@ import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { dashboardTool } from "@sanity/dashboard";
 
-import { documentListWidget } from "sanity-plugin-dashboard-widget-document-list";
-
 import { structure } from "./structure";
 import {
   internetResourceDocumentTypes,
@@ -12,6 +10,7 @@ import {
   singletonDocumentTypes,
 } from "./schemas";
 import { ConvertAction, setReadyForReviewOnPublishAction } from "./actions";
+import { resourceTypeOverviewWidget } from "./dashboard-widgets/resource-type-overview/plugin";
 
 const singletonTypes: Set<string> = new Set([
   ...singletonDocumentTypes.map((t) => t.name),
@@ -33,16 +32,7 @@ export default defineConfig({
       structure,
     }),
     dashboardTool({
-      widgets: [
-        documentListWidget({
-          apiVersion: process.env.SANITY_STUDIO_API_VERSION,
-          title: "Documents Awaiting Review",
-          query: "*[readyForReview == true]",
-          layout: {
-            width: "small",
-          },
-        }),
-      ],
+      widgets: [resourceTypeOverviewWidget()],
     }),
     visionTool(),
   ],
