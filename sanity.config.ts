@@ -32,7 +32,11 @@ export default defineConfig({
       structure,
     }),
     dashboardTool({
-      widgets: [resourceTypeOverviewWidget()],
+      widgets: [
+        resourceTypeOverviewWidget({
+          layout: { width: "full", height: "medium" },
+        }),
+      ],
     }),
     visionTool(),
   ],
