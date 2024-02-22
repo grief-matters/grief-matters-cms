@@ -1,12 +1,17 @@
-import { DocumentActionProps, useDocumentOperation } from "sanity";
+import {
+  DocumentActionComponent,
+  DocumentActionProps,
+  DocumentActionsContext,
+  useDocumentOperation,
+} from "sanity";
 
 export function setReadyForReviewOnPublishAction(
-  publishAction: any,
-  context: any
+  publishAction: DocumentActionComponent,
+  context: DocumentActionsContext
 ) {
   const canPublish =
-    context.currentUser.role === "administrator" ||
-    context.currentUser.email === "camille.wortman@sunysb.edu";
+    context?.currentUser?.role === "administrator" ||
+    context?.currentUser?.email === "camille.wortman@sunysb.edu";
 
   const Action = (props: DocumentActionProps) => {
     const { patch } = useDocumentOperation(props.id, props.type);
@@ -15,10 +20,13 @@ export function setReadyForReviewOnPublishAction(
 
     return {
       ...originalResult,
-      disabled: !props.draft?.readyForReview || !canPublish,
+      disabled:
+        originalResult?.disabled || !props.draft?.readyForReview || !canPublish,
       onHandle: () => {
         patch.execute([{ set: { readyForReview: false } }]);
-        originalResult.onHandle();
+        if (originalResult?.onHandle) {
+          originalResult.onHandle();
+        }
       },
     };
   };

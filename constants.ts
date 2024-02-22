@@ -16,4 +16,4 @@ export const INTERNET_RESOURCE_TYPES = [
   "therapyResource",
   "video",
   "webinar",
-];
+] as const;
