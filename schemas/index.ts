@@ -46,6 +46,7 @@ import {
   resourcePageLinks,
   richTextContentBlock,
   rowOfThree,
+  rowOfThreeFeaturedResources,
   telephoneNumber,
 } from "./objectSchemas";
 
@@ -61,6 +62,7 @@ export const objectTypes = [
   resourcePageLinks,
   richTextContentBlock,
   rowOfThree,
+  rowOfThreeFeaturedResources,
   telephoneNumber,
 ];
 
