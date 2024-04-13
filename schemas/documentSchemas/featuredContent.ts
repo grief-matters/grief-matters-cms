@@ -21,6 +21,7 @@ export default defineType({
       of: [
         { type: "rowOfThree" },
         { type: "richTextContentBlock" },
+        { type: "rowOfThreeFeaturedResources" },
         { type: "resourceLinks" },
         { type: "resourcePageLinks" },
       ],

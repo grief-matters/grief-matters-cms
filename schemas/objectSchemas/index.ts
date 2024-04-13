@@ -10,4 +10,5 @@ export { default as resourcePageLink } from "./resourcePageLink";
 export { default as resourcePageLinks } from "./resourcePageLinks";
 export { default as richTextContentBlock } from "./richTextContentBlock";
 export { default as rowOfThree } from "./rowOfThree";
+export { default as rowOfThreeFeaturedResources } from "./rowOfThreeFeaturedResources";
 export { default as telephoneNumber } from "./telephoneNumber";
