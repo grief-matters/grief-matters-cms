@@ -1,7 +1,7 @@
 ---
 name: Bug
 about: Issue to track something that isn't working
-title: "CMS > [BUG] Title of bug"
+title: "CMS > Title"
 labels: bug
 projects: ["grief-matters/1"]
 assignees: ""

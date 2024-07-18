@@ -8,9 +8,10 @@ assignees: "jkraesullivan"
 ---
 
 **Description**
-What are we trying to solve with this feature? What can a user not currently do? What will this feature enable them to do?
+Describe the context of the content requirements
 
 **Task List**
 
 Sub-task list - delete if not relevant
+
 - [ ] Task 1
