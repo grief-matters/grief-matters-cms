@@ -1,25 +1,37 @@
 import { startCase } from "lodash";
 import pluralize from "pluralize";
+
 import { DashboardWidgetContainer } from "@sanity/dashboard";
-import { Card, Grid, Spinner, Stack, Text } from "@sanity/ui";
+import {
+  Box,
+  Card,
+  Container,
+  Grid,
+  Heading,
+  Inline,
+  Spinner,
+  Stack,
+  Text,
+} from "@sanity/ui";
 import { Feedback, useListeningQuery } from "sanity-plugin-utils";
+
 import { INTERNET_RESOURCE_TYPES } from "../../constants";
 
 type Overview = {
   type: string | null;
   total: number | null;
   published: number | null;
+  draft: number | null;
   awaitingReview: number | null;
 };
 
-export interface ResourceTypeOverviewProps {}
-
-function ResourceTypeOverview(props: ResourceTypeOverviewProps) {
+function ResourceTypeOverview() {
   const queryStringParts = [...INTERNET_RESOURCE_TYPES, "website"].map(
     (type) => `{
     "type": "${type}",
     "total": count(*[_type == "${type}"]),
     "published": count(*[_type == "${type}" && !(_id in path("drafts.**"))]),
+    "draft": count(*[_type == "${type}" && (_id in path("drafts.**"))]),
     "awaitingReview": count(*[_type == "${type}" && readyForReview == true]),
   }`
   );
@@ -41,20 +53,69 @@ function ResourceTypeOverview(props: ResourceTypeOverviewProps) {
 
   return (
     <DashboardWidgetContainer header="Publishing Overview">
-      <Grid columns={[2, 4]} padding={3} gap={4}>
-        {data?.map((overview) => (
-          <Card border={true} key={overview.type} padding={3}>
-            <Stack space={3}>
-              <Text weight="medium" size={4}>
-                {startCase(pluralize(overview?.type ?? ""))}:
-              </Text>
-              <Text>Total: {overview.total}</Text>
-              <Text>Published: {overview.published}</Text>
-              <Text>Awaiting Review: {overview.awaitingReview}</Text>
+      <Container height="fill" width="auto">
+        <Box padding={3}>
+          <Card border tone="positive" padding={2} radius={2}>
+            <Heading as={"h3"} size={1}>
+              Key Terms
+            </Heading>
+            <Stack space={3} marginTop={3}>
+              <Inline space={1}>
+                <Text size={1} weight="bold">
+                  Total
+                </Text>
+                <Text size={1}>
+                  Total number of resources, regardless of state.
+                </Text>
+              </Inline>
+
+              <Inline space={1}>
+                <Text size={1} weight="bold">
+                  Published
+                </Text>
+                <Text size={1}>
+                  Total number of resources that have a currently published
+                  version.
+                </Text>
+              </Inline>
+
+              <Inline space={1}>
+                <Text size={1} weight="bold">
+                  Drafts
+                </Text>
+                <Text size={1}>
+                  Total number of resources with unpublished changes (may have a
+                  previously published version still active).
+                </Text>
+              </Inline>
+
+              <Inline space={1}>
+                <Text size={1} weight="bold">
+                  Awaiting Review
+                </Text>
+                <Text size={1}>
+                  {`Resources that are in 'Draft', that have been marked ready for review`}
+                </Text>
+              </Inline>
             </Stack>
           </Card>
-        ))}
-      </Grid>
+        </Box>
+        <Grid columns={[2, 4]} padding={3} gap={4}>
+          {data?.map((overview) => (
+            <Card border={true} key={overview.type} padding={3}>
+              <Stack space={3}>
+                <Heading as="h4" size={1}>
+                  {startCase(pluralize(overview?.type ?? ""))}:
+                </Heading>
+                <Text>Total: {overview.total}</Text>
+                <Text>Published: {overview.published}</Text>
+                <Text>Draft: {overview.draft}</Text>
+                <Text>Awaiting Review: {overview.awaitingReview}</Text>
+              </Stack>
+            </Card>
+          ))}
+        </Grid>
+      </Container>
     </DashboardWidgetContainer>
   );
 }
