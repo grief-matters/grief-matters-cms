@@ -1,0 +1,23 @@
+name: Content
+description: Create an Issue to track Content tasks.
+title: "CMS Content > "
+labels: ["content"]
+projects: ["grief-matters/1"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      description: Outline the specific, or a list of tasks for this issue
+      placeholder: |
+        e.g...
+        - [ ] Task 1
+        - [ ] Task 2
+    validations:
+      required: true
