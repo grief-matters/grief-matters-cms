@@ -1,7 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { MobileDeviceIcon } from "@sanity/icons";
 
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 import { createBaseInternetResourceSchema } from "../helpers";
 
 const base = createBaseInternetResourceSchema({
@@ -14,7 +13,7 @@ const base = createBaseInternetResourceSchema({
 // TODO - we'll need to migrate the 'name' field to 'title'
 const appSchema = defineType({
   ...base,
-  preview: reviewableDocumentPreviewConfig,
+
   fields: [
     ...base.fields,
     defineField({

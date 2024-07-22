@@ -1,6 +1,6 @@
 import { PlayIcon } from "@sanity/icons";
 import { defineType, defineField } from "sanity";
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+
 import { createBaseInternetResourceSchema } from "../helpers";
 
 const base = createBaseInternetResourceSchema({
@@ -21,7 +21,6 @@ const podcastEpSchema = defineType({
       to: [{ type: "podcast" }],
     }),
   ],
-  preview: reviewableDocumentPreviewConfig,
 });
 
 export default podcastEpSchema;

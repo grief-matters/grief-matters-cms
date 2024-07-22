@@ -1,6 +1,6 @@
 import { DocumentIcon } from "@sanity/icons";
 import { defineType } from "sanity";
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+
 import { createBaseInternetResourceSchema } from "../helpers";
 
 const base = createBaseInternetResourceSchema({
@@ -13,7 +13,6 @@ const base = createBaseInternetResourceSchema({
 // TODO - migrate 'name' to 'title'
 const memorialSchema = defineType({
   ...base,
-  preview: reviewableDocumentPreviewConfig,
 });
 
 export default memorialSchema;

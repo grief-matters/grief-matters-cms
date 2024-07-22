@@ -9,7 +9,7 @@ import {
   schemaTypes,
   singletonDocumentTypes,
 } from "./schemas";
-import { ConvertAction, setReadyForReviewOnPublishAction } from "./actions";
+import { ConvertAction } from "./actions";
 import { resourceTypeOverviewWidget } from "./dashboard-widgets/resource-type-overview/plugin";
 
 const singletonTypes: Set<string> = new Set([
@@ -57,14 +57,7 @@ export default defineConfig({
         : prev;
 
       return internetResourceTypes.has(context.schemaType)
-        ? ([
-            ...nonSingletonActions.map((a) =>
-              a.action === "publish"
-                ? setReadyForReviewOnPublishAction(a, context)
-                : a
-            ),
-            ConvertAction,
-          ] as DocumentActionComponent[])
+        ? ([...nonSingletonActions, ConvertAction] as DocumentActionComponent[])
         : nonSingletonActions;
     },
   },

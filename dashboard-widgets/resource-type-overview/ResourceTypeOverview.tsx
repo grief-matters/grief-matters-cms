@@ -32,7 +32,6 @@ function ResourceTypeOverview() {
     "total": count(*[_type == "${type}"]),
     "published": count(*[_type == "${type}" && !(_id in path("drafts.**"))]),
     "draft": count(*[_type == "${type}" && (_id in path("drafts.**"))]),
-    "awaitingReview": count(*[_type == "${type}" && readyForReview == true]),
   }`
   );
 
@@ -88,15 +87,6 @@ function ResourceTypeOverview() {
                   previously published version still active).
                 </Text>
               </Inline>
-
-              <Inline space={1}>
-                <Text size={1} weight="bold">
-                  Awaiting Review
-                </Text>
-                <Text size={1}>
-                  {`Resources that are in 'Draft', that have been marked ready for review`}
-                </Text>
-              </Inline>
             </Stack>
           </Card>
         </Box>
@@ -110,7 +100,6 @@ function ResourceTypeOverview() {
                 <Text>Total: {overview.total}</Text>
                 <Text>Published: {overview.published}</Text>
                 <Text>Draft: {overview.draft}</Text>
-                <Text>Awaiting Review: {overview.awaitingReview}</Text>
               </Stack>
             </Card>
           ))}

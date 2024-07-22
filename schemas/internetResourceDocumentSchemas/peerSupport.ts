@@ -1,6 +1,6 @@
 import { UserIcon } from "@sanity/icons";
 import { defineType } from "sanity";
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+
 import { broadFocusToggleField, supportFormatField } from "../fields";
 import { createBaseInternetResourceSchema } from "../helpers";
 
@@ -15,7 +15,6 @@ const base = createBaseInternetResourceSchema({
 const peerSupportSchema = defineType({
   ...base,
   fields: [...base.fields, broadFocusToggleField, supportFormatField],
-  preview: reviewableDocumentPreviewConfig,
 });
 
 export default peerSupportSchema;

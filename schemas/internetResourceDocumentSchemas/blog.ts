@@ -1,7 +1,6 @@
 import { defineType } from "sanity";
 import { DocumentsIcon } from "@sanity/icons";
 
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 import { createBaseInternetResourceSchema } from "../helpers";
 
 const base = createBaseInternetResourceSchema({
@@ -13,7 +12,6 @@ const base = createBaseInternetResourceSchema({
 
 const blogSchema = defineType({
   ...base,
-  preview: reviewableDocumentPreviewConfig,
 });
 
 export default blogSchema;

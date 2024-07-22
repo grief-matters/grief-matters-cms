@@ -1,7 +1,6 @@
 import { defineType } from "sanity";
 import { DocumentIcon } from "@sanity/icons";
 
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 import { hasSpanishVersionField, accessibleImageField } from "../fields";
 import { createBaseInternetResourceSchema } from "../helpers";
 
@@ -14,7 +13,7 @@ const base = createBaseInternetResourceSchema({
 
 const articleSchema = defineType({
   ...base,
-  preview: reviewableDocumentPreviewConfig,
+
   fields: [
     ...base.fields,
     accessibleImageField,
