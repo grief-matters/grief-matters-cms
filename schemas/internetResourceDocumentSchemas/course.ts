@@ -1,6 +1,6 @@
 import { PresentationIcon } from "@sanity/icons";
 import { defineType } from "sanity";
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+
 import { createBaseInternetResourceSchema } from "../helpers";
 
 const base = createBaseInternetResourceSchema({
@@ -12,7 +12,6 @@ const base = createBaseInternetResourceSchema({
 
 const courseSchema = defineType({
   ...base,
-  preview: reviewableDocumentPreviewConfig,
 });
 
 export default courseSchema;

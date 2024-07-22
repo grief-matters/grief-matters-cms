@@ -1,7 +1,7 @@
 import { defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
 import { broadFocusToggleField, supportFormatField } from "../fields";
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+
 import { createBaseInternetResourceSchema } from "../helpers";
 
 const base = createBaseInternetResourceSchema({
@@ -15,7 +15,6 @@ const base = createBaseInternetResourceSchema({
 const supportGroupSchema = defineType({
   ...base,
   fields: [...base.fields, broadFocusToggleField, supportFormatField],
-  preview: reviewableDocumentPreviewConfig,
 });
 
 export default supportGroupSchema;

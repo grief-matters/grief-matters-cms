@@ -8,7 +8,6 @@ import {
   categoriesField,
   populationsField,
   ratingField,
-  readyForReviewField,
   urlField,
 } from "./fields";
 
@@ -37,7 +36,6 @@ export const createBaseInternetResourceSchema = (
       categoriesField,
       populationsField,
       ratingField,
-      readyForReviewField,
     ],
   });
 };

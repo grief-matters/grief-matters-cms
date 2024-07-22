@@ -1,6 +1,6 @@
 import { BookIcon } from "@sanity/icons";
 import { defineType } from "sanity";
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
+
 import { createBaseInternetResourceSchema } from "../helpers";
 
 const base = createBaseInternetResourceSchema({
@@ -12,7 +12,6 @@ const base = createBaseInternetResourceSchema({
 
 const bookletSchema = defineType({
   ...base,
-  preview: reviewableDocumentPreviewConfig,
 });
 
 export default bookletSchema;

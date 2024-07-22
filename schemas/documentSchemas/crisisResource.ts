@@ -4,16 +4,13 @@ import {
   categoriesField,
   populationsField,
   portableTextDescriptionField,
-  readyForReviewField,
   urlField,
 } from "../fields";
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 
 export default defineType({
   type: "document",
   name: "crisisResource",
   title: "Crisis Resource",
-  preview: reviewableDocumentPreviewConfig,
   fields: [
     defineField({
       type: "string",
@@ -74,6 +71,5 @@ export default defineType({
         list: ["English", "Spanish"],
       },
     }),
-    readyForReviewField,
   ],
 });

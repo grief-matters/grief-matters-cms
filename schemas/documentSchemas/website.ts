@@ -1,12 +1,10 @@
 import { defineField, defineType } from "sanity";
 import { EarthGlobeIcon } from "@sanity/icons";
 
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 import {
   categoriesField,
   hasSpanishVersionField,
   populationsField,
-  readyForReviewField,
   simpleDescriptionField,
   urlField,
 } from "../fields";
@@ -16,7 +14,6 @@ export default defineType({
   title: "Website",
   type: "document",
   icon: EarthGlobeIcon,
-  preview: reviewableDocumentPreviewConfig,
   fields: [
     defineField({
       title: "Website Name",
@@ -55,6 +52,5 @@ export default defineType({
     }),
     categoriesField,
     populationsField,
-    readyForReviewField,
   ],
 });

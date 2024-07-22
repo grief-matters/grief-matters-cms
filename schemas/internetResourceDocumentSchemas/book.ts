@@ -2,7 +2,6 @@ import { defineField, defineType } from "sanity";
 import { BookIcon } from "@sanity/icons";
 
 import { createBaseInternetResourceSchema } from "../helpers";
-import { reviewableDocumentPreviewConfig } from "../../configs/reviewableDocumentPreviewConfig";
 
 const base = createBaseInternetResourceSchema({
   name: "book",
@@ -13,7 +12,7 @@ const base = createBaseInternetResourceSchema({
 
 const bookSchema = defineType({
   ...base,
-  preview: reviewableDocumentPreviewConfig,
+
   fields: [
     ...base.fields,
     defineField({
