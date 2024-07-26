@@ -12,6 +12,7 @@ import {
   population,
   website,
   smartCategory,
+  topicCollection,
 } from "./documentSchemas";
 
 import {
@@ -48,6 +49,7 @@ import {
   rowOfThree,
   rowOfThreeFeaturedResources,
   telephoneNumber,
+  topicCollectionContentBlock,
 } from "./objectSchemas";
 
 export const objectTypes = [
@@ -64,6 +66,7 @@ export const objectTypes = [
   rowOfThree,
   rowOfThreeFeaturedResources,
   telephoneNumber,
+  topicCollectionContentBlock,
 ];
 
 export const internetResourceDocumentTypes = [
@@ -88,6 +91,7 @@ export const internetResourceDocumentTypes = [
 
 export const documentTypes = [
   category,
+  topicCollection,
   smartCategory,
   crisisResource,
   population,

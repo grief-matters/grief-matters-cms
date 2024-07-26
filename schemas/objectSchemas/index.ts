@@ -12,3 +12,4 @@ export { default as richTextContentBlock } from "./richTextContentBlock";
 export { default as rowOfThree } from "./rowOfThree";
 export { default as rowOfThreeFeaturedResources } from "./rowOfThreeFeaturedResources";
 export { default as telephoneNumber } from "./telephoneNumber";
+export { default as topicCollectionContentBlock } from "./topicCollectionContentBlock";

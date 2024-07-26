@@ -24,6 +24,7 @@ export default defineType({
         { type: "rowOfThreeFeaturedResources" },
         { type: "resourceLinks" },
         { type: "resourcePageLinks" },
+        { type: "topicCollectionContentBlock" },
       ],
       validation: (Rule) => Rule.required(),
     }),

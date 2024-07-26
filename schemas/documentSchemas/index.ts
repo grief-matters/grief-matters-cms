@@ -10,4 +10,5 @@ export { default as organization } from "./organization";
 export { default as person } from "./person";
 export { default as population } from "./population";
 export { default as smartCategory } from "./smartCategory";
+export { default as topicCollection } from "./topicCollection";
 export { default as website } from "./website";
