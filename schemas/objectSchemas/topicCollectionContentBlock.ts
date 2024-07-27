@@ -1,8 +1,10 @@
 import { defineField, defineType } from "sanity";
+import { topicCollectionContentBlockPreviewConfig } from "../../configs/topicCollectionContentBlockPreviewConfig";
 
 export default defineType({
   type: "object",
   name: "topicCollectionContentBlock",
+  preview: topicCollectionContentBlockPreviewConfig,
   fields: [
     defineField({
       name: "topicCollection",

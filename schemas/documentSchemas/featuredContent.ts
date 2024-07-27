@@ -72,7 +72,7 @@ export default defineType({
         typeof fields?.manualFeaturedContentFooterLink !== "undefined";
 
       return tooManyFooterFields
-        ? "You can only have a single footer field  "
+        ? "You can only have a single footer field"
         : true;
     }),
 });
