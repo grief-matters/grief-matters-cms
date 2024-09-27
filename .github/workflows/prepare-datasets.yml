@@ -22,24 +22,21 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install Sanity CLI
-        run: npm install -g @sanity/cli
-
       - name: Export 'production' dataset
         run: |
-          sanity dataset export production production.tar.gz --overwrite
+          npx @sanity/cli dataset export production production.tar.gz --overwrite
 
       - name: Delete existing 'dev' dataset
         run: |
-          sanity dataset delete dev --force
+          npx @sanity/cli dataset delete dev --force
 
       - name: Create new 'dev' dataset
         run: |
-          sanity dataset create dev
+          npx @sanity/cli dataset create dev
 
       - name: Import data into new 'dev' dataset
         run: |
-          sanity dataset import production.tar.gz dev
+          npx@sanity-cli dataset import production.tar.gz dev
 
       - name: Clean up exported file
         run: rm production.tar.gz
