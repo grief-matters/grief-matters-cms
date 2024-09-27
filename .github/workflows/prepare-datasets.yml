@@ -1,0 +1,45 @@
+name: Sync Sanity Production to Dev Dataset
+
+on:
+  workflow_dispatch:
+  create:
+    branches: # Trigger only when a branch is created
+      - "*"
+
+jobs:
+  prepare-datasets:
+    runs-on: ubuntu-latest
+    env:
+      SANITY_AUTH_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
+      SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.10.0"
+
+      - name: Install Sanity CLI
+        run: npm install -g @sanity/cli
+
+      - name: Export 'production' dataset
+        run: |
+          sanity dataset export production production.tar.gz --overwrite
+
+      - name: Delete existing 'dev' dataset
+        run: |
+          sanity dataset delete dev --force
+
+      - name: Create new 'dev' dataset
+        run: |
+          sanity dataset create dev
+
+      - name: Import data into new 'dev' dataset
+        run: |
+          sanity dataset import production.tar.gz dev
+
+      - name: Clean up exported file
+        run: rm production.tar.gz
