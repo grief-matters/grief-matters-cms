@@ -10,7 +10,7 @@ jobs:
   prepare-datasets:
     runs-on: ubuntu-latest
     env:
-      SANITY_AUTH_TOKEN: ${{ secrets.SANITY_TOKEN }}
+      SANITY_AUTH_TOKEN: ${{ secrets.SANITY_API_TOKEN_DEPLOY_GRANT }}
       SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
       SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
 
