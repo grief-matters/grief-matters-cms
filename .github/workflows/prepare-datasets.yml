@@ -24,19 +24,19 @@ jobs:
 
       - name: Export 'production' dataset
         run: |
-          npx @sanity/cli dataset export production production.tar.gz --overwrite
+          npx -y sanity@latest dataset export production production.tar.gz --overwrite
 
       - name: Delete existing 'dev' dataset
         run: |
-          npx @sanity/cli dataset delete dev --force
+          npx -y sanity@latest dataset delete dev --force
 
       - name: Create new 'dev' dataset
         run: |
-          npx @sanity/cli dataset create dev
+          npx -y sanity@latest dataset create dev
 
       - name: Import data into new 'dev' dataset
         run: |
-          npx@sanity-cli dataset import production.tar.gz dev
+          npx -y sanity@latest dataset import production.tar.gz dev
 
       - name: Clean up exported file
         run: rm production.tar.gz
