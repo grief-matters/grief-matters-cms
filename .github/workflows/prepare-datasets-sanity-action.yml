@@ -18,6 +18,7 @@ jobs:
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_TOKEN }}
           SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
+          SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
         with:
           args: dataset export production production.tar.gz --overwrite
 
@@ -26,6 +27,7 @@ jobs:
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_TOKEN }}
           SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
+          SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
         with:
           args: dataset delete dev --force
 
@@ -34,6 +36,7 @@ jobs:
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_TOKEN }}
           SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
+          SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
         with:
           args: dataset create dev
 
@@ -42,6 +45,7 @@ jobs:
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_TOKEN }}
           SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
+          SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
         with:
           args: dataset import production.tar.gz dev
 
