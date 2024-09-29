@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SANITY_AUTH_TOKEN: ${{ secrets.SANITY_API_TOKEN_DEPLOY_GRANT }}
-      SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
       SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_PROJECT }}
 
     steps:
@@ -31,17 +30,19 @@ jobs:
         run: |
           npx -y sanity@latest dataset export production production.tar.gz --overwrite
 
-      - name: Delete existing 'dev' dataset
-        run: |
-          npx -y sanity@latest dataset delete dev --force
+      # Does not work on 'free' plan - editor grant cannot delete a dataset via API token
+      # - name: Delete existing 'dev' dataset
+      #   run: |
+      #     npx -y sanity@latest dataset delete dev --force
 
-      - name: Create new 'dev' dataset
-        run: |
-          npx -y sanity@latest dataset create dev
+      # - name: Create new 'dev' dataset
+      #   run: |
+      #     npx -y sanity@latest dataset create dev
 
+      # We have to accept that for now we can't have a completely "clean" dataset
       - name: Import data into new 'dev' dataset
         run: |
-          npx -y sanity@latest dataset import production.tar.gz dev
+          npx -y sanity@latest dataset import production.tar.gz dev --replace
 
       - name: Clean up exported file
         run: rm production.tar.gz
