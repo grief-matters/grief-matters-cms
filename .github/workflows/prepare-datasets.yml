@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
-      SANITY_STUDIO_PROJECT_ID: ${{ vars.SANITY_PROJECT }}
+      SANITY_STUDIO_PROJECT_ID: ${{ vars.SANITY_STUDIO_PROJECT_ID }}
 
     steps:
       - name: Checkout repository
