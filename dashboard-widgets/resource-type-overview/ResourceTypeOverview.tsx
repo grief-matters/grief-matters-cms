@@ -25,8 +25,16 @@ type Overview = {
   awaitingReview: number | null;
 };
 
-function ResourceTypeOverview() {
-  const queryStringParts = [...INTERNET_RESOURCE_TYPES, "website"].map(
+export interface ResourceTypeOverviewProps {
+  resourceTypes?: string[];
+  title?: string;
+}
+
+const ResourceTypeOverview = ({
+  resourceTypes = [...INTERNET_RESOURCE_TYPES, "website"],
+  title = "Publishing Overview",
+}: ResourceTypeOverviewProps) => {
+  const queryStringParts = resourceTypes.map(
     (type) => `{
     "type": "${type}",
     "total": count(*[_type == "${type}"]),
@@ -51,7 +59,7 @@ function ResourceTypeOverview() {
   }
 
   return (
-    <DashboardWidgetContainer header="Publishing Overview">
+    <DashboardWidgetContainer header={title}>
       <Container height="fill" width="auto">
         <Box padding={3}>
           <Card border tone="positive" padding={2} radius={2}>
@@ -91,7 +99,7 @@ function ResourceTypeOverview() {
           </Card>
         </Box>
         <Grid columns={[2, 4]} padding={3} gap={4}>
-          {data?.map((overview) => (
+          {data?.map((overview: Overview) => (
             <Card border={true} key={overview.type} padding={3}>
               <Stack space={3}>
                 <Heading as="h4" size={1}>
@@ -107,6 +115,6 @@ function ResourceTypeOverview() {
       </Container>
     </DashboardWidgetContainer>
   );
-}
+};
 
 export default ResourceTypeOverview;
