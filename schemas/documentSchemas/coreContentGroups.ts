@@ -10,8 +10,8 @@ export default defineType({
       name: "title",
       type: "string",
       initialValue: "Core Content Groups",
-      // readOnly: true,
-      // hidden: true,
+      readOnly: true,
+      hidden: true,
     }),
     defineField({
       name: "groups",

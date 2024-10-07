@@ -26,6 +26,13 @@ export default defineType({
         "The description will usually displayed to the user. Think of it as an introduction to this collection of content. Leave blank if you do not want anything to be displayed",
     },
     defineField({
+      name: "coverImage",
+      title: "Core Content Group Cover Image",
+      type: "accessibleImage",
+      description:
+        "A cover image that will be displayed alongside this content group (used as a background image for example)",
+    }),
+    defineField({
       name: "mainContent",
       title: "Main Content Group",
       description:
