@@ -9,7 +9,7 @@ export interface ResourceTypeOverviewWidgetConfig
 }
 
 export function resourceTypeOverviewWidget(
-  config: ResourceTypeOverviewWidgetConfig = {}
+  config: ResourceTypeOverviewWidgetConfig
 ): DashboardWidget {
   return {
     name: "resource-type-overview-widget",
