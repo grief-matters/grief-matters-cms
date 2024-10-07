@@ -1,5 +1,7 @@
 import aboutPage from "./documentSchemas/aboutPage";
 import category from "./documentSchemas/category";
+import contentGroup from "./documentSchemas/contentGroup";
+import coreContentGroups from "./documentSchemas/coreContentGroups";
 import crisisResource from "./documentSchemas/crisisResource";
 import featuredContent from "./documentSchemas/featuredContent";
 import featuredTopics from "./documentSchemas/featuredTopics";
@@ -33,6 +35,8 @@ import webinar from "./internetResourceDocumentSchemas/webinar";
 
 import accessibleImage from "./objectSchemas/accessibleImage";
 import availability from "./objectSchemas/availability";
+import contentBlock from "./objectSchemas/contentBlock";
+import coreContentGroup from "./objectSchemas/coreContentGroup";
 import coreValue from "./objectSchemas/coreValue";
 import customResourceCollection from "./objectSchemas/customResourceCollection";
 import link from "./objectSchemas/link";
@@ -45,11 +49,15 @@ import rowOfThree from "./objectSchemas/rowOfThree";
 import rowOfThreeFeaturedResources from "./objectSchemas/rowOfThreeFeaturedResources";
 import telephoneNumber from "./objectSchemas/telephoneNumber";
 import topicCollectionContentBlock from "./objectSchemas/topicCollectionContentBlock";
+import topicCollectionContentBlockNew from "./objectSchemas/topicCollectionContentBlockNew";
+import topicContentBlock from "./objectSchemas/topicContentBlock";
 
 export const objectTypes = [
   accessibleImage,
   availability,
   coreValue,
+  coreContentGroup,
+  contentBlock,
   customResourceCollection,
   link,
   logo,
@@ -60,7 +68,9 @@ export const objectTypes = [
   rowOfThree,
   rowOfThreeFeaturedResources,
   telephoneNumber,
+  topicContentBlock,
   topicCollectionContentBlock,
+  topicCollectionContentBlockNew,
 ];
 
 export const internetResourceDocumentTypes = [
@@ -85,6 +95,7 @@ export const internetResourceDocumentTypes = [
 
 export const documentTypes = [
   category,
+  contentGroup,
   topicCollection,
   smartCategory,
   crisisResource,
@@ -101,6 +112,7 @@ export const singletonDocumentTypes = [
   featuredTopics,
   homePage,
   aboutPage,
+  coreContentGroups,
 ];
 
 export const SINGLETON_TYPES = new Set([
