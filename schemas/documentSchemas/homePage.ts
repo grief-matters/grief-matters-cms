@@ -28,7 +28,7 @@ export default defineType({
       title: "Feature Panels",
       description: "References to instances of the Featured Content type",
       type: "array",
-      of: [{ type: "reference", to: [{ type: "featuredContent" }] }],
+      of: [{ type: "reference", to: [{ type: "contentGroup" }] }],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
