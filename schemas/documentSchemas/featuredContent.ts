@@ -5,6 +5,9 @@ export default defineType({
   name: "featuredContent",
   title: "Featured Content",
   type: "document",
+  deprecated: {
+    reason: "The 'Featured Content' type has been replaced by 'Content Groups'",
+  },
   fields: [
     defineField({
       ...titleField,
