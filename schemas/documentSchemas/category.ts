@@ -6,7 +6,7 @@ import { featuredResourcesField, slugField, titleField } from "../fields";
 
 export default defineType({
   name: "category",
-  title: "Category",
+  title: "Topic",
   description: "A category used to classify resources",
   icon: TagsIcon,
   type: "document",
