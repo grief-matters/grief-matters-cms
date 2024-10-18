@@ -35,6 +35,7 @@ import webinar from "./internetResourceDocumentSchemas/webinar";
 
 import accessibleImage from "./objectSchemas/accessibleImage";
 import availability from "./objectSchemas/availability";
+import contactMethod from "./objectSchemas/contactMethod";
 import contentBlock from "./objectSchemas/contentBlock";
 import coreContentGroup from "./objectSchemas/coreContentGroup";
 import coreValue from "./objectSchemas/coreValue";
@@ -55,6 +56,7 @@ import topicContentBlock from "./objectSchemas/topicContentBlock";
 export const objectTypes = [
   accessibleImage,
   availability,
+  contactMethod,
   coreValue,
   coreContentGroup,
   contentBlock,

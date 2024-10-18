@@ -32,35 +32,13 @@ export default defineType({
     populationsField,
     defineField({
       type: "array",
-      name: "availabilities",
-      title: "Availability",
+      name: "contactMethods",
+      title: "Contact Methods",
       of: [
         defineArrayMember({
-          type: "availability",
+          type: "contactMethod",
         }),
       ],
-    }),
-    defineField({
-      type: "array",
-      name: "contactNumbers",
-      title: "Contact Numbers",
-      of: [
-        defineArrayMember({
-          type: "telephoneNumber",
-        }),
-      ],
-    }),
-    defineField({
-      type: "email",
-      name: "email",
-      description: "An email address to get crisis support (if available)",
-      title: "Email",
-    }),
-    defineField({
-      name: "liveChatUrl",
-      title: "Live Chat",
-      description: "The URL at which live chat help can be found",
-      type: "url",
     }),
     defineField({
       type: "array",
