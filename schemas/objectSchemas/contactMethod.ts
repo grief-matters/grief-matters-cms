@@ -38,7 +38,7 @@ export default defineType({
       name: "telephoneNumber",
       title: "Telephone Number",
       description:
-        "Enter the telephone number. Any common format is acceptable.",
+        "Enter a number as you would dial it. This ensures it will connect to the correct number when the user clicks the link.",
       type: "string",
       hidden: ({ parent }) =>
         parent?.contactType !== "tel" && parent?.contactType !== "sms",
@@ -56,6 +56,13 @@ export default defineType({
           }
           return true;
         }),
+    }),
+    defineField({
+      name: "smsBody",
+      type: "string",
+      title: "SMS Content",
+      description: `Enter a predefined word that the user has to text to initiate the service e.g. for TeenLine they say "Text TEEN to 839863", so enter TEEN here`,
+      hidden: ({ parent }) => parent?.contactType !== "sms",
     }),
     defineField({
       name: "email",
