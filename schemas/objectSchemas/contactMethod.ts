@@ -1,9 +1,16 @@
 import { defineField, defineType } from "sanity";
 
-const contactTypes = ["email", "tel", "sms", "liveChat"] as const;
+const contactTypes = [
+  "email",
+  "contactForm",
+  "tel",
+  "sms",
+  "liveChat",
+] as const;
 
 const contactTypesLabels: Record<(typeof contactTypes)[number], string> = {
   email: "Email",
+  contactForm: "Contact Form",
   tel: "Telephone",
   sms: "SMS",
   liveChat: "Live Chat Service",
@@ -79,6 +86,24 @@ export default defineType({
             return typeof value === "string" && value.trim() !== ""
               ? true
               : "An email address is required for email contact methods";
+          }
+          return true;
+        }),
+    }),
+    defineField({
+      name: "contactForm",
+      title: "Contact Form",
+      description: "The URL for the contact form",
+      type: "url",
+      hidden: ({ parent }) => parent?.contactType !== "contactForm",
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          const { parent } = context;
+
+          if ((parent as any)?.contactType === "contactForm") {
+            return typeof value === "string" && value.trim() !== ""
+              ? true
+              : "A URL is required for a contact form";
           }
           return true;
         }),
