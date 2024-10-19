@@ -130,7 +130,9 @@ export default defineType({
       name: "availability",
       type: "availability",
       title: "Availability",
-      hidden: ({ parent }) => parent?.contactType === "email",
+      hidden: ({ parent }) =>
+        parent?.contactType === "email" ||
+        parent?.contactType === "contactForm",
     }),
   ],
 });
