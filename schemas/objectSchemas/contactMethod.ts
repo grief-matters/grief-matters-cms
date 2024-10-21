@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 const contactTypes = [
   "email",
@@ -127,8 +127,9 @@ export default defineType({
         }),
     }),
     defineField({
-      name: "availability",
-      type: "availability",
+      name: "availabilities",
+      type: "array",
+      of: [defineArrayMember({ type: "availability" })],
       title: "Availability",
       hidden: ({ parent }) =>
         parent?.contactType === "email" ||
