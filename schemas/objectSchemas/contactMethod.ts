@@ -70,32 +70,6 @@ export default defineType({
         }),
     }),
     defineField({
-      name: "tty",
-      title: "TTY",
-      description:
-        "Enter a number as you would dial it. This ensures it will connect to the correct number when the user clicks the link.",
-      type: "string",
-      hidden: ({ parent }) =>
-        parent?.contactType !== "tel" &&
-        parent?.contactType !== "tty" &&
-        parent?.contactType !== "sms",
-      validation: (rule) =>
-        rule.custom((value, context) => {
-          const { parent } = context;
-
-          if (
-            (parent as any)?.contactType === "tel" ||
-            (parent as any)?.contactType === "tty" ||
-            (parent as any)?.contactType === "sms"
-          ) {
-            return typeof value === "string" && value.trim() !== ""
-              ? true
-              : "A telephone number is required for telephone or SMS contact methods";
-          }
-          return true;
-        }),
-    }),
-    defineField({
       name: "smsBody",
       type: "string",
       title: "SMS Content",
