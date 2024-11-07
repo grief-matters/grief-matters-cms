@@ -14,6 +14,12 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      title: "Legal Name",
+      name: "legalName",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       title: "Logos",
       name: "logos",
       type: "array",
