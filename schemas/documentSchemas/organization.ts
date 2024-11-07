@@ -77,5 +77,12 @@ export default defineType({
       ],
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      title: "Copyright Notice",
+      description: "The copyright notice under which we publish content",
+      name: "copyrightNotice",
+      type: "text",
+      validation: (rule) => rule.required(),
+    }),
   ],
 });
