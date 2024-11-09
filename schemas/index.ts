@@ -11,6 +11,7 @@ import imageSource from "./documentSchemas/imageSource";
 import organization from "./documentSchemas/organization";
 import person from "./documentSchemas/person";
 import population from "./documentSchemas/population";
+import resourceEvaluation from "./documentSchemas/resourceEvaluation";
 import smartCategory from "./documentSchemas/smartCategory";
 import topicCollection from "./documentSchemas/topicCollection";
 import website from "./documentSchemas/website";
@@ -107,6 +108,7 @@ export const documentTypes = [
   imageSource,
   imageCollection,
   person,
+  resourceEvaluation,
 ];
 
 export const singletonDocumentTypes = [
