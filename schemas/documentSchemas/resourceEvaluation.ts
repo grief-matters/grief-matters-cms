@@ -20,7 +20,12 @@ export default defineType({
       title: "Rating",
       name: "rating",
       type: "number",
-      validation: (rule) => rule.min(1).max(10).required(),
+      validation: (rule) => rule.min(1).max(5).required(),
+    }),
+    defineField({
+      title: "Comment",
+      name: "comment",
+      type: "text",
     }),
   ],
 });
