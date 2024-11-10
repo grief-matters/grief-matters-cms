@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
 import { categoryPreviewConfig } from "../../configs/categoryPreviewConfig";
 import CategoryPreview from "../../components/CategoryPreview";
@@ -30,6 +30,28 @@ export default defineType({
       name: "parent",
       type: "reference",
       to: [{ type: "category" }],
+    }),
+    defineField({
+      title: "Sub-Topics",
+      description:
+        "Select the Topics that will appear as children of this Topic",
+      name: "subtopics",
+      type: "array",
+      of: [defineArrayMember({ type: "reference", to: { type: "category" } })],
+      validation: (rule) => [
+        rule.unique(),
+        rule.custom((subtopics, ctx) => {
+          if (typeof subtopics === "undefined") {
+            return true;
+          }
+
+          return subtopics.some((st) =>
+            ctx.document?._id.includes((st as any)._ref)
+          )
+            ? "A Topic cannot be a Subtopic of itself"
+            : true;
+        }),
+      ],
     }),
     defineField({
       name: "image",
