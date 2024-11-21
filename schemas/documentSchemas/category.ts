@@ -24,18 +24,6 @@ export default defineType({
       validation: (rule) => rule.max(255),
     }),
     defineField({
-      deprecated: {
-        reason:
-          "Now using 'Subtopics' to track parent-child link between 'Topics'",
-      },
-      title: "Parent Category",
-      description:
-        "Select the parent category, if this is a sub-category of another",
-      name: "parent",
-      type: "reference",
-      to: [{ type: "category" }],
-    }),
-    defineField({
       title: "Sub-Topics",
       description:
         "Select the Topics that will appear as children of this Topic",
