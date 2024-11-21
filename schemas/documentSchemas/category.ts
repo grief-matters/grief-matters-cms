@@ -1,7 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
-import { categoryPreviewConfig } from "../../configs/categoryPreviewConfig";
-import CategoryPreview from "../../components/CategoryPreview";
 import { featuredResourcesField, slugField, titleField } from "../fields";
 
 export default defineType({
@@ -10,8 +8,15 @@ export default defineType({
   description: "A category used to classify resources",
   icon: TagsIcon,
   type: "document",
-  preview: categoryPreviewConfig,
-  components: { preview: CategoryPreview },
+  preview: {
+    select: {
+      displayTitle: "displayTitle",
+      title: "title",
+    },
+    prepare: ({ displayTitle, title }) => ({
+      title: displayTitle ?? title,
+    }),
+  },
   fields: [
     defineField({
       ...titleField,
