@@ -13,7 +13,18 @@ export default defineType({
   preview: categoryPreviewConfig,
   components: { preview: CategoryPreview },
   fields: [
-    titleField,
+    defineField({
+      ...titleField,
+      description:
+        "The topic title. Will be used when the topic is displayed within the topic hierarchy (e.g. in the top-level navigation)",
+    }),
+    defineField({
+      title: "Display Title",
+      name: "displayTitle",
+      type: "string",
+      description:
+        "A preferred display title. Will be used when topic is displayed outside the topic hierarchy (e.g. when used as a page heading)",
+    }),
     slugField,
     defineField({
       name: "description",
