@@ -19,6 +19,7 @@ export default defineType({
         hotspot: true,
         storeOriginalFilename: false,
       },
+      validation: (rule) => rule.required(),
     },
     {
       name: "alt",
@@ -26,7 +27,6 @@ export default defineType({
       title: "Alternative text",
       description:
         "This is for accessibility (for example, a screen reader may read this description aloud to a sight-impaired user).",
-      hidden: ({ parent }) => !parent?.image,
       validation: (Rule) => [
         Rule.required(),
         Rule.custom((altText: string) => {
@@ -51,7 +51,6 @@ export default defineType({
       description:
         "The source of the image. If you do not see the correct source listed please create one. This enables us to track our licensing compliance",
       to: [{ type: "imageSource" }],
-      hidden: ({ parent }) => !parent?.image,
       validation: (Rule) => Rule.required().warning(),
     },
   ],
