@@ -9,6 +9,7 @@ import {
   populationsField,
   ratingField,
   urlField,
+  accessibleImageField,
 } from "./fields";
 
 export type CreateBaseInternetResourceParams = {
@@ -36,6 +37,7 @@ export const createBaseInternetResourceSchema = (
       categoriesField,
       populationsField,
       ratingField,
+      accessibleImageField,
     ],
   });
 };
