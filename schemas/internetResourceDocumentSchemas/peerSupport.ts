@@ -1,7 +1,11 @@
 import { UserIcon } from "@sanity/icons";
 import { defineType } from "sanity";
 
-import { broadFocusToggleField, supportFormatField } from "../fields";
+import {
+  accessibleImageField,
+  broadFocusToggleField,
+  supportFormatField,
+} from "../fields";
 import { createBaseInternetResourceSchema } from "../helpers";
 
 const base = createBaseInternetResourceSchema({
@@ -14,7 +18,12 @@ const base = createBaseInternetResourceSchema({
 // TODO - migrate 'name' to 'title'
 const peerSupportSchema = defineType({
   ...base,
-  fields: [...base.fields, broadFocusToggleField, supportFormatField],
+  fields: [
+    ...base.fields,
+    accessibleImageField,
+    broadFocusToggleField,
+    supportFormatField,
+  ],
 });
 
 export default peerSupportSchema;
