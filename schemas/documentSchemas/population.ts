@@ -1,6 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
-import { slugField } from "../fields";
+import { accessibleImageField, slugField } from "../fields";
 
 export default defineType({
   name: "population",
@@ -31,5 +31,6 @@ export default defineType({
       type: "boolean",
       initialValue: false,
     }),
+    accessibleImageField,
   ],
 });
