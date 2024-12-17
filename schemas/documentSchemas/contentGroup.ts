@@ -28,6 +28,13 @@ export default defineType({
       description:
         "An optional title to display to users. Leave blank if you want an untitled content group.",
     }),
+    defineField({
+      name: "image",
+      title: "Content Group Cover Image",
+      type: "accessibleImage",
+      description:
+        "A cover image to to be used for this Content Group if appropriate",
+    }),
     portableTextDescriptionField,
     defineField({
       name: "contentBlocks",
