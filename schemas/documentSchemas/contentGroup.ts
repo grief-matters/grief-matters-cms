@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { portableTextDescriptionField } from "../fields";
+import { portableTextDescriptionField, slugField } from "../fields";
 
 export default defineType({
   type: "document",
@@ -27,6 +27,11 @@ export default defineType({
       name: "title",
       description:
         "An optional title to display to users. Leave blank if you want an untitled content group.",
+    }),
+    defineField({
+      ...slugField,
+      description: `Generating a slug for a Content Group means that a webpage may be automatically generated. Be sure to provide some way for a user to navigate to the page e.g. by adding a 'pageLink' content type to some other area`,
+      validation: undefined,
     }),
     defineField({
       name: "image",

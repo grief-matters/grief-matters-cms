@@ -41,8 +41,12 @@ import contentBlock from "./objectSchemas/contentBlock";
 import coreContentGroup from "./objectSchemas/coreContentGroup";
 import coreValue from "./objectSchemas/coreValue";
 import customResourceCollection from "./objectSchemas/customResourceCollection";
+import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
+import featuredResource from "./objectSchemas/featuredResource";
+import featuredWebsite from "./objectSchemas/featuredWebsite";
 import link from "./objectSchemas/link";
 import logo from "./objectSchemas/logo";
+import relativeLink from "./objectSchemas/relativeLink";
 import resourceLinks from "./objectSchemas/resourceLinks";
 import resourcePageLink from "./objectSchemas/resourcePageLink";
 import resourcePageLinks from "./objectSchemas/resourcePageLinks";
@@ -62,8 +66,12 @@ export const objectTypes = [
   coreContentGroup,
   contentBlock,
   customResourceCollection,
+  featuredCrisisResource,
+  featuredResource,
+  featuredWebsite,
   link,
   logo,
+  relativeLink,
   resourceLinks,
   resourcePageLink,
   resourcePageLinks,

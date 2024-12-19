@@ -1,4 +1,6 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { portableTextDescriptionField } from "../fields";
+import startCase from "lodash/startCase";
 
 export default defineType({
   type: "object",
@@ -10,11 +12,25 @@ export default defineType({
       content: "content",
     },
     prepare: ({ content }) => ({
-      title: "Content Block",
-      subtitle: `Click to view contents`,
+      title: `Content Block`,
+      subtitle: content?.map((x: any) => startCase(x._type)).join(", "),
     }),
   },
   fields: [
+    defineField({
+      title: "Title",
+      name: "title",
+      type: "string",
+      description: "Optional descriptive title for the Content Block.",
+      validation: (Rule) => [
+        Rule.max(60).warning("Headings for content blocks should be short"),
+      ],
+    }),
+    defineField({
+      ...portableTextDescriptionField,
+      description:
+        "Optional description for the Content Block. Will act as lead in text in most cases",
+    }),
     defineField({
       type: "array",
       name: "content",
@@ -30,6 +46,9 @@ export default defineType({
         defineArrayMember({ type: "resourcePageLinks" }),
         defineArrayMember({ type: "topicContentBlock" }),
         defineArrayMember({ type: "topicCollectionContentBlockNew" }),
+        defineArrayMember({ type: "featuredResource" }),
+        defineArrayMember({ type: "featuredCrisisResource" }),
+        defineArrayMember({ type: "featuredWebsite" }),
       ],
       validation: (Rule) => Rule.required(),
     }),
