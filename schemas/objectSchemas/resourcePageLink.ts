@@ -45,6 +45,7 @@ export default defineType({
             value: resourceType,
             title: startCase(resourceType),
           })),
+          { value: "crisisResource", title: "Crisis Resource" },
           {
             value: "website",
             title: "Website",
