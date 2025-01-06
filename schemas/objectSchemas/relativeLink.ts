@@ -18,10 +18,20 @@ export default defineType({
       title: "Relative Path",
       description: "A relative path for the desired page",
       type: "url",
-      validation: (rule) => [
-        rule.required(),
-        rule.uri({ allowRelative: true, relativeOnly: true }),
-      ],
+      validation: (rule) =>
+        rule
+          .required()
+          .uri({ allowRelative: true, relativeOnly: true })
+          .custom((relativeUrl) => {
+            if (typeof relativeUrl !== "string") {
+              return true;
+            }
+
+            return (
+              !/\s/.test(relativeUrl) ||
+              "Do not use spaces in URLs, use '-' instead"
+            );
+          }),
     }),
   ],
 });
