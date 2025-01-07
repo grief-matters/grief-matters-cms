@@ -41,6 +41,11 @@ export default defineType({
       ],
     }),
     defineField({
+      title: "Logo",
+      name: "logo",
+      type: "image",
+    }),
+    defineField({
       type: "array",
       name: "languages",
       title: "Available Languages",

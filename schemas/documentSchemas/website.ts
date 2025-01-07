@@ -48,7 +48,7 @@ export default defineType({
     defineField({
       title: "Logo",
       name: "logo",
-      type: "logo",
+      type: "image",
     }),
     categoriesField,
     populationsField,
