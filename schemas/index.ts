@@ -1,5 +1,6 @@
 import aboutPage from "./documentSchemas/aboutPage";
 import category from "./documentSchemas/category";
+import contentBlock from "./documentSchemas/contentBlock";
 import contentGroup from "./documentSchemas/contentGroup";
 import coreContentGroups from "./documentSchemas/coreContentGroups";
 import crisisResource from "./documentSchemas/crisisResource";
@@ -37,7 +38,6 @@ import webinar from "./internetResourceDocumentSchemas/webinar";
 import accessibleImage from "./objectSchemas/accessibleImage";
 import availability from "./objectSchemas/availability";
 import contactMethod from "./objectSchemas/contactMethod";
-import contentBlock from "./objectSchemas/contentBlock";
 import coreContentGroup from "./objectSchemas/coreContentGroup";
 import coreValue from "./objectSchemas/coreValue";
 import customResourceCollection from "./objectSchemas/customResourceCollection";
@@ -64,7 +64,6 @@ export const objectTypes = [
   contactMethod,
   coreValue,
   coreContentGroup,
-  contentBlock,
   customResourceCollection,
   featuredCrisisResource,
   featuredResource,
@@ -106,6 +105,7 @@ export const internetResourceDocumentTypes = [
 
 export const documentTypes = [
   category,
+  contentBlock,
   contentGroup,
   topicCollection,
   smartCategory,

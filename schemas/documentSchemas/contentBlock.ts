@@ -3,20 +3,29 @@ import { portableTextDescriptionField } from "../fields";
 import startCase from "lodash/startCase";
 
 export default defineType({
-  type: "object",
+  type: "document",
   name: "contentBlock",
   description:
     "A Content Block allows you to build a section of content from predefined building blocks",
   preview: {
     select: {
+      name: "name",
+      title: "title",
       content: "content",
     },
-    prepare: ({ content }) => ({
-      title: `Content Block`,
+    prepare: ({ name, content }) => ({
+      title: name,
       subtitle: content?.map((x: any) => startCase(x._type)).join(", "),
     }),
   },
   fields: [
+    defineField({
+      name: "name",
+      description:
+        "Meaningful name for distinguishing this content block within Sanity (not displayed to users)",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       title: "Title",
       name: "title",
