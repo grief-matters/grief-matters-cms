@@ -46,7 +46,9 @@ export default defineType({
       title: "Content Blocks",
       description: `Build a Content Group from Content Blocks. You can think of a Content Block as a "section" within the group`,
       type: "array",
-      of: [defineArrayMember({ type: "contentBlock" })],
+      of: [
+        defineArrayMember({ type: "reference", to: { type: "contentBlock" } }),
+      ],
     }),
     defineField({
       name: "contentGroupJumpLink",

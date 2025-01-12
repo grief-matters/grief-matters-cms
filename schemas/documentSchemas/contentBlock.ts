@@ -3,7 +3,7 @@ import { portableTextDescriptionField } from "../fields";
 import startCase from "lodash/startCase";
 
 export default defineType({
-  type: "object",
+  type: "document",
   name: "contentBlock",
   description:
     "A Content Block allows you to build a section of content from predefined building blocks",
