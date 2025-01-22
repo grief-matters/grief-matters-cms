@@ -11,6 +11,7 @@ import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
 import organization from "./documentSchemas/organization";
 import person from "./documentSchemas/person";
+import personGroup from "./documentSchemas/personGroup";
 import population from "./documentSchemas/population";
 import resourceEvaluation from "./documentSchemas/resourceEvaluation";
 import smartCategory from "./documentSchemas/smartCategory";
@@ -53,6 +54,7 @@ import resourcePageLinks from "./objectSchemas/resourcePageLinks";
 import richTextContentBlock from "./objectSchemas/richTextContentBlock";
 import rowOfThree from "./objectSchemas/rowOfThree";
 import rowOfThreeFeaturedResources from "./objectSchemas/rowOfThreeFeaturedResources";
+import socials from "./objectSchemas/socials";
 import telephoneNumber from "./objectSchemas/telephoneNumber";
 import topicCollectionContentBlock from "./objectSchemas/topicCollectionContentBlock";
 import topicCollectionContentBlockNew from "./objectSchemas/topicCollectionContentBlockNew";
@@ -77,6 +79,7 @@ export const objectTypes = [
   richTextContentBlock,
   rowOfThree,
   rowOfThreeFeaturedResources,
+  socials,
   telephoneNumber,
   topicContentBlock,
   topicCollectionContentBlock,
@@ -116,6 +119,7 @@ export const documentTypes = [
   imageSource,
   imageCollection,
   person,
+  personGroup,
   resourceEvaluation,
 ];
 

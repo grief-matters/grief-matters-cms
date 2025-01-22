@@ -1,11 +1,11 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { UsersIcon } from "@sanity/icons";
+import { UserIcon } from "@sanity/icons";
 
 export default defineType({
   name: "person",
   title: "Person",
   type: "document",
-  icon: UsersIcon,
+  icon: UserIcon,
   fields: [
     defineField({
       name: "fullName",
@@ -27,8 +27,10 @@ export default defineType({
       type: "string",
     }),
     defineField({
-      name: "bio",
-      title: "Bio",
+      name: "shortBio",
+      title: "Short Bio",
+      description:
+        "A short bio about the person, should be written in third-person",
       type: "array",
       of: [
         defineArrayMember({
@@ -37,6 +39,25 @@ export default defineType({
         }),
       ],
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "personalStory",
+      title: "Personal Story",
+      description:
+        "An optional extended bio, written from a personal (first person) perspective",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "block",
+          styles: [{ title: "Normal", value: "normal" }],
+        }),
+      ],
+    }),
+    defineField({
+      name: "socials",
+      title: "Social Media and Contact",
+      description: "Optional social media and contact details",
+      type: "socials",
     }),
   ],
 });
