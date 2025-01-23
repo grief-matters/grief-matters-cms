@@ -31,13 +31,13 @@ jobs:
           npx -y sanity@latest dataset export production production.tar.gz --overwrite
 
       # Does not work on 'free' plan - editor grant cannot delete a dataset via API token
-      # - name: Delete existing 'dev' dataset
-      #   run: |
-      #     npx -y sanity@latest dataset delete dev --force
+      - name: Delete existing 'dev' dataset
+        run: |
+          npx -y sanity@latest dataset delete dev --force
 
-      # - name: Create new 'dev' dataset
-      #   run: |
-      #     npx -y sanity@latest dataset create dev
+      - name: Create new 'dev' dataset
+        run: |
+          npx -y sanity@latest dataset create dev
 
       # We have to accept that for now we can't have a completely "clean" dataset
       - name: Import data into new 'dev' dataset
