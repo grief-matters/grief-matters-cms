@@ -4,19 +4,30 @@ Welcome to the Why Grief Matters Sanity Studio! This repository plays host to th
 
 If you have lost someone and are looking for support, or you're supporting someone else, please visit the website; [https://www.whygriefmatters.org](www.whygriefmatters.org).
 
-## About Sanity Studio
+---
 
-The Why Grief Matters Sanity Studio Content Management System (CMS) is built with Sanity Studio.
+## Contributing
 
-Sanity Studio offers an intuitive interface for real-time editing. Collaborative and efficient, it ensures data consistency and accuracy, allowing creators to effortlessly craft, edit, and organize content. Sanity Studio optimizes productivity and enhances the content creation journey.
-
-## Documentation
-
-The project documentation can be found at this website:
-[https://grief-matters.github.io/grief-matters-cms/](https://grief-matters.github.io/grief-matters-cms/)
+We welcome contributions of all sizes and skill levels. There are a couple of different ways we accept contributions, and in all cases you'll need permission to access our Sanity Project. See the [Contributing](./CONTRIBUTING.md) guide for more information.
 
 ---
 
-## Wanting to Contribute?
+## Quick Start Guide
 
-We welcome contributions from the community! If you'd like to contribute to Why Grief Matters, please contact Dr. Camille Wortman (the project founder) or Dan Chambers (technical lead).
+1. Create a Sanity account and join our Sanity Org
+2. Clone this repo `git clone https://github.com/grief-matters/grief-matters-cms.git`
+3. `cd` into the project
+4. Create a file named `.env` in the root of your project and add to it the following environment variables:
+   ```shell
+   SANITY_STUDIO_PROJECT_ID="PROJECT_ID" #replace with the actual ID
+   SANITY_STUDIO_DATASET="dev"
+   SANITY_STUDIO_API_VERSION="2023-07-16"
+   ```
+   Our Sanity project has a public API - so these environment variables do not need to be treated as secrets.
+5. Run `npm install` at the root of the project to install all dependencies.
+6. Run `npm run dev` at the root of the project folder. This will build the studio application and start a local development server (you'll be prompted to authenticate with your Sanity credentials).
+7. Once the build is complete, you can head over to http://localhost:3333.
+
+---
+
+More detailed information for developers working on the project can be found in [docs](./docs/README.md)
