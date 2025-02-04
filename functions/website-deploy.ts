@@ -18,6 +18,8 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         status: 500,
       });
     }
+
+    return new Response("Deploy was successful!", { status: 200 });
   } catch (error) {
     return new Response(`Error triggering deploy: ${error}`, { status: 500 });
   }
