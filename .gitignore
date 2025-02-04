@@ -29,9 +29,14 @@
 *.local
 
 .env
+.dev.vars
 
 # Dataset artifacts
 /datasets
 
 # Reports
 /reports
+
+# wrangler
+.wrangler
+worker-configuration.d.ts
