@@ -58,6 +58,14 @@ export default defineType({
         defineArrayMember({ type: "featuredResource" }),
         defineArrayMember({ type: "featuredCrisisResource" }),
         defineArrayMember({ type: "featuredWebsite" }),
+        defineArrayMember({ type: "relativeLink" }),
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "personGroup" }, { type: "person" }],
+          options: {
+            disableNew: true,
+          },
+        }),
       ],
       validation: (Rule) => Rule.required(),
     }),
