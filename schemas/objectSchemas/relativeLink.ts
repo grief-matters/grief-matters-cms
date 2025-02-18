@@ -5,6 +5,12 @@ export default defineType({
   name: "relativeLink",
   title: "Relative Link",
   description: `A relative link is a URL within our website e.g. '/crisis-resources'`,
+  preview: {
+    select: {
+      title: "label",
+      subtitle: "url",
+    },
+  },
   fields: [
     defineField({
       name: "label",
