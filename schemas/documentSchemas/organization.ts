@@ -90,5 +90,12 @@ export default defineType({
       type: "text",
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      title: "Nonprofit Notice",
+      description: "Declaration regarding nonprofit status",
+      name: "nonprofitNotice",
+      type: "text",
+      validation: (rule) => rule.required(),
+    }),
   ],
 });
