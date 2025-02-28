@@ -62,7 +62,7 @@ export default defineType({
         defineArrayMember({ type: "relativeLink" }),
         defineArrayMember({
           type: "reference",
-          to: [{ type: "personGroup" }, { type: "person" }],
+          to: [{ type: "personGroup" }, { type: "person" }, { type: "form" }],
           options: {
             disableNew: true,
           },
