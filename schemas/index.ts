@@ -1,11 +1,8 @@
-import aboutPage from "./documentSchemas/aboutPage";
 import category from "./documentSchemas/category";
 import contentBlock from "./documentSchemas/contentBlock";
 import contentGroup from "./documentSchemas/contentGroup";
 import coreContentGroups from "./documentSchemas/coreContentGroups";
 import crisisResource from "./documentSchemas/crisisResource";
-import featuredContent from "./documentSchemas/featuredContent";
-import featuredTopics from "./documentSchemas/featuredTopics";
 import homePage from "./documentSchemas/homePage";
 import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
@@ -117,7 +114,6 @@ export const documentTypes = [
   crisisResource,
   population,
   website,
-  featuredContent,
   imageSource,
   imageCollection,
   person,
@@ -127,9 +123,7 @@ export const documentTypes = [
 
 export const singletonDocumentTypes = [
   organization,
-  featuredTopics,
   homePage,
-  aboutPage,
   coreContentGroups,
 ];
 
