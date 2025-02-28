@@ -1,11 +1,9 @@
-import aboutPage from "./documentSchemas/aboutPage";
 import category from "./documentSchemas/category";
 import contentBlock from "./documentSchemas/contentBlock";
 import contentGroup from "./documentSchemas/contentGroup";
 import coreContentGroups from "./documentSchemas/coreContentGroups";
 import crisisResource from "./documentSchemas/crisisResource";
-import featuredContent from "./documentSchemas/featuredContent";
-import featuredTopics from "./documentSchemas/featuredTopics";
+import form from "./documentSchemas/form";
 import homePage from "./documentSchemas/homePage";
 import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
@@ -45,6 +43,8 @@ import customResourceCollection from "./objectSchemas/customResourceCollection";
 import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
 import featuredResource from "./objectSchemas/featuredResource";
 import featuredWebsite from "./objectSchemas/featuredWebsite";
+import formField from "./objectSchemas/formField";
+import imageRow from "./objectSchemas/imageRow";
 import link from "./objectSchemas/link";
 import logo from "./objectSchemas/logo";
 import relativeLink from "./objectSchemas/relativeLink";
@@ -70,6 +70,8 @@ export const objectTypes = [
   featuredCrisisResource,
   featuredResource,
   featuredWebsite,
+  formField,
+  imageRow,
   link,
   logo,
   relativeLink,
@@ -110,24 +112,22 @@ export const documentTypes = [
   category,
   contentBlock,
   contentGroup,
-  topicCollection,
-  smartCategory,
   crisisResource,
-  population,
-  website,
-  featuredContent,
-  imageSource,
+  form,
   imageCollection,
+  imageSource,
   person,
   personGroup,
+  population,
   resourceEvaluation,
+  smartCategory,
+  topicCollection,
+  website,
 ];
 
 export const singletonDocumentTypes = [
   organization,
-  featuredTopics,
   homePage,
-  aboutPage,
   coreContentGroups,
 ];
 

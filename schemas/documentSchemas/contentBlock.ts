@@ -49,6 +49,7 @@ export default defineType({
       of: [
         defineArrayMember({ type: "richTextContentBlock" }),
         defineArrayMember({ type: "accessibleImage" }),
+        defineArrayMember({ type: "imageRow" }),
         defineArrayMember({ type: "rowOfThree" }),
         defineArrayMember({ type: "rowOfThreeFeaturedResources" }),
         defineArrayMember({ type: "resourceLinks" }),
@@ -61,7 +62,7 @@ export default defineType({
         defineArrayMember({ type: "relativeLink" }),
         defineArrayMember({
           type: "reference",
-          to: [{ type: "personGroup" }, { type: "person" }],
+          to: [{ type: "personGroup" }, { type: "person" }, { type: "form" }],
           options: {
             disableNew: true,
           },
