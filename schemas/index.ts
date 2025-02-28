@@ -45,6 +45,7 @@ import customResourceCollection from "./objectSchemas/customResourceCollection";
 import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
 import featuredResource from "./objectSchemas/featuredResource";
 import featuredWebsite from "./objectSchemas/featuredWebsite";
+import imageRow from "./objectSchemas/imageRow";
 import link from "./objectSchemas/link";
 import logo from "./objectSchemas/logo";
 import relativeLink from "./objectSchemas/relativeLink";
@@ -70,6 +71,7 @@ export const objectTypes = [
   featuredCrisisResource,
   featuredResource,
   featuredWebsite,
+  imageRow,
   link,
   logo,
   relativeLink,

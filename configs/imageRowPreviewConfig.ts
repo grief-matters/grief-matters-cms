@@ -1,12 +1,12 @@
 import { PreviewConfig } from "sanity";
 
-export const rowOfThreePreviewConfig: PreviewConfig = {
+export const imageRowPreviewConfig: PreviewConfig = {
   select: {
     image: "images.0.image",
   },
   prepare: ({ image }) => ({
-    title: "Row of Three",
-    subtitle: "Row of three photos",
+    title: "Image Row",
+    subtitle: "Row of multiple images",
     media: image,
   }),
 };
