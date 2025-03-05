@@ -52,7 +52,6 @@ import resourceLinks from "./objectSchemas/resourceLinks";
 import resourcePageLink from "./objectSchemas/resourcePageLink";
 import resourcePageLinks from "./objectSchemas/resourcePageLinks";
 import richTextContentBlock from "./objectSchemas/richTextContentBlock";
-import rowOfThree from "./objectSchemas/rowOfThree";
 import rowOfThreeFeaturedResources from "./objectSchemas/rowOfThreeFeaturedResources";
 import socials from "./objectSchemas/socials";
 import telephoneNumber from "./objectSchemas/telephoneNumber";
@@ -79,7 +78,6 @@ export const objectTypes = [
   resourcePageLink,
   resourcePageLinks,
   richTextContentBlock,
-  rowOfThree,
   rowOfThreeFeaturedResources,
   socials,
   telephoneNumber,
