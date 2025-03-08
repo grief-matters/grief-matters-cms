@@ -46,9 +46,15 @@ If you're making a one off contribution or just helping out where you can, you'l
    SANITY_STUDIO_DATASET="dev"
    SANITY_STUDIO_API_VERSION="2023-07-16"
    ```
-3. Run `npm install` at the root of the project to install all dependencies.
-4. Run `npm run dev` at the root of the project folder. This will build the studio application and start a local development server.
-5. Once the build is complete, you can head over to http://localhost:3333.
+3. Create a file named `.dev.vars` in the root of your project and add the following variables:
+   ```shell
+   WEBSITE_DEPLOY_HOOK="" # not needed in local development
+   SANITY_STUDIO_DATASET="dev"
+   ``` 
+   These variables are required for local development.
+4. Run `npm install` at the root of the project to install all dependencies.
+5. Run `npm run dev` at the root of the project folder. This will build the studio application and start a local development server.
+6. Once the build is complete, you can head over to http://localhost:3333.
 
 > [!Note]
 >
