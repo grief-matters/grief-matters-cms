@@ -38,7 +38,6 @@ export default defineType({
           styles: [{ title: "Normal", value: "normal" }],
         }),
       ],
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "personalStory",
