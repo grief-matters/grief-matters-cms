@@ -47,6 +47,7 @@ import formField from "./objectSchemas/formField";
 import imageRow from "./objectSchemas/imageRow";
 import link from "./objectSchemas/link";
 import logo from "./objectSchemas/logo";
+import personGroupBlock from "./objectSchemas/personGroupBlock";
 import relativeLink from "./objectSchemas/relativeLink";
 import resourceLinks from "./objectSchemas/resourceLinks";
 import resourcePageLink from "./objectSchemas/resourcePageLink";
@@ -73,6 +74,7 @@ export const objectTypes = [
   imageRow,
   link,
   logo,
+  personGroupBlock,
   relativeLink,
   resourceLinks,
   resourcePageLink,

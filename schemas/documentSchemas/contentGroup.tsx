@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { portableTextDescriptionField, slugField } from "../fields";
+import { ContentGroupPreview } from "../../components";
 
 export default defineType({
   type: "document",
@@ -7,12 +8,15 @@ export default defineType({
   preview: {
     select: {
       name: "name",
-      title: "title",
+      slug: "slug.current",
     },
-    prepare: ({ name, title }) => ({
-      title: name,
-      subtitle: `Display Label: ${title}`,
-    }),
+    prepare({ name, slug }) {
+      return {
+        title: name,
+        subtitle: slug ? `Page: /${slug}` : "Standard Content Group",
+        media: <ContentGroupPreview slug={slug} />,
+      };
+    },
   },
   fields: [
     defineField({
