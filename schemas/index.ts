@@ -13,6 +13,7 @@ import personGroup from "./documentSchemas/personGroup";
 import population from "./documentSchemas/population";
 import resourceEvaluation from "./documentSchemas/resourceEvaluation";
 import smartCategory from "./documentSchemas/smartCategory";
+import smartCollection from "./documentSchemas/smartCollection";
 import topicCollection from "./documentSchemas/topicCollection";
 import website from "./documentSchemas/website";
 
@@ -54,6 +55,7 @@ import resourcePageLink from "./objectSchemas/resourcePageLink";
 import resourcePageLinks from "./objectSchemas/resourcePageLinks";
 import richTextContentBlock from "./objectSchemas/richTextContentBlock";
 import rowOfThreeFeaturedResources from "./objectSchemas/rowOfThreeFeaturedResources";
+import smartCollectionLink from "./objectSchemas/smartCollectionLink";
 import socials from "./objectSchemas/socials";
 import telephoneNumber from "./objectSchemas/telephoneNumber";
 import topicCollectionContentBlock from "./objectSchemas/topicCollectionContentBlock";
@@ -81,6 +83,7 @@ export const objectTypes = [
   resourcePageLinks,
   richTextContentBlock,
   rowOfThreeFeaturedResources,
+  smartCollectionLink,
   socials,
   telephoneNumber,
   topicContentBlock,
@@ -121,6 +124,7 @@ export const documentTypes = [
   population,
   resourceEvaluation,
   smartCategory,
+  smartCollection,
   topicCollection,
   website,
 ];
