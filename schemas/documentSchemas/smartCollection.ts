@@ -23,6 +23,13 @@ export default defineType({
     }),
     slugField,
     defineField({
+      name: "image",
+      title: "Smart Collection Cover Image",
+      type: "accessibleImage",
+      description:
+        "A preferred image to de displayed alongside this Smart Collection",
+    }),
+    defineField({
       name: "categories",
       title: "Topics",
       description:
