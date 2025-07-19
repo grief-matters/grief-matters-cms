@@ -7,8 +7,7 @@
   "scripts": {
     "dev": "wrangler types && sanity dev",
     "start": "wrangler types && sanity start",
-    "build": "wrangler types && sanity build",
-    "deploy": "npm run build && wrangler deploy"
+    "build": "wrangler types && sanity build"
   },
   "keywords": [
     "sanity"
