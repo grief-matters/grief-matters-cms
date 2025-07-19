@@ -1,7 +1,7 @@
 name = "grief-matters-cms"
 main = "./worker/index.ts"
 compatibility_date = "2024-09-08"
-preview_urls = true
+preview_urls = false
 
 [assets]
 directory = "./dist"
