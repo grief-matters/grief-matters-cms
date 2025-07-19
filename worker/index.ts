@@ -1,10 +1,14 @@
-import { AutoRouter } from "itty-router";
+import { AutoRouter, IRequest } from "itty-router";
+import { handleWebsiteDeploy } from "./handlers/website-deploy";
 
-const router = AutoRouter();
+export interface Env {
+  WEBSITE_DEPLOY_HOOK: string;
+}
 
-router
-  .get("/hello/:name", ({ name }) => `Hello, ${name}!`)
-  .get("/json", () => ({ foo: "bar" }))
-  .get("/throw", (a) => a.b.c); // safely throws
+type CFArgs = [Env, ExecutionContext];
+
+const router = AutoRouter<IRequest, CFArgs>();
+
+router.post("/cfw-api/website-deploy", handleWebsiteDeploy);
 
 export default router;

@@ -1,8 +1,9 @@
-import { DocumentActionComponent, defineConfig } from "sanity";
+import { type DocumentActionComponent, defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { dashboardTool } from "@sanity/dashboard";
-import websiteDeployment from "./tools/website-deployment/plugin";
+
+import websiteManagementTool from "./tools/website-tools/plugin";
 
 import { structure } from "./structure";
 import {
@@ -40,7 +41,7 @@ export default defineConfig({
       ],
     }),
     visionTool(),
-    websiteDeployment(),
+    websiteManagementTool(),
   ],
   schema: {
     types: schemaTypes,

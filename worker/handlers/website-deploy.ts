@@ -1,10 +1,7 @@
-// todo - I don't think we should have todo this as we're generating worker-configuration.d.ts automatically
-interface Env {
-  WEBSITE_DEPLOY_HOOK: string;
-}
+import { Env } from "..";
 
-export const onRequest: PagesFunction<Env> = async (context) => {
-  const deployHookUrl = context.env.WEBSITE_DEPLOY_HOOK;
+export async function handleWebsiteDeploy(request: Request, context: Env) {
+  const deployHookUrl = context.WEBSITE_DEPLOY_HOOK;
 
   if (typeof deployHookUrl === "undefined") {
     return new Response("Deploy hook URL is not configured", { status: 500 });
@@ -23,4 +20,4 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   } catch (error) {
     return new Response(`Error triggering deploy: ${error}`, { status: 500 });
   }
-};
+}
