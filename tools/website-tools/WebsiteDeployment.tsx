@@ -21,7 +21,7 @@ export const WebsiteDeployment = () => {
   const handleClick = async () => {
     setSubmitting(true);
     try {
-      await fetch("/cfw-api/website-deploy");
+      await fetch("/cfw-api/website-deploy", { method: "POST" });
     } catch (error) {
       console.error("Error triggering deploy:", error);
     } finally {
