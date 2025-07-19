@@ -12,6 +12,8 @@ We welcome contributions of all sizes and skill levels. There are a couple of di
 
 ---
 
+[TODO] Review all of this now we've migrated to Cloudflare Workers
+
 ## Quick Start Guide
 
 1. Create a Sanity account and join our Sanity Org
@@ -28,7 +30,7 @@ We welcome contributions of all sizes and skill levels. There are a couple of di
    ```shell
    WEBSITE_DEPLOY_HOOK="" # not needed in local development
    SANITY_STUDIO_DATASET="dev"
-   ``` 
+   ```
    These variables are required for local development.
 6. Run `npm install` at the root of the project to install all dependencies.
 7. Run `npm run dev` at the root of the project folder. This will build the studio application and start a local development server (you'll be prompted to authenticate with your Sanity credentials).
