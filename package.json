@@ -19,6 +19,7 @@
     "@sanity/ui": "2.16.7",
     "@sanity/vision": "4.0.1",
     "groq": "4.0.1",
+    "itty-router": "^5.0.18",
     "lodash": "^4.17.21",
     "pluralize": "^8.0.0",
     "react": "^18.2.0",
