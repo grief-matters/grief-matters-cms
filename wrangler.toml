@@ -7,15 +7,13 @@ preview_urls = false
 directory = "./dist"
 not_found_handling = "single-page-application"
 
-# Add defaults, then override per environment
 [vars]
-API_BASE_URL = "https://cms.whygriefmatters.com"
+API_BASE_URL = "https://cms.whygriefmatters.org"
 CF_WEB_PROJECT_NAME = "whygriefmatters-org"
 CF_ACCOUNT_ID = "82b1313af677f5eb2d8633b0bbfc8f73"
 
 [env.dev]
-vars = { API_BASE_URL = "http://localhost:8787" }
+vars = { API_BASE_URL = "http://localhost:8787", CF_WEB_PROJECT_NAME = "whygriefmatters-org", CF_ACCOUNT_ID = "82b1313af677f5eb2d8633b0bbfc8f73" }
 
-# You can define additional environments too:
 [env.production]
-vars = { API_BASE_URL = "https://cms.whygriefmatters.com" }
+vars = { API_BASE_URL = "https://cms.whygriefmatters.org", CF_WEB_PROJECT_NAME = "whygriefmatters-org", CF_ACCOUNT_ID = "82b1313af677f5eb2d8633b0bbfc8f73" }
