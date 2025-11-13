@@ -1,5 +1,5 @@
 import { Box, Card, Container, Flex, Heading } from "@sanity/ui";
-import WebsiteDeployment from "./WebsiteDeployment";
+// import WebsiteDeployment from "./WebsiteDeployment";
 import BrokenLinks from "./BrokenLinks";
 
 export const WebsiteTools = () => {
@@ -12,7 +12,8 @@ export const WebsiteTools = () => {
       </Card>
       <Card>
         <Flex wrap="wrap">
-          <WebsiteDeployment />
+          {/* Needs to be reimplemented following migration from Pages to Workers */}
+          {/* <WebsiteDeployment /> */}
           <BrokenLinks />
         </Flex>
       </Card>
