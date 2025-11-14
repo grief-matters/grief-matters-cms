@@ -21,15 +21,16 @@ We welcome contributions of all sizes and skill levels. There are a couple of di
 3. `cd` into the project
 4. Create a file named `.env` in the root of your project and add to it the following environment variables:
    ```shell
-   SANITY_STUDIO_PROJECT_ID="PROJECT_ID" #replace with the actual ID
+   SANITY_STUDIO_PROJECT_ID="[PROJECT_ID]" # replace with the actual ID
    SANITY_STUDIO_DATASET="dev"
    SANITY_STUDIO_API_VERSION="2023-07-16"
+   SANITY_STUDIO_API_BASE_URL="http://localhost:8787"
    ```
    Our Sanity project has a public API - so these environment variables do not need to be treated as secrets.
 5. Create a file named `.dev.vars` in the root of your project and add the following variables:
    ```shell
-   WEBSITE_DEPLOY_HOOK="" # not needed in local development
-   SANITY_STUDIO_DATASET="dev"
+   CF_API_TOKEN="[CF_API_TOKEN]" # replace with actual token
+   CF_ACCOUNT_ID="[CF_ACCOUNT_ID]" # replace with actual value
    ```
    These variables are required for local development.
 6. Run `npm install` at the root of the project to install all dependencies.
