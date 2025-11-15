@@ -19,5 +19,13 @@ export default defineType({
         }),
       ],
     }),
+    defineField({
+      name: "isProminent",
+      type: "boolean",
+      title: "Emphasized",
+      description:
+        "This particular block of text should be made prominent if the context allows",
+      initialValue: false,
+    }),
   ],
 });

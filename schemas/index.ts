@@ -45,6 +45,7 @@ import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
 import featuredResource from "./objectSchemas/featuredResource";
 import featuredWebsite from "./objectSchemas/featuredWebsite";
 import formField from "./objectSchemas/formField";
+import headingText from "./objectSchemas/headingText";
 import imageRow from "./objectSchemas/imageRow";
 import link from "./objectSchemas/link";
 import logo from "./objectSchemas/logo";
@@ -73,6 +74,7 @@ export const objectTypes = [
   featuredResource,
   featuredWebsite,
   formField,
+  headingText,
   imageRow,
   link,
   logo,

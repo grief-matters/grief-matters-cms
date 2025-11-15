@@ -22,5 +22,13 @@ export default defineType({
         defineArrayMember({ type: "smartCollectionLink" }),
       ],
     }),
+    defineField({
+      name: "isProminent",
+      type: "boolean",
+      title: "Emphasized",
+      description:
+        "Whether this set of links should be shown more prominently than other collections shown in the same context",
+      initialValue: false,
+    }),
   ],
 });

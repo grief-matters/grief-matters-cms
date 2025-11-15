@@ -27,31 +27,19 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      title: "Title",
-      name: "title",
-      type: "string",
-      description: "Optional descriptive title for the Content Block.",
-      validation: (Rule) => [
-        Rule.max(60).warning("Headings for content blocks should be short"),
-      ],
-    }),
-    defineField({
-      ...portableTextDescriptionField,
-      description:
-        "Optional description for the Content Block. Will act as lead in text in most cases",
-    }),
-    defineField({
       type: "array",
       name: "content",
       title: "Content",
       description:
         "Set of predefined building blocks that make up the section of content",
       of: [
+        defineArrayMember({ type: "headingText" }),
         defineArrayMember({ type: "richTextContentBlock" }),
         defineArrayMember({ type: "accessibleImage" }),
         defineArrayMember({ type: "imageRow" }),
         defineArrayMember({ type: "rowOfThreeFeaturedResources" }),
         defineArrayMember({ type: "resourceLinks" }),
+        defineArrayMember({ type: "resourcePageLink" }),
         defineArrayMember({ type: "resourcePageLinks" }),
         defineArrayMember({ type: "topicContentBlock" }),
         defineArrayMember({ type: "topicCollectionContentBlockNew" }),
@@ -69,6 +57,25 @@ export default defineType({
         }),
       ],
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      deprecated: {
+        reason:
+          "Deprecated as part of site redesign. Add appropriate to Content instead.",
+      },
+      title: "Title",
+      name: "title",
+      type: "string",
+      validation: (Rule) => [
+        Rule.max(60).warning("Headings for content blocks should be short"),
+      ],
+    }),
+    defineField({
+      ...portableTextDescriptionField,
+      deprecated: {
+        reason:
+          "Deprecated as part of site redesign. Use appropriate item within a Content Block instead.",
+      },
     }),
   ],
 });

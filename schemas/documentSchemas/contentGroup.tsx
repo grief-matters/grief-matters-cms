@@ -5,6 +5,8 @@ import { ContentGroupPreview } from "../../components";
 export default defineType({
   type: "document",
   name: "contentGroup",
+  description:
+    "A 'Content Group' is usually used to to manage page content on the website",
   preview: {
     select: {
       name: "name",
@@ -34,7 +36,7 @@ export default defineType({
     }),
     defineField({
       ...slugField,
-      description: `Generating a slug for a Content Group means that a webpage may be automatically generated. Be sure to provide some way for a user to navigate to the page e.g. by adding a 'pageLink' content type to some other area`,
+      description: `Slugs are used to link specific content to a specific page e.g. a slug of 'donate' will be linked to the 'donate' page. Where there is no existing page, one will be generated. Speak to a project developer if you are unsure.`,
       validation: undefined,
     }),
     defineField({
@@ -44,7 +46,6 @@ export default defineType({
       description:
         "A cover image to to be used for this Content Group if appropriate",
     }),
-    portableTextDescriptionField,
     defineField({
       name: "contentBlocks",
       title: "Content Blocks",
@@ -55,6 +56,21 @@ export default defineType({
       ],
     }),
     defineField({
+      ...portableTextDescriptionField,
+      deprecated: {
+        reason:
+          "Deprecated as part of site redesign. Use appropriate item within a Content Block instead.",
+      },
+    }),
+    defineField({
+      deprecated: {
+        reason:
+          "Deprecated as part of site redesign. Use appropriate item within a Content Block instead.",
+      },
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       name: "contentGroupJumpLink",
       title: "Jump Link",
       description: "A link to take a user to another related page",
@@ -63,6 +79,14 @@ export default defineType({
         typeof ctx.document?.manualFeaturedContentFooterLink !== "undefined",
     }),
     defineField({
+      deprecated: {
+        reason:
+          "Deprecated as part of site redesign. Use appropriate item within a Content Block instead.",
+      },
+      options: {
+        collapsible: true,
+        collapsed: true,
+      },
       name: "relativeContentGroupJumpLink",
       title: "Jump Link (manual)",
       description:
