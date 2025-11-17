@@ -46,6 +46,7 @@ export default defineType({
         defineArrayMember({ type: "featuredResource" }),
         defineArrayMember({ type: "featuredCrisisResource" }),
         defineArrayMember({ type: "featuredWebsite" }),
+        defineArrayMember({ type: "featuredWebsites" }),
         defineArrayMember({ type: "relativeLink" }),
         defineArrayMember({ type: "personGroupBlock" }),
         defineArrayMember({

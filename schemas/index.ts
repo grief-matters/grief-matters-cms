@@ -44,6 +44,7 @@ import customResourceCollection from "./objectSchemas/customResourceCollection";
 import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
 import featuredResource from "./objectSchemas/featuredResource";
 import featuredWebsite from "./objectSchemas/featuredWebsite";
+import featuredWebsites from "./objectSchemas/featuredWebsites";
 import formField from "./objectSchemas/formField";
 import headingText from "./objectSchemas/headingText";
 import imageRow from "./objectSchemas/imageRow";
@@ -73,6 +74,7 @@ export const objectTypes = [
   featuredCrisisResource,
   featuredResource,
   featuredWebsite,
+  featuredWebsites,
   formField,
   headingText,
   imageRow,
