@@ -43,6 +43,7 @@ import coreValue from "./objectSchemas/coreValue";
 import customResourceCollection from "./objectSchemas/customResourceCollection";
 import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
 import featuredResource from "./objectSchemas/featuredResource";
+import featuredResources from "./objectSchemas/featuredResources";
 import featuredWebsite from "./objectSchemas/featuredWebsite";
 import featuredWebsites from "./objectSchemas/featuredWebsites";
 import formField from "./objectSchemas/formField";
@@ -56,7 +57,6 @@ import resourceLinks from "./objectSchemas/resourceLinks";
 import resourcePageLink from "./objectSchemas/resourcePageLink";
 import resourcePageLinks from "./objectSchemas/resourcePageLinks";
 import richTextContentBlock from "./objectSchemas/richTextContentBlock";
-import rowOfThreeFeaturedResources from "./objectSchemas/rowOfThreeFeaturedResources";
 import smartCollectionLink from "./objectSchemas/smartCollectionLink";
 import socials from "./objectSchemas/socials";
 import telephoneNumber from "./objectSchemas/telephoneNumber";
@@ -73,6 +73,7 @@ export const objectTypes = [
   customResourceCollection,
   featuredCrisisResource,
   featuredResource,
+  featuredResources,
   featuredWebsite,
   featuredWebsites,
   formField,
@@ -86,7 +87,6 @@ export const objectTypes = [
   resourcePageLink,
   resourcePageLinks,
   richTextContentBlock,
-  rowOfThreeFeaturedResources,
   smartCollectionLink,
   socials,
   telephoneNumber,

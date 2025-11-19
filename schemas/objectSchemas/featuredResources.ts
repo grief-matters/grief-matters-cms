@@ -4,10 +4,10 @@ import { featuredResourceLinksPreviewConfig } from "../../configs/featuredResour
 
 export default defineType({
   type: "object",
-  name: "rowOfThreeFeaturedResources",
+  name: "featuredResources",
   description: "Selected resources will be shown with their images",
   preview: featuredResourceLinksPreviewConfig,
-  title: "Row of 3 Featured Resources",
+  title: "Featured Resources",
   fields: [
     defineField({
       name: "resources",
@@ -21,7 +21,7 @@ export default defineType({
           to: [...INTERNET_RESOURCE_TYPES.map((t) => ({ type: t }))],
         }),
       ],
-      validation: (Rule) => Rule.length(3),
+      validation: (Rule) => Rule.min(1),
     }),
   ],
 });

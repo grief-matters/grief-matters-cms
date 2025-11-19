@@ -34,12 +34,12 @@ export default defineType({
     }),
     defineField({
       name: "type",
-      title: "Resource Type",
+      title: "Resource Types",
       description:
-        "The type of resources that will be shown on the linked page",
-      type: "string",
+        "The type of resources that will be pre-filtered on the linked page",
+      type: "array",
+      of: [{ type: "string" }],
       options: {
-        layout: "dropdown",
         list: [
           ...INTERNET_RESOURCE_TYPES.map((resourceType) => ({
             value: resourceType,

@@ -37,7 +37,7 @@ export default defineType({
         defineArrayMember({ type: "richTextContentBlock" }),
         defineArrayMember({ type: "accessibleImage" }),
         defineArrayMember({ type: "imageRow" }),
-        defineArrayMember({ type: "rowOfThreeFeaturedResources" }),
+        defineArrayMember({ type: "featuredResources" }),
         defineArrayMember({ type: "resourceLinks" }),
         defineArrayMember({ type: "resourcePageLink" }),
         defineArrayMember({ type: "resourcePageLinks" }),
