@@ -4,8 +4,8 @@ import { featuredResourcesField, slugField, titleField } from "../fields";
 
 export default defineType({
   name: "category",
-  title: "Topic",
-  description: "A category used to classify resources",
+  title: "Category",
+  description: `A category used to classify resources. Not to be used with "Topics" which is a specific 'category' itself`,
   icon: TagsIcon,
   type: "document",
   preview: {
@@ -23,14 +23,14 @@ export default defineType({
     defineField({
       ...titleField,
       description:
-        "The topic title. Will be used when the topic is displayed within the topic hierarchy (e.g. in the top-level navigation)",
+        "The category title. Will be used when the category is displayed within the category hierarchy (e.g. in the top-level navigation)",
     }),
     defineField({
       title: "Display Title",
       name: "displayTitle",
       type: "string",
       description:
-        "A preferred display title. Will be used when topic is displayed outside the topic hierarchy (e.g. when used as a page heading)",
+        "A preferred display title. Will be used when category is displayed outside the category hierarchy (e.g. when used as a page heading)",
     }),
     slugField,
     defineField({
@@ -42,23 +42,23 @@ export default defineType({
       validation: (rule) => rule.max(255),
     }),
     defineField({
-      title: "Sub-Topics",
+      title: "Sub-Categories",
       description:
-        "Select the Topics that will appear as children of this Topic",
+        "Select the Categories that will appear as children of this Category",
       name: "subtopics",
       type: "array",
       of: [defineArrayMember({ type: "reference", to: { type: "category" } })],
       validation: (rule) => [
         rule.unique(),
-        rule.custom((subtopics, ctx) => {
-          if (typeof subtopics === "undefined") {
+        rule.custom((subcategories, ctx) => {
+          if (typeof subcategories === "undefined") {
             return true;
           }
 
-          return subtopics.some((st) =>
+          return subcategories.some((st) =>
             ctx.document?._id.includes((st as any)._ref)
           )
-            ? "A Topic cannot be a Subtopic of itself"
+            ? "A Category cannot be a Subcategory of itself"
             : true;
         }),
       ],
