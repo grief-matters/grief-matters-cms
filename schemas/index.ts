@@ -1,7 +1,6 @@
 import category from "./documentSchemas/category";
 import contentBlock from "./documentSchemas/contentBlock";
 import contentGroup from "./documentSchemas/contentGroup";
-import coreContentGroups from "./documentSchemas/coreContentGroups";
 import crisisResource from "./documentSchemas/crisisResource";
 import form from "./documentSchemas/form";
 import homePage from "./documentSchemas/homePage";
@@ -131,11 +130,7 @@ export const documentTypes = [
   website,
 ];
 
-export const singletonDocumentTypes = [
-  organization,
-  homePage,
-  coreContentGroups,
-];
+export const singletonDocumentTypes = [organization, homePage];
 
 export const SINGLETON_TYPES = new Set([
   "organization",
