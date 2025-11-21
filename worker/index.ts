@@ -6,6 +6,7 @@ import {
   handleGetDeployments,
   handleWebsiteDeploy,
 } from "./handlers/deployments";
+import { handleFallback } from "./handlers/fallback";
 import { handleGetDeployment } from "./handlers/deployment";
 import { handleGetLatestDeployment } from "./handlers/latestDeployment";
 
@@ -17,6 +18,7 @@ router
   .post(apiRoutes.deployments, handleWebsiteDeploy)
   .get(apiRoutes.deployments, handleGetDeployments)
   .get(apiRoutes.latestDeployment, handleGetLatestDeployment)
-  .get(apiRoutes.deployment, handleGetDeployment);
+  .get(apiRoutes.deployment, handleGetDeployment)
+  .all("*", handleFallback);
 
 export default router;
