@@ -37,7 +37,6 @@ import webinar from "./internetResourceDocumentSchemas/webinar";
 import accessibleImage from "./objectSchemas/accessibleImage";
 import availability from "./objectSchemas/availability";
 import contactMethod from "./objectSchemas/contactMethod";
-import coreValue from "./objectSchemas/coreValue";
 import customResourceCollection from "./objectSchemas/customResourceCollection";
 import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
 import featuredResource from "./objectSchemas/featuredResource";
@@ -66,7 +65,6 @@ export const objectTypes = [
   accessibleImage,
   availability,
   contactMethod,
-  coreValue,
   customResourceCollection,
   featuredCrisisResource,
   featuredResource,

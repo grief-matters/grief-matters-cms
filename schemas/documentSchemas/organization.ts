@@ -62,13 +62,6 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      title: "Core Values",
-      name: "coreValues",
-      type: "array",
-      of: [defineArrayMember({ type: "coreValue" })],
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       title: "Small Print",
       description:
         "All the text that usually appears in the footer including legal information, disclaimers etc.",
