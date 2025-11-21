@@ -75,11 +75,12 @@ export default defineType({
       title: "Featured Resources",
       type: "array",
       description: "Select a maximum of 3 Featured Resources in this category.",
-      of: INTERNET_RESOURCE_TYPES.map((resourceType) =>
+      of: [
         defineArrayMember({
-          name: resourceType,
           type: "reference",
-          to: [{ type: resourceType }],
+          to: INTERNET_RESOURCE_TYPES.map((resourceType) => ({
+            type: resourceType,
+          })),
           options: {
             filter: (resolverCtx) => {
               const { document } = resolverCtx;
@@ -93,8 +94,8 @@ export default defineType({
               };
             },
           },
-        })
-      ),
+        }),
+      ],
       validation: (Rule) => [
         Rule.max(3),
         Rule.unique(),
@@ -105,7 +106,6 @@ export default defineType({
 
           const queryParts = resources.map((r: any) => `_id == "${r._ref}"`);
           const query = `*[${queryParts.join(" || ")}]`;
-          console.log(query);
 
           const client = context.getClient({
             apiVersion: process.env.SANITY_STUDIO_API_VERSION!,
