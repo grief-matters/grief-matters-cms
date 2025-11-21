@@ -54,6 +54,7 @@ import relativeLink from "./objectSchemas/relativeLink";
 import resourceLinks from "./objectSchemas/resourceLinks";
 import resourcePageLink from "./objectSchemas/resourcePageLink";
 import richTextContentBlock from "./objectSchemas/richTextContentBlock";
+import richTextWithHeading from "./objectSchemas/richTextWithHeading";
 import smartCollectionLink from "./objectSchemas/smartCollectionLink";
 import socials from "./objectSchemas/socials";
 import telephoneNumber from "./objectSchemas/telephoneNumber";
@@ -83,6 +84,7 @@ export const objectTypes = [
   resourceLinks,
   resourcePageLink,
   richTextContentBlock,
+  richTextWithHeading,
   smartCollectionLink,
   socials,
   telephoneNumber,
