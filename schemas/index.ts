@@ -3,7 +3,6 @@ import contentBlock from "./documentSchemas/contentBlock";
 import contentGroup from "./documentSchemas/contentGroup";
 import crisisResource from "./documentSchemas/crisisResource";
 import form from "./documentSchemas/form";
-import homePage from "./documentSchemas/homePage";
 import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
 import organization from "./documentSchemas/organization";
@@ -130,14 +129,7 @@ export const documentTypes = [
   website,
 ];
 
-export const singletonDocumentTypes = [organization, homePage];
-
-export const SINGLETON_TYPES = new Set([
-  "organization",
-  "featuredTopics",
-  "homePage",
-  "aboutPage",
-]);
+export const singletonDocumentTypes = [organization];
 
 export const schemaTypes = [
   ...singletonDocumentTypes,
