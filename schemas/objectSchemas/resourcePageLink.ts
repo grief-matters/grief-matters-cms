@@ -5,6 +5,15 @@ import { startCase } from "lodash";
 export default defineType({
   name: "resourcePageLink",
   type: "object",
+  preview: {
+    select: {
+      label: "label",
+    },
+    prepare: ({ label }) => ({
+      title: "Resources Page Link",
+      subtitle: `${label}`,
+    }),
+  },
   fieldsets: [
     {
       name: "filters",

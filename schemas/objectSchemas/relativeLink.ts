@@ -3,13 +3,17 @@ import { defineField, defineType } from "sanity";
 export default defineType({
   type: "object",
   name: "relativeLink",
-  title: "Relative Link",
+  title: "Internal Page Link",
   description: `A relative link is a URL within our website e.g. '/crisis-resources'`,
   preview: {
     select: {
       title: "label",
       subtitle: "url",
     },
+    prepare: ({ title, subtitle }) => ({
+      title: `Page Link: ${title}`,
+      subtitle: `to: ${subtitle}`,
+    }),
   },
   fields: [
     defineField({
@@ -31,6 +35,10 @@ export default defineType({
           .custom((relativeUrl) => {
             if (typeof relativeUrl !== "string") {
               return true;
+            }
+
+            if (!relativeUrl.startsWith("/")) {
+              return "Internal Page Links must start with a '/' character";
             }
 
             return (
