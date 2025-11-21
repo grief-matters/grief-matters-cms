@@ -3,7 +3,6 @@ import contentBlock from "./documentSchemas/contentBlock";
 import contentGroup from "./documentSchemas/contentGroup";
 import crisisResource from "./documentSchemas/crisisResource";
 import form from "./documentSchemas/form";
-import homePage from "./documentSchemas/homePage";
 import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
 import organization from "./documentSchemas/organization";
@@ -55,6 +54,7 @@ import relativeLink from "./objectSchemas/relativeLink";
 import resourceLinks from "./objectSchemas/resourceLinks";
 import resourcePageLink from "./objectSchemas/resourcePageLink";
 import richTextContentBlock from "./objectSchemas/richTextContentBlock";
+import richTextWithHeading from "./objectSchemas/richTextWithHeading";
 import smartCollectionLink from "./objectSchemas/smartCollectionLink";
 import socials from "./objectSchemas/socials";
 import telephoneNumber from "./objectSchemas/telephoneNumber";
@@ -84,6 +84,7 @@ export const objectTypes = [
   resourceLinks,
   resourcePageLink,
   richTextContentBlock,
+  richTextWithHeading,
   smartCollectionLink,
   socials,
   telephoneNumber,
@@ -130,14 +131,7 @@ export const documentTypes = [
   website,
 ];
 
-export const singletonDocumentTypes = [organization, homePage];
-
-export const SINGLETON_TYPES = new Set([
-  "organization",
-  "featuredTopics",
-  "homePage",
-  "aboutPage",
-]);
+export const singletonDocumentTypes = [organization];
 
 export const schemaTypes = [
   ...singletonDocumentTypes,
