@@ -1,6 +1,12 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
-import { featuredResourcesField, slugField, titleField } from "../fields";
+
+import {
+  featuredResourcesField,
+  portableTextDescriptionField,
+  slugField,
+  titleField,
+} from "../fields";
 import { INTERNET_RESOURCE_TYPES } from "../../constants";
 
 export default defineType({
@@ -35,12 +41,9 @@ export default defineType({
     }),
     slugField,
     defineField({
-      name: "description",
-      title: "Description",
-      type: "string",
+      ...portableTextDescriptionField,
       description:
-        "A short description for the category (may appear on the website)",
-      validation: (rule) => rule.max(255),
+        "A short description for the category (will appear on the category page)",
     }),
     defineField({
       title: "Sub-Categories",

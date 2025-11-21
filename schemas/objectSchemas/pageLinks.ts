@@ -2,11 +2,11 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 export default defineType({
   type: "object",
-  name: "resourcePageLinks",
+  name: "pageLinks",
   preview: {
     prepare: () => ({
-      title: "Resource Page Links",
-      subtitle: "A collection of links to pages of resources",
+      title: "Page Links",
+      subtitle: "A collection of links to pages",
     }),
   },
   fields: [
@@ -19,7 +19,6 @@ export default defineType({
       of: [
         defineArrayMember({ type: "resourcePageLink" }),
         defineArrayMember({ type: "relativeLink" }),
-        defineArrayMember({ type: "smartCollectionLink" }),
       ],
     }),
     defineField({

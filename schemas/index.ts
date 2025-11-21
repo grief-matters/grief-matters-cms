@@ -38,7 +38,6 @@ import webinar from "./internetResourceDocumentSchemas/webinar";
 import accessibleImage from "./objectSchemas/accessibleImage";
 import availability from "./objectSchemas/availability";
 import contactMethod from "./objectSchemas/contactMethod";
-import coreContentGroup from "./objectSchemas/coreContentGroup";
 import coreValue from "./objectSchemas/coreValue";
 import customResourceCollection from "./objectSchemas/customResourceCollection";
 import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
@@ -51,11 +50,11 @@ import headingText from "./objectSchemas/headingText";
 import imageRow from "./objectSchemas/imageRow";
 import link from "./objectSchemas/link";
 import logo from "./objectSchemas/logo";
+import pageLinks from "./objectSchemas/pageLinks";
 import personGroupBlock from "./objectSchemas/personGroupBlock";
 import relativeLink from "./objectSchemas/relativeLink";
 import resourceLinks from "./objectSchemas/resourceLinks";
 import resourcePageLink from "./objectSchemas/resourcePageLink";
-import resourcePageLinks from "./objectSchemas/resourcePageLinks";
 import richTextContentBlock from "./objectSchemas/richTextContentBlock";
 import smartCollectionLink from "./objectSchemas/smartCollectionLink";
 import socials from "./objectSchemas/socials";
@@ -69,7 +68,6 @@ export const objectTypes = [
   availability,
   contactMethod,
   coreValue,
-  coreContentGroup,
   customResourceCollection,
   featuredCrisisResource,
   featuredResource,
@@ -81,11 +79,11 @@ export const objectTypes = [
   imageRow,
   link,
   logo,
+  pageLinks,
   personGroupBlock,
   relativeLink,
   resourceLinks,
   resourcePageLink,
-  resourcePageLinks,
   richTextContentBlock,
   smartCollectionLink,
   socials,

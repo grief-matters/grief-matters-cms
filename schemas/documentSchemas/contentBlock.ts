@@ -40,7 +40,7 @@ export default defineType({
         defineArrayMember({ type: "featuredResources" }),
         defineArrayMember({ type: "resourceLinks" }),
         defineArrayMember({ type: "resourcePageLink" }),
-        defineArrayMember({ type: "resourcePageLinks" }),
+        defineArrayMember({ type: "pageLinks" }),
         defineArrayMember({ type: "topicContentBlock" }),
         defineArrayMember({ type: "topicCollectionContentBlockNew" }),
         defineArrayMember({ type: "featuredResource" }),
