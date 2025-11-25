@@ -5,6 +5,7 @@ export const INTERNET_RESOURCE_TYPES = [
   "book",
   "booklet",
   "brochure",
+  "community",
   "course",
   "forum",
   "memorial",
