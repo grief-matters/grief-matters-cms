@@ -21,7 +21,7 @@ import blog from "./internetResourceDocumentSchemas/blog";
 import book from "./internetResourceDocumentSchemas/book";
 import booklet from "./internetResourceDocumentSchemas/booklet";
 import brochure from "./internetResourceDocumentSchemas/brochure";
-import communities from "./internetResourceDocumentSchemas/communities";
+import community from "./internetResourceDocumentSchemas/community";
 import course from "./internetResourceDocumentSchemas/course";
 import forum from "./internetResourceDocumentSchemas/forum";
 import memorial from "./internetResourceDocumentSchemas/memorial";
@@ -99,7 +99,7 @@ export const internetResourceDocumentTypes = [
   book,
   booklet,
   brochure,
-  communities,
+  community,
   course,
   forum,
   memorial,

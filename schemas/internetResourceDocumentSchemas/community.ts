@@ -4,15 +4,15 @@ import { defineType } from "sanity";
 import { createBaseInternetResourceSchema } from "../helpers";
 
 const base = createBaseInternetResourceSchema({
-  name: "communities",
-  title: "Communities",
+  name: "community",
+  title: "Community",
   icon: UsersIcon,
   isUrlRequired: true,
 });
 
-const communitiesSchema = defineType({
+const communitySchema = defineType({
   ...base,
   fields: [...base.fields],
 });
 
-export default communitiesSchema;
+export default communitySchema;
