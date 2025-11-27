@@ -15,13 +15,5 @@ export default defineType({
       to: [...INTERNET_RESOURCE_TYPES.map((t) => ({ type: t }))],
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      type: "boolean",
-      name: "showImage",
-      title: "Show Image",
-      description:
-        "Whether or not to show the resource's image (if it has one)",
-      initialValue: false,
-    }),
   ],
 });

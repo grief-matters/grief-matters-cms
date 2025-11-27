@@ -36,6 +36,7 @@ import webinar from "./internetResourceDocumentSchemas/webinar";
 
 import accessibleImage from "./objectSchemas/accessibleImage";
 import availability from "./objectSchemas/availability";
+import categoryPageLink from "./objectSchemas/categoryPageLink";
 import contactMethod from "./objectSchemas/contactMethod";
 import customResourceCollection from "./objectSchemas/customResourceCollection";
 import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
@@ -65,6 +66,7 @@ import topicContentBlock from "./objectSchemas/topicContentBlock";
 export const objectTypes = [
   accessibleImage,
   availability,
+  categoryPageLink,
   contactMethod,
   customResourceCollection,
   featuredCrisisResource,

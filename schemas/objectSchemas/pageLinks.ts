@@ -18,6 +18,7 @@ export default defineType({
       type: "array",
       of: [
         defineArrayMember({ type: "resourcePageLink" }),
+        defineArrayMember({ type: "categoryPageLink" }),
         defineArrayMember({ type: "relativeLink" }),
       ],
     }),
