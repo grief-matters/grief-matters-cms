@@ -12,7 +12,7 @@ import { INTERNET_RESOURCE_TYPES } from "../../constants";
 export default defineType({
   name: "category",
   title: "Category",
-  description: `A category used to classify resources. Not to be used with "Topics" which is a specific 'category' itself`,
+  description: `A category used to classify resources. Not to be confused with "Topics" which is a specific 'category' itself`,
   icon: TagsIcon,
   type: "document",
   preview: {
@@ -27,6 +27,7 @@ export default defineType({
     }),
   },
   fields: [
+    slugField,
     defineField({
       ...titleField,
       description:
@@ -39,11 +40,22 @@ export default defineType({
       description:
         "A preferred display title. Will be used when category is displayed outside the category hierarchy (e.g. when used as a page heading)",
     }),
-    slugField,
+    defineField({
+      title: "Short Description",
+      name: "shortDescription",
+      type: "text",
+      description: `This is a short description for the category that will usually appear close to the header. Keep it short and punchy!`,
+      validation: (Rule) => [
+        Rule.max(255).warning(
+          `This description is a bit too long. Use the main "Description" field for a longer explanation of what this category contains.`
+        ),
+        Rule.max(1024).error(`Description longer than allowed length`),
+      ],
+    }),
     defineField({
       ...portableTextDescriptionField,
       description:
-        "A short description for the category (will appear on the category page)",
+        "A longer description for the category (will appear on the category page as lead-in text)",
     }),
     defineField({
       title: "Sub-Categories",
