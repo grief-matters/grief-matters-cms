@@ -2,6 +2,7 @@ import { defineType } from "sanity";
 import { DocumentTextIcon } from "@sanity/icons";
 
 import { createBaseInternetResourceSchema } from "../helpers";
+import { hasSpanishVersionField } from "../fields";
 
 const base = createBaseInternetResourceSchema({
   name: "story",
@@ -13,7 +14,7 @@ const base = createBaseInternetResourceSchema({
 const storySchema = defineType({
   ...base,
 
-  fields: [...base.fields],
+  fields: [...base.fields, hasSpanishVersionField],
 });
 
 export default storySchema;
