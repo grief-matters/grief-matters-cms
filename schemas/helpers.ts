@@ -1,5 +1,5 @@
 import type { ComponentType, ReactNode } from "react";
-import { defineType } from "sanity";
+import { defineField, defineType } from "sanity";
 import {
   titleField,
   simpleDescriptionField,
@@ -11,6 +11,8 @@ import {
   urlField,
   accessibleImageField,
 } from "./fields";
+import keywordsField from "./fields/keywordsField";
+import seoPhrasesField from "./fields/seoPhrasesField";
 
 export type CreateBaseInternetResourceParams = {
   name: string;
@@ -29,6 +31,12 @@ export const createBaseInternetResourceSchema = (
     name: params.name,
     title: params.title,
     icon: params.icon,
+    groups: [
+      {
+        name: "search",
+        title: "Search & SEO",
+      },
+    ],
     fields: [
       titleField,
       simpleDescriptionField,
@@ -38,6 +46,14 @@ export const createBaseInternetResourceSchema = (
       populationsField,
       ratingField,
       accessibleImageField,
+      defineField({
+        group: "search",
+        ...keywordsField,
+      }),
+      defineField({
+        group: "search",
+        ...seoPhrasesField,
+      }),
     ],
   });
 };
