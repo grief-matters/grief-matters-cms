@@ -28,6 +28,7 @@ import memorial from "./internetResourceDocumentSchemas/memorial";
 import peerSupport from "./internetResourceDocumentSchemas/peerSupport";
 import podcast from "./internetResourceDocumentSchemas/podcast";
 import podcastEpisode from "./internetResourceDocumentSchemas/podcastEpisode";
+import printedMaterial from "./internetResourceDocumentSchemas/printedMaterial";
 import story from "./internetResourceDocumentSchemas/story";
 import supportGroup from "./internetResourceDocumentSchemas/supportGroup";
 import therapyResource from "./internetResourceDocumentSchemas/therapyResource";
@@ -108,6 +109,7 @@ export const internetResourceDocumentTypes = [
   peerSupport,
   podcast,
   podcastEpisode,
+  printedMaterial,
   story,
   supportGroup,
   therapyResource,
