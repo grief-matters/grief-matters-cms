@@ -45,6 +45,8 @@ const resourceNameKeyMap: TypedMap<InternetResourceType> = {
   video: "title",
   webinar: "title",
   supportGroup: "name",
+  community: "title",
+  printedMaterial: "title",
 };
 
 function convertCamelCaseToSentence(value: string) {

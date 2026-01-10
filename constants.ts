@@ -12,6 +12,7 @@ export const INTERNET_RESOURCE_TYPES = [
   "peerSupport",
   "podcast",
   "podcastEpisode",
+  "printedMaterial",
   "story",
   "supportGroup",
   "therapyResource",
