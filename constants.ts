@@ -3,8 +3,6 @@ export const INTERNET_RESOURCE_TYPES = [
   "article",
   "blog",
   "book",
-  "booklet",
-  "brochure",
   "community",
   "course",
   "forum",

@@ -19,8 +19,6 @@ import app from "./internetResourceDocumentSchemas/app";
 import article from "./internetResourceDocumentSchemas/article";
 import blog from "./internetResourceDocumentSchemas/blog";
 import book from "./internetResourceDocumentSchemas/book";
-import booklet from "./internetResourceDocumentSchemas/booklet";
-import brochure from "./internetResourceDocumentSchemas/brochure";
 import community from "./internetResourceDocumentSchemas/community";
 import course from "./internetResourceDocumentSchemas/course";
 import forum from "./internetResourceDocumentSchemas/forum";
@@ -100,8 +98,6 @@ export const internetResourceDocumentTypes = [
   article,
   blog,
   book,
-  booklet,
-  brochure,
   community,
   course,
   forum,

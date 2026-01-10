@@ -32,8 +32,6 @@ const resourceNameKeyMap: TypedMap<InternetResourceType> = {
   article: "title",
   blog: "title",
   book: "title",
-  booklet: "title",
-  brochure: "title",
   course: "title",
   forum: "name",
   memorial: "name",
