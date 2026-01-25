@@ -30,5 +30,13 @@ export default defineType({
         "Whether this set of links should be shown more prominently than other collections shown in the same context",
       initialValue: false,
     }),
+    defineField({
+      name: "showImages",
+      type: "boolean",
+      title: "Show Images",
+      description:
+        "Whether to show images alongside the link. The image used will be selected automatically based on the configuration of the links",
+      initialValue: false,
+    }),
   ],
 });
