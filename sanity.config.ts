@@ -13,6 +13,7 @@ import {
 } from "./schemas";
 import { ConvertAction } from "./actions";
 import { resourceTypeOverviewWidget } from "./dashboard-widgets/resource-type-overview/plugin";
+import { categoryTreeWidget } from "./dashboard-widgets/category-tree/plugin";
 
 const singletonTypes: Set<string> = new Set([
   ...singletonDocumentTypes.map((t) => t.name),
@@ -36,7 +37,10 @@ export default defineConfig({
     dashboardTool({
       widgets: [
         resourceTypeOverviewWidget({
-          layout: { width: "full", height: "medium" },
+          layout: { width: "medium", height: "medium" },
+        }),
+        categoryTreeWidget({
+          layout: { width: "medium", height: "medium" },
         }),
       ],
     }),
