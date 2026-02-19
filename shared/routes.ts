@@ -5,6 +5,7 @@ export const apiRoutes = {
   deployments: "/api/deployments",
   latestDeployment: "/api/deployments/latest",
   deployment: "/api/deployments/:deploymentId",
+  brokenLinks: "/api/broken-links",
 } as const;
 
 export type RouteParams = Record<string, string | number>;

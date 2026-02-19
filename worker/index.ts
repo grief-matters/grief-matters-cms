@@ -9,6 +9,10 @@ import {
 import { handleFallback } from "./handlers/fallback";
 import { handleGetDeployment } from "./handlers/deployment";
 import { handleGetLatestDeployment } from "./handlers/latestDeployment";
+import {
+  handleGetBrokenLinks,
+  handleScheduledBrokenLinkCheck,
+} from "./handlers/brokenLinks";
 
 export type CFArgs = [Env, ExecutionContext];
 
@@ -19,6 +23,10 @@ router
   .get(apiRoutes.deployments, handleGetDeployments)
   .get(apiRoutes.latestDeployment, handleGetLatestDeployment)
   .get(apiRoutes.deployment, handleGetDeployment)
+  .get(apiRoutes.brokenLinks, handleGetBrokenLinks)
   .all("*", handleFallback);
 
-export default router;
+export default {
+  fetch: router.fetch,
+  scheduled: handleScheduledBrokenLinkCheck,
+};
