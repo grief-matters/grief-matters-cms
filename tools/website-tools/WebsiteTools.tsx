@@ -12,8 +12,12 @@ export const WebsiteTools = () => {
       </Card>
       <Card>
         <Flex wrap="wrap">
-          <WebsiteDeployment />
-          <BrokenLinks />
+          <Box>
+            <WebsiteDeployment />
+          </Box>
+          <Box flex={1}>
+            <BrokenLinks />
+          </Box>
         </Flex>
       </Card>
     </Box>

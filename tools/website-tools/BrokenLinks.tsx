@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Badge,
   Box,
@@ -82,21 +82,17 @@ export const BrokenLinks = () => {
     };
   }, []);
 
-  const documentTypes = useMemo(() => {
-    if (!report) return [];
-    const types = new Set(report.entries.map((e) => e.documentType));
-    return [...types].sort();
-  }, [report]);
+  const documentTypes = report
+    ? [...new Set(report.entries.map((e) => e.documentType))].sort()
+    : [];
 
-  const filteredEntries = useMemo(() => {
-    if (!report) return [];
-
-    return report.entries.filter((entry) => {
-      if (statusFilter !== "all" && entry.status !== statusFilter) return false;
-      if (typeFilter !== "all" && entry.documentType !== typeFilter) return false;
-      return true;
-    });
-  }, [report, statusFilter, typeFilter]);
+  const filteredEntries = report
+    ? report.entries.filter((entry) => {
+        if (statusFilter !== "all" && entry.status !== statusFilter) return false;
+        if (typeFilter !== "all" && entry.documentType !== typeFilter) return false;
+        return true;
+      })
+    : [];
 
   if (loading) {
     return (
