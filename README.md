@@ -97,6 +97,7 @@ GitHub issue templates are available for [features, enhancements, bugs, and devo
 ├── worker/             # Cloudflare Worker source
 │   ├── index.ts        # Worker entry point and router
 │   ├── handlers/       # Route handlers
+│   ├── mock-server.ts  # Mock API server for local Studio development
 │   └── utils/          # Cloudflare and Sanity client utilities
 ├── sanity.config.ts    # Studio configuration
 ├── sanity.cli.ts       # Sanity CLI configuration
@@ -139,7 +140,7 @@ The Worker (`worker/index.ts`) serves the built Studio as a single-page applicat
 
 **Scheduled tasks:**
 
-- A broken link checker runs on a cron schedule (`0 3 * * 0` — weekly at 3am UTC on Sundays). It checks resource URLs via the Sanity client and stores results in Cloudflare KV (`WGM_BROKEN_LINKS` binding).
+- A broken link checker runs on a cron schedule (`0 3 * * 1` — weekly at 3am UTC on Mondays). It checks resource URLs via the Sanity client and stores results in Cloudflare KV (`WGM_BROKEN_LINKS` binding).
 
 **KV bindings:**
 
@@ -162,6 +163,7 @@ The `shared/` directory contains code used by both the Studio and the Worker:
 | `worker-dev` | `npm run worker-dev` | Build the Studio, then start the Worker locally with Wrangler (localhost:8787) |
 | `build` | `npm run build` | Generate Wrangler types, then production build the Studio |
 | `start` | `npm run start` | Generate Wrangler types, then start Sanity in production mode |
+| `mock-api` | `npm run mock-api` | Start mock API server for Studio development (`npx tsx worker/mock-server.ts`) |
 
 ### Environment Variables
 
@@ -194,7 +196,7 @@ The `shared/` directory contains code used by both the Studio and the Worker:
 - Entry point: `worker/index.ts` — sets up the itty-router and exports `fetch` and `scheduled` handlers.
 - Route handlers live in `worker/handlers/` with one file per handler group.
 - API routes are defined in `shared/routes.ts` — add new routes there so both the Studio tools and Worker can reference them.
-- Utility clients: `worker/utils/cf-client.ts` (Cloudflare API), `worker/utils/sanity-client.ts` (Sanity API), `worker/utils/url-checker.ts` (link checking).
+- Utility clients: `worker/utils/cf-builds-client.ts` (Cloudflare Pages builds API), `worker/utils/sanity-client.ts` (Sanity API), `worker/utils/url-checker.ts` (link checking).
 - Local development: `npm run worker-dev` builds the Studio and starts Wrangler's local dev server at http://localhost:8787.
 
 ### Working on Studio Tools and Plugins

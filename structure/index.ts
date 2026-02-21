@@ -8,6 +8,9 @@ import {
 
 import { startCase } from "lodash";
 import pluralize from "pluralize";
+import { BookIcon } from "@sanity/icons";
+import { docs } from "./documentation/docs";
+import { DocumentationPane } from "./documentation/DocumentationPane";
 
 export const structure: StructureResolver = (S, context) =>
   S.list()
@@ -34,4 +37,24 @@ export const structure: StructureResolver = (S, context) =>
           startCase(pluralize(t.title ?? t.name))
         )
       ),
+      S.divider(),
+      S.listItem()
+        .title("Documentation")
+        .icon(BookIcon)
+        .child(
+          S.list()
+            .title("Documentation")
+            .items(
+              docs.map((doc) =>
+                S.listItem()
+                  .title(doc.title)
+                  .icon(BookIcon)
+                  .child(
+                    S.component(DocumentationPane)
+                      .title(doc.title)
+                      .options({ documentId: doc.id })
+                  )
+              )
+            )
+        ),
     ]);

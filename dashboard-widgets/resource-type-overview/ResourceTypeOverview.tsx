@@ -99,7 +99,7 @@ const ResourceTypeOverview = ({
           </Card>
         </Box>
         <Grid columns={[2, 4]} padding={3} gap={4}>
-          {data?.map((overview: Overview) => (
+          {(data as Overview[])?.map((overview: Overview) => (
             <Card border={true} key={overview.type} padding={3}>
               <Stack space={3}>
                 <Heading as="h4" size={1}>

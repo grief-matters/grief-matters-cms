@@ -50,5 +50,5 @@ Three tiers of Sanity schema definitions:
 
 - `.env` — Sanity Studio vars (project ID, dataset, API version, API base URL)
 - `.dev.vars` — Cloudflare Worker credentials (not committed)
-- `wrangler.toml` — Worker config with production/dev environment split
+- `wrangler.toml` — Worker config
 - Node 24.13.0 (`.nvmrc`)
