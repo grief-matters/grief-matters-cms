@@ -1,11 +1,11 @@
 import { fetcher } from "itty-fetcher";
 import { createRoute } from "../../shared/routes";
-import { Deployment } from "cloudflare/resources/pages/projects/projects";
+import type { Build } from "../../shared/types/build";
 import type { BrokenLinksReport } from "../../shared/types/broken-links";
 
 const api = fetcher(process.env.SANITY_STUDIO_API_BASE_URL);
 
-export async function deployWebsite(): Promise<Deployment> {
+export async function deployWebsite(): Promise<Build> {
   try {
     const deployment = await api.post(createRoute("deployments"));
     return deployment;
@@ -15,7 +15,7 @@ export async function deployWebsite(): Promise<Deployment> {
   }
 }
 
-export async function getDeployment(id: string): Promise<Deployment> {
+export async function getDeployment(id: string): Promise<Build> {
   try {
     const deployment = await api.get(
       createRoute("deployment", { deploymentId: id })
@@ -27,7 +27,7 @@ export async function getDeployment(id: string): Promise<Deployment> {
   }
 }
 
-export async function getDeployments(): Promise<any> {
+export async function getDeployments(): Promise<Build[]> {
   try {
     const deployments = await api.get(createRoute("deployments"));
     return deployments;
@@ -37,7 +37,7 @@ export async function getDeployments(): Promise<any> {
   }
 }
 
-export async function getLatestDeployment(): Promise<Deployment> {
+export async function getLatestDeployment(): Promise<Build> {
   try {
     const deployment = await api.get(createRoute("latestDeployment"));
     return deployment;
@@ -52,7 +52,9 @@ export async function getBrokenLinks(): Promise<BrokenLinksReport> {
     const report = await api.get(createRoute("brokenLinks"));
     return report;
   } catch (error) {
-    console.error("[api-client.getBrokenLinks] Failed to get broken links report");
+    console.error(
+      "[api-client.getBrokenLinks] Failed to get broken links report"
+    );
     throw error;
   }
 }
