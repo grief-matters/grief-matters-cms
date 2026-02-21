@@ -10,7 +10,6 @@ import {
   Select,
   Spinner,
   Stack,
-  Switch,
   Text,
 } from "@sanity/ui";
 import { getBrokenLinks } from "../api-client/api-client";
@@ -56,7 +55,6 @@ export const BrokenLinks = () => {
 
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
-  const [confirmedOnly, setConfirmedOnly] = useState(true);
 
   useEffect(() => {
     let ignore = false;
@@ -96,10 +94,9 @@ export const BrokenLinks = () => {
     return report.entries.filter((entry) => {
       if (statusFilter !== "all" && entry.status !== statusFilter) return false;
       if (typeFilter !== "all" && entry.documentType !== typeFilter) return false;
-      if (confirmedOnly && entry.consecutiveFailures < 2) return false;
       return true;
     });
-  }, [report, statusFilter, typeFilter, confirmedOnly]);
+  }, [report, statusFilter, typeFilter]);
 
   if (loading) {
     return (
@@ -224,15 +221,7 @@ export const BrokenLinks = () => {
                   </Select>
                 </Stack>
               </Box>
-              <Box>
-                <Flex align="center" gap={2} style={{ paddingTop: 18 }}>
-                  <Switch
-                    checked={confirmedOnly}
-                    onChange={() => setConfirmedOnly(!confirmedOnly)}
-                  />
-                  <Text size={1}>Show only confirmed broken (2+ failures)</Text>
-                </Flex>
-              </Box>
+
             </Flex>
           </Stack>
         </Card>
