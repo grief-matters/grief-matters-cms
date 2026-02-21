@@ -5,10 +5,10 @@ import { apiRoutes } from "../shared/routes";
 import {
   handleGetDeployments,
   handleWebsiteDeploy,
+  handleGetDeployment,
+  handleGetLatestDeployment,
 } from "./handlers/deployments";
 import { handleFallback } from "./handlers/fallback";
-import { handleGetDeployment } from "./handlers/deployment";
-import { handleGetLatestDeployment } from "./handlers/latestDeployment";
 import {
   handleGetBrokenLinks,
   handleScheduledBrokenLinkCheck,
