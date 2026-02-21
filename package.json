@@ -8,7 +8,8 @@
     "dev": "wrangler types && sanity dev",
     "worker-dev": "npm run build && npx wrangler dev",
     "start": "wrangler types && sanity start",
-    "build": "wrangler types && sanity build"
+    "build": "wrangler types && sanity build",
+    "mock-api": "npx tsx worker/mock-server.ts"
   },
   "keywords": [
     "sanity"
