@@ -11,15 +11,7 @@ binding = "ASSETS"
 [[kv_namespaces]]
 binding = "WGM_BROKEN_LINKS"
 id = "88f9bbb672784739badd2e5bc1ab9c91"
+preview_id = "cf65057e0ad44032bb16b03591e8b1b0"
 
 [triggers]
 crons = ["0 3 * * 1"]
-
-[vars]
-API_BASE_URL = "https://cms.whygriefmatters.org"
-
-[env.dev]
-vars = { API_BASE_URL = "http://localhost:8787" }
-
-[env.production]
-vars = { API_BASE_URL = "https://cms.whygriefmatters.org" }
