@@ -36,12 +36,21 @@ export default defineType({
             : true;
         }),
     }),
-    {
-      name: "submitAction",
+    defineField({
+      name: "submitButtonText",
       type: "string",
-      title: "Submit Action",
+      title: "Submit Button Text",
+      description: "The text displayed on the form's submit button",
+      initialValue: "Submit",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "successMessage",
+      type: "text",
+      title: "Success Message",
       description:
-        "Where the form submits data (e.g., API endpoint, email handler, etc.)",
-    },
+        "The confirmation message shown to the user after successful submission",
+      validation: (Rule) => Rule.required(),
+    }),
   ],
 });

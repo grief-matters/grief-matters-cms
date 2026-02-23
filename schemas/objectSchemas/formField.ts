@@ -39,10 +39,10 @@ export default defineType({
       description:
         "This will be used to track the field. It should be machine readable and unique within the form",
       validation: (Rule) =>
-        Rule.regex(/[\d\s]+/, { invert: true })
+        Rule.regex(/[\s]+/, { invert: true })
           .lowercase()
           .required()
-          .error("Must be lowercase and contain no whitespace or numbers"),
+          .error("Must be lowercase and contain no whitespace"),
     }),
     defineField({
       name: "type",
@@ -68,17 +68,36 @@ export default defineType({
       of: [defineArrayMember({ type: "string" })],
       validation: (rule) => [
         rule.unique(),
-        rule.custom((options) => {
+        rule.custom((options, context) => {
           if (!Array.isArray(options)) {
             return true;
           }
 
-          return options.some((o: any) => (o ?? "").length === 0)
-            ? "You cannot have an empty option"
-            : true;
+          if (options.some((o: any) => (o ?? "").length === 0)) {
+            return "You cannot have an empty option";
+          }
+
+          const parent = context.parent as { type?: string } | undefined;
+          if (
+            ["select", "radio"].includes(parent?.type ?? "") &&
+            options.length < 2
+          ) {
+            return "Select and radio fields require at least 2 options";
+          }
+
+          return true;
         }),
       ],
-      hidden: ({ parent }) => !["select", "radio"].includes(parent?.type),
+      hidden: ({ parent }) =>
+        !["select", "radio", "checkbox"].includes(parent?.type),
+    }),
+    defineField({
+      name: "placeholder",
+      type: "string",
+      title: "Placeholder",
+      description: "Placeholder text shown inside the input before the user types",
+      hidden: ({ parent }) =>
+        ["checkbox", "radio", "select"].includes(parent?.type),
     }),
     defineField({
       name: "required",
