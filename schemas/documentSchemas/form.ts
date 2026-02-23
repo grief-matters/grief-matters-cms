@@ -7,6 +7,19 @@ export default defineType({
   title: "Form",
   fields: [
     titleField,
+    defineField({
+      name: "formId",
+      type: "slug",
+      title: "Form ID",
+      description:
+        "A friendly identifier used by the front-end to look up this form (e.g. 'contact-us', 'volunteer-signup')",
+      options: {
+        source: "title",
+        slugify: (input) =>
+          input.toLowerCase().replace(/\s+/g, "-").slice(0, 200),
+      },
+      validation: (Rule) => Rule.required(),
+    }),
     simpleDescriptionField,
     defineField({
       name: "fields",
