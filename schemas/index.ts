@@ -2,6 +2,7 @@ import category from "./documentSchemas/category";
 import contentBlock from "./documentSchemas/contentBlock";
 import contentGroup from "./documentSchemas/contentGroup";
 import crisisResource from "./documentSchemas/crisisResource";
+import endorsement from "./documentSchemas/endorsement";
 import form from "./documentSchemas/form";
 import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
@@ -118,6 +119,7 @@ export const documentTypes = [
   contentBlock,
   contentGroup,
   crisisResource,
+  endorsement,
   form,
   imageCollection,
   imageSource,
