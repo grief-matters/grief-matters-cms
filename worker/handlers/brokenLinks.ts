@@ -96,7 +96,7 @@ function buildReport(
 }
 
 export async function handleScheduledBrokenLinkCheck(
-  _event: ScheduledEvent,
+  _controller: ScheduledController,
   env: Env,
   _ctx: ExecutionContext
 ): Promise<void> {
