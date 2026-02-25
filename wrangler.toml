@@ -8,6 +8,11 @@ directory = "./dist/"
 not_found_handling = "single-page-application"
 binding = "ASSETS"
 
+[vars]
+SANITY_STUDIO_PROJECT_ID = "vg3sb730"
+SANITY_STUDIO_DATASET = "production"
+SANITY_STUDIO_API_VERSION = '2023-07-16'
+
 [[kv_namespaces]]
 binding = "WGM_BROKEN_LINKS"
 id = "88f9bbb672784739badd2e5bc1ab9c91"

@@ -18,12 +18,12 @@ const QUERY = `*[_type in $types && !(_id in path("drafts.**"))]{
 }`;
 
 export async function fetchPublishedResources(
-  env: Env,
+  env: Env
 ): Promise<SanityResourceDocument[]> {
   const client = createClient({
     projectId: env.SANITY_STUDIO_PROJECT_ID,
     dataset: env.SANITY_STUDIO_DATASET,
-    apiVersion: "2024-01-01",
+    apiVersion: env.SANITY_STUDIO_API_VERSION,
     token: env.SANITY_API_AUTH_TOKEN,
     useCdn: false,
   });
