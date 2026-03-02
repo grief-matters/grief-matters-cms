@@ -40,46 +40,17 @@ export default defineType({
         defineArrayMember({ type: "imageRow" }),
         defineArrayMember({ type: "featuredResource" }),
         defineArrayMember({ type: "featuredResources" }),
-        // TODO - this will be come service provider or something
+        // TODO - this will become service provider or something
         defineArrayMember({ type: "featuredCrisisResource" }),
         defineArrayMember({ type: "relativeLink" }),
         defineArrayMember({ type: "resourcePageLink" }),
         defineArrayMember({ type: "categoryPageLink" }),
         defineArrayMember({ type: "pageLinks" }),
-        // defineArrayMember({ type: "topicContentBlock" }),
-        // defineArrayMember({ type: "topicCollectionContentBlockNew" }),
         defineArrayMember({ type: "featuredWebsite" }),
         defineArrayMember({ type: "featuredWebsites" }),
         defineArrayMember({ type: "resourceLinks" }),
-        // defineArrayMember({ type: "personGroupBlock" }),
-        // defineArrayMember({
-        //   type: "reference",
-        //   to: [{ type: "personGroup" }, { type: "person" }, { type: "form" }],
-        //   options: {
-        //     disableNew: true,
-        //   },
-        // }),
       ],
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      deprecated: {
-        reason:
-          "Deprecated as part of site redesign. Add appropriate to Content instead.",
-      },
-      title: "Title",
-      name: "title",
-      type: "string",
-      validation: (Rule) => [
-        Rule.max(60).warning("Headings for content blocks should be short"),
-      ],
-    }),
-    defineField({
-      ...portableTextDescriptionField,
-      deprecated: {
-        reason:
-          "Deprecated as part of site redesign. Use appropriate item within a Content Block instead.",
-      },
     }),
   ],
 });
