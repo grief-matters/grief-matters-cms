@@ -62,55 +62,5 @@ export default defineType({
         defineArrayMember({ type: "reference", to: { type: "contentBlock" } }),
       ],
     }),
-    defineField({
-      deprecated: {
-        reason:
-          "Deprecated as part of site redesign. Use appropriate item within a Content Block instead.",
-      },
-      options: {
-        collapsible: true,
-        collapsed: true,
-      },
-      name: "contentGroupJumpLink",
-      title: "Jump Link",
-      description: "A link to take a user to another related page",
-      type: "resourcePageLink",
-      readOnly: (ctx) =>
-        typeof ctx.document?.manualFeaturedContentFooterLink !== "undefined",
-    }),
-    defineField({
-      deprecated: {
-        reason:
-          "Deprecated as part of site redesign. Use appropriate item within a Content Block instead.",
-      },
-      options: {
-        collapsible: true,
-        collapsed: true,
-      },
-      name: "relativeContentGroupJumpLink",
-      title: "Jump Link (manual)",
-      description:
-        "A link to take a user to another related page. Only use a manually entered jump link if you are certain the route exists",
-      type: "object",
-      readOnly: (ctx) =>
-        typeof ctx.document?.featuredContentFooterLink !== "undefined",
-      fields: [
-        defineField({
-          name: "label",
-          title: "Label",
-          description: "The text that a user will see",
-          type: "string",
-          validation: (Rule) => Rule.required(),
-        }),
-        defineField({
-          name: "url",
-          title: "Relative Path",
-          description: "A relative path for the desired page",
-          type: "url",
-          validation: (Rule) =>
-            Rule.uri({ allowRelative: true, relativeOnly: true }),
-        }),
-      ],
-    }),
   ],
 });
