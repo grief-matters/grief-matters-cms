@@ -15,8 +15,8 @@ SANITY_STUDIO_API_VERSION = '2023-07-16'
 
 [[kv_namespaces]]
 binding = "WGM_BROKEN_LINKS"
-id = "88f9bbb672784739badd2e5bc1ab9c91"
-preview_id = "cf65057e0ad44032bb16b03591e8b1b0"
+id = "c550797730cd46548c029305d481209c"
+preview_id = "a7d4febae7d2471d90754d4b90913ecf"
 
 [triggers]
 crons = ["15 10 * * wed"]
