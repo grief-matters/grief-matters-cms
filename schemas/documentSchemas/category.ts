@@ -148,19 +148,5 @@ export default defineType({
         }).warning(),
       ],
     }),
-    defineField({
-      ...featuredResourcesField("article"),
-      deprecated: {
-        reason:
-          "Deprecated as part of site redesign. Use Featured Resources instead.",
-      },
-    }),
-    defineField({
-      ...featuredResourcesField("story"),
-      deprecated: {
-        reason:
-          "Deprecated as part of site redesign. Use Featured Resources instead.",
-      },
-    }),
   ],
 });
