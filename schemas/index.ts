@@ -11,9 +11,6 @@ import person from "./documentSchemas/person";
 import personGroup from "./documentSchemas/personGroup";
 import population from "./documentSchemas/population";
 import resourceEvaluation from "./documentSchemas/resourceEvaluation";
-import smartCategory from "./documentSchemas/smartCategory";
-import smartCollection from "./documentSchemas/smartCollection";
-import topicCollection from "./documentSchemas/topicCollection";
 import website from "./documentSchemas/website";
 
 import app from "./internetResourceDocumentSchemas/app";
@@ -56,12 +53,8 @@ import resourceLinks from "./objectSchemas/resourceLinks";
 import resourcePageLink from "./objectSchemas/resourcePageLink";
 import richTextContentBlock from "./objectSchemas/richTextContentBlock";
 import richTextWithHeading from "./objectSchemas/richTextWithHeading";
-import smartCollectionLink from "./objectSchemas/smartCollectionLink";
 import socials from "./objectSchemas/socials";
 import telephoneNumber from "./objectSchemas/telephoneNumber";
-import topicCollectionContentBlock from "./objectSchemas/topicCollectionContentBlock";
-import topicCollectionContentBlockNew from "./objectSchemas/topicCollectionContentBlockNew";
-import topicContentBlock from "./objectSchemas/topicContentBlock";
 
 export const objectTypes = [
   accessibleImage,
@@ -86,12 +79,8 @@ export const objectTypes = [
   resourcePageLink,
   richTextContentBlock,
   richTextWithHeading,
-  smartCollectionLink,
   socials,
   telephoneNumber,
-  topicContentBlock,
-  topicCollectionContentBlock,
-  topicCollectionContentBlockNew,
 ];
 
 export const internetResourceDocumentTypes = [
@@ -127,9 +116,6 @@ export const documentTypes = [
   personGroup,
   population,
   resourceEvaluation,
-  smartCategory,
-  smartCollection,
-  topicCollection,
   website,
 ];
 
