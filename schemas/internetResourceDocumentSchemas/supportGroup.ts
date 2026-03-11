@@ -1,7 +1,7 @@
 import { defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
-import { broadFocusToggleField, supportFormatField } from "../fields";
 
+import { supportFormatField } from "../fields";
 import { createBaseInternetResourceSchema } from "../helpers";
 
 const base = createBaseInternetResourceSchema({
@@ -11,10 +11,9 @@ const base = createBaseInternetResourceSchema({
   isUrlRequired: true,
 });
 
-// TODO - migrate 'name' to 'title'
 const supportGroupSchema = defineType({
   ...base,
-  fields: [...base.fields, broadFocusToggleField, supportFormatField],
+  fields: [...base.fields, supportFormatField],
 });
 
 export default supportGroupSchema;

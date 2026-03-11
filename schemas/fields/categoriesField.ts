@@ -9,11 +9,19 @@ export default defineField({
   validation: (Rule) => [
     Rule.custom((categories, context) => {
       if (
-        !context.document?.hasBroadFocus &&
+        context.document?._type === "peerSupport" ||
+        context.document?._type === "supportGroup" ||
+        context.document?._type === "forum" ||
+        context.document?._type === "therapyResource"
+      ) {
+        return true;
+      }
+
+      if (
         typeof categories === "undefined" &&
         typeof context.document?.populations === "undefined"
       ) {
-        return "You must select a category if no population has been specified";
+        return "You must select a category or population, or the resource will not show anywhere on the website";
       }
 
       return true;

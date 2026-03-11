@@ -1,6 +1,6 @@
-import { defineType } from "sanity";
+import { defineField, defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
-import { hasSpanishVersionField } from "../fields";
+import { hasSpanishVersionField, supportFormatField } from "../fields";
 
 import { createBaseInternetResourceSchema } from "../helpers";
 
@@ -11,10 +11,20 @@ const base = createBaseInternetResourceSchema({
   isUrlRequired: true,
 });
 
-// TODO - migrate 'name' to 'title' field
 const therapyResourceSchema = defineType({
   ...base,
-  fields: [...base.fields, hasSpanishVersionField],
+  fields: [
+    ...base.fields,
+    supportFormatField,
+    defineField({
+      title: "Budget Friendly Option",
+      name: "budgetFriendly",
+      type: "boolean",
+      description: "Is this resource suitable for budget conscious users.",
+      initialValue: false,
+    }),
+    hasSpanishVersionField,
+  ],
 });
 
 export default therapyResourceSchema;

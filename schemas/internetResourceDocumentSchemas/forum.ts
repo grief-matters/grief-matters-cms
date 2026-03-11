@@ -1,7 +1,6 @@
 import { defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
 
-import { broadFocusToggleField } from "../fields";
 import { createBaseInternetResourceSchema } from "../helpers";
 
 const base = createBaseInternetResourceSchema({
@@ -14,7 +13,7 @@ const base = createBaseInternetResourceSchema({
 // TODO - migrate 'name' to 'title'
 const forumSchema = defineType({
   ...base,
-  fields: [...base.fields, broadFocusToggleField],
+  fields: [...base.fields],
 });
 
 export default forumSchema;
