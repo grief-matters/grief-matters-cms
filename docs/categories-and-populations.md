@@ -1,11 +1,11 @@
 ---
 title: Categories & Populations
-order: 3
+order: 4
 ---
 
 # Categories & Populations
 
-Categories and populations are the two main ways content is organized on the website.
+Categories and populations are the two main ways content is organized on the website. Understanding how they work is essential, because they directly control which pages exist and what visitors see on them.
 
 ## Categories
 
@@ -27,22 +27,9 @@ Resources **bubble up** through the category tree. If you tag a resource with a 
 
 This means you should tag resources with the **most specific** category that applies — they'll automatically appear in broader categories too.
 
-### Category Fields
-
-| Field | Purpose |
-|-------|---------|
-| **Title** | The category name displayed within the category hierarchy (max 60 characters recommended) |
-| **Display Title** | An alternative title used when the category is shown outside the hierarchy (optional) |
-| **Slug** | URL segment for this category — becomes part of the page URL |
-| **Short Description** | Brief summary (max 255 characters recommended) |
-| **Description** | Longer rich text description shown on the category page |
-| **Image** | Cover image for the category |
-| **Subcategories** | References to child categories that appear under this one |
-| **Featured Resources** | Up to 3 hand-picked resources displayed prominently on the category page |
-
 ### Featured Resources
 
-Each category can have up to **3 featured resources** that are displayed prominently on its page. Keep in mind:
+Each category can have up to **3 featured resources** that are displayed prominently on its page as a scrollable carousel. Keep in mind:
 
 - Featured resources should have images — you'll see a warning if they don't
 - Resources should already belong to the category (or one of its subcategories) to make sense as a featured item
@@ -58,33 +45,22 @@ A category's slug becomes its URL segment. The category with slug `coping-strate
 
 Populations are **audience segments** that enable filtered views of resources. They represent specific communities or demographics.
 
-### How Populations Work
+When you tag a resource with a population, that resource appears on population-filtered pages. For example, a resource tagged with the "LGBTQ+ Community" population appears on `/lgbtq-community/`.
 
-When you tag a resource with a population, that resource appears on population-filtered pages. For example:
-
-- A resource tagged with the "LGBTQ+ Community" population appears on `/lgbtq-community/`
-- Combined category × population pages (like `/coping-strategies/lgbtq-community`) are **only generated when resources exist** for that combination — no empty pages are created
-
-### Population Fields
-
-| Field | Purpose |
-|-------|---------|
-| **Name** | The population name |
-| **Slug** | URL segment for population-filtered pages |
-| **Description** | Brief description of this population |
-| **Underserved** | Flag indicating an underserved community (used for visibility) |
-| **Image** | Cover image for the population |
-
-### Population Pages on the Website
+### How Population Pages Look to Visitors
 
 Population landing pages show a **pruned category tree** — only branches that actually contain resources for that population are displayed. This keeps navigation clean and avoids leading users to empty pages.
 
+### Populations Can Create New Pages
+
+Combined category x population pages (like `/coping-strategies/lgbtq-community`) are **only generated when resources exist** for that combination. This means that tagging a resource with both a category and a population may create a new page on the site that didn't exist before.
+
 ## How They Affect the Website
 
-| Page Type | URL Pattern | What It Shows |
-|-----------|-------------|---------------|
+| Page Type | URL Pattern | What Visitors See |
+|-----------|-------------|-------------------|
 | Root category | `/topics/`, `/types-of-loss/`, `/supporting-the-bereaved/` | Subcategory summaries with resource counts |
-| Category page | `/{category-slug}/` | Category info, featured resources, all tagged resources grouped by type |
+| Category page | `/{category-slug}/` | Category description, featured resources carousel, all tagged resources grouped by type with client-side filtering |
 | Population page | `/{population-slug}` | Pruned category tree showing only branches with resources for that population |
-| Category × Population | `/{category-slug}/{population-slug}` | Resources filtered by both category and population |
-| Root category × Population | `/topics/{population-slug}` | Filtered subcategory view |
+| Category x Population | `/{category-slug}/{population-slug}` | Resources filtered by both category and population, grouped by type |
+| Root x Population | `/topics/{population-slug}` | Filtered subcategory view |

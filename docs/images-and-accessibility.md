@@ -1,6 +1,6 @@
 ---
 title: Images & Accessibility
-order: 9
+order: 6
 ---
 
 # Images & Accessibility
