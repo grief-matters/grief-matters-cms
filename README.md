@@ -9,21 +9,33 @@ If you have lost someone and are looking for support, or you're supporting someo
 
 ## Table of Contents
 
-- [Quick Start](#quick-start)
-- [Contributing](#contributing)
-- [Project Structure](#project-structure)
-- [Architecture](#architecture)
-- [Development](#development)
-- [Data Migrations](#data-migrations)
-- [Code Quality](#code-quality)
-- [CI/CD](#cicd)
-- [Additional Resources](#additional-resources)
+- [Why Grief Matters CMS](#why-grief-matters-cms)
+  - [Table of Contents](#table-of-contents)
+  - [Quick Start](#quick-start)
+    - [Prerequisites](#prerequisites)
+    - [Setup](#setup)
+  - [Contributing](#contributing)
+  - [Project Structure](#project-structure)
+  - [Architecture](#architecture)
+    - [Sanity Studio](#sanity-studio)
+    - [Cloudflare Worker](#cloudflare-worker)
+    - [Shared Code](#shared-code)
+  - [Development](#development)
+    - [Available Scripts](#available-scripts)
+    - [Environment Variables](#environment-variables)
+    - [Working on the Studio](#working-on-the-studio)
+    - [Working on the Worker](#working-on-the-worker)
+    - [Working on Studio Tools and Plugins](#working-on-studio-tools-and-plugins)
+  - [Data Migrations](#data-migrations)
+  - [Code Quality](#code-quality)
+  - [CI/CD](#cicd)
+  - [Additional Resources](#additional-resources)
 
 ## Quick Start
 
 ### Prerequisites
 
-- Node 24.13.0 (see `.nvmrc`)
+- Node 24.14.0 (see `.nvmrc`)
 - npm
 - A Sanity account with access to the project (see [Contributing](#contributing))
 
@@ -130,13 +142,13 @@ The Worker (`worker/index.ts`) serves the built Studio as a single-page applicat
 
 **API routes** (defined in `shared/routes.ts`):
 
-| Method | Route | Description |
-|--------|-------|-------------|
-| `POST` | `/api/deployments` | Trigger a website deployment |
-| `GET` | `/api/deployments` | List deployments |
-| `GET` | `/api/deployments/latest` | Get the latest deployment |
-| `GET` | `/api/deployments/:deploymentId` | Get a specific deployment |
-| `GET` | `/api/broken-links` | Get broken link check results |
+| Method | Route                            | Description                   |
+| ------ | -------------------------------- | ----------------------------- |
+| `POST` | `/api/deployments`               | Trigger a website deployment  |
+| `GET`  | `/api/deployments`               | List deployments              |
+| `GET`  | `/api/deployments/latest`        | Get the latest deployment     |
+| `GET`  | `/api/deployments/:deploymentId` | Get a specific deployment     |
+| `GET`  | `/api/broken-links`              | Get broken link check results |
 
 **Scheduled tasks:**
 
@@ -157,33 +169,33 @@ The `shared/` directory contains code used by both the Studio and the Worker:
 
 ### Available Scripts
 
-| Script | Command | Description |
-|--------|---------|-------------|
-| `dev` | `npm run dev` | Generate Wrangler types, then start Sanity Studio dev server (localhost:3333) |
+| Script       | Command              | Description                                                                    |
+| ------------ | -------------------- | ------------------------------------------------------------------------------ |
+| `dev`        | `npm run dev`        | Generate Wrangler types, then start Sanity Studio dev server (localhost:3333)  |
 | `worker-dev` | `npm run worker-dev` | Build the Studio, then start the Worker locally with Wrangler (localhost:8787) |
-| `build` | `npm run build` | Generate Wrangler types, then production build the Studio |
-| `start` | `npm run start` | Generate Wrangler types, then start Sanity in production mode |
-| `mock-api` | `npm run mock-api` | Start mock API server for Studio development (`npx tsx worker/mock-server.ts`) |
+| `build`      | `npm run build`      | Generate Wrangler types, then production build the Studio                      |
+| `start`      | `npm run start`      | Generate Wrangler types, then start Sanity in production mode                  |
+| `mock-api`   | `npm run mock-api`   | Start mock API server for Studio development (`npx tsx worker/mock-server.ts`) |
 
 ### Environment Variables
 
 **`.env`** (Sanity Studio — not secrets):
 
-| Variable | Description |
-|----------|-------------|
-| `SANITY_STUDIO_PROJECT_ID` | Sanity project ID |
-| `SANITY_STUDIO_DATASET` | Dataset name (`dev` for local development) |
-| `SANITY_STUDIO_API_VERSION` | Sanity API version date |
+| Variable                     | Description                                                       |
+| ---------------------------- | ----------------------------------------------------------------- |
+| `SANITY_STUDIO_PROJECT_ID`   | Sanity project ID                                                 |
+| `SANITY_STUDIO_DATASET`      | Dataset name (`dev` for local development)                        |
+| `SANITY_STUDIO_API_VERSION`  | Sanity API version date                                           |
 | `SANITY_STUDIO_API_BASE_URL` | Base URL for the Worker API (use `http://localhost:8787` locally) |
 
 **`.dev.vars`** (Cloudflare Worker — contains secrets):
 
-| Variable | Secret? | Description |
-|----------|---------|-------------|
-| `CF_API_TOKEN` | Yes | Cloudflare API token |
-| `CF_ACCOUNT_ID` | Yes | Cloudflare account ID |
-| `WEBSITE_DEPLOY_HOOK` | Yes | Webhook URL to trigger website deployments |
-| `SANITY_STUDIO_DATASET` | No | Dataset name (must match `.env`) |
+| Variable                | Secret? | Description                                |
+| ----------------------- | ------- | ------------------------------------------ |
+| `CF_API_TOKEN`          | Yes     | Cloudflare API token                       |
+| `CF_ACCOUNT_ID`         | Yes     | Cloudflare account ID                      |
+| `WEBSITE_DEPLOY_HOOK`   | Yes     | Webhook URL to trigger website deployments |
+| `SANITY_STUDIO_DATASET` | No      | Dataset name (must match `.env`)           |
 
 ### Working on the Studio
 
