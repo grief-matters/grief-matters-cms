@@ -13,6 +13,7 @@ import {
 } from "./fields";
 import keywordsField from "./fields/keywordsField";
 import seoPhrasesField from "./fields/seoPhrasesField";
+import skipLinkReportField from "./fields/skipLinkReportField";
 
 export type CreateBaseInternetResourceParams = {
   name: string;
@@ -54,6 +55,7 @@ export const createBaseInternetResourceSchema = (
         group: "search",
         ...seoPhrasesField,
       }),
+      skipLinkReportField,
     ],
   });
 };

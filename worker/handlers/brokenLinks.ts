@@ -5,8 +5,8 @@ import type {
   BrokenLinksReport,
 } from "../../shared/types/broken-links";
 import {
-  fetchPublishedResources,
-  type SanityResourceDocument,
+  fetchResourcesForBrokenLinkReport,
+  type SanityDocumentUrlResult,
 } from "../utils/sanity-client";
 import { checkUrls, type UrlCheckResult } from "../utils/url-checker";
 
@@ -21,12 +21,12 @@ interface DocumentUrl {
   urlField: string;
 }
 
-function extractUrls(doc: SanityResourceDocument): DocumentUrl[] {
+function extractUrls(doc: SanityDocumentUrlResult): DocumentUrl[] {
   const urls: DocumentUrl[] = [];
   const title = doc.title || doc.name || "Untitled";
 
   const urlFields: Array<{
-    field: keyof SanityResourceDocument;
+    field: keyof SanityDocumentUrlResult;
     name: string;
   }> = [
     { field: "resourceUrl", name: "resourceUrl" },
@@ -108,7 +108,8 @@ export async function handleScheduledBrokenLinkCheck(
       return;
     }
 
-    const documents = await fetchPublishedResources(env);
+    const documents = await fetchResourcesForBrokenLinkReport(env);
+
     const allDocumentUrls = documents.flatMap(extractUrls);
     const allUrls = allDocumentUrls.map((d) => d.url);
 
