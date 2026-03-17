@@ -14,6 +14,8 @@ import {
 import keywordsField from "./fields/keywordsField";
 import seoPhrasesField from "./fields/seoPhrasesField";
 import skipLinkReportField from "./fields/skipLinkReportField";
+import freeRegistrationField from "./fields/freeRegistrationField";
+import paywallField from "./fields/paywallField";
 
 export type CreateBaseInternetResourceParams = {
   name: string;
@@ -55,6 +57,8 @@ export const createBaseInternetResourceSchema = (
         group: "search",
         ...seoPhrasesField,
       }),
+      freeRegistrationField,
+      paywallField,
       skipLinkReportField,
     ],
   });
