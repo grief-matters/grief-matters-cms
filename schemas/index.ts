@@ -11,6 +11,7 @@ import person from "./documentSchemas/person";
 import personGroup from "./documentSchemas/personGroup";
 import population from "./documentSchemas/population";
 import resourceEvaluation from "./documentSchemas/resourceEvaluation";
+import wdynrnEntry from "./documentSchemas/wdynrnEntry";
 import website from "./documentSchemas/website";
 
 import app from "./internetResourceDocumentSchemas/app";
@@ -117,6 +118,7 @@ export const documentTypes = [
   population,
   resourceEvaluation,
   website,
+  wdynrnEntry,
 ];
 
 export const singletonDocumentTypes = [organization];
