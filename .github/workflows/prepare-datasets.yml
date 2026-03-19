@@ -12,6 +12,7 @@ jobs:
     env:
       SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
       SANITY_STUDIO_PROJECT_ID: ${{ vars.SANITY_STUDIO_PROJECT_ID }}
+      SANITY_IMPORT_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
 
     steps:
       - name: Checkout repository
