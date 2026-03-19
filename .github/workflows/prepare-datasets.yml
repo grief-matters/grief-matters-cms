@@ -36,7 +36,7 @@ jobs:
 
       - name: Create new 'dev' dataset
         run: |
-          npx -y sanity@latest dataset create dev --visibility public
+          npx -y sanity@latest dataset create dev --visibility private
 
       - name: Import data into new 'dev' dataset
         run: |
