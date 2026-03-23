@@ -48,6 +48,52 @@ function getEditUrl(documentId: string): string {
   return `/intent/edit/id=${documentId}`;
 }
 
+function exportToCsv(entries: BrokenLinkEntry[], scanDate: string): void {
+  const headers = [
+    "Document Title",
+    "Document Type",
+    "Document ID",
+    "URL Field",
+    "URL",
+    "Status",
+    "HTTP Status",
+    "Error",
+    "Consecutive Failures",
+    "First Failed At",
+    "Last Checked At",
+  ];
+
+  const rows = entries.map((e) =>
+    [
+      e.documentTitle,
+      e.documentType,
+      e.documentId,
+      e.urlField,
+      e.url,
+      STATUS_LABELS[e.status],
+      e.httpStatus ?? "",
+      e.error,
+      e.consecutiveFailures,
+      e.firstFailedAt,
+      e.lastCheckedAt,
+    ].map((val) => {
+      const str = String(val);
+      return str.includes(",") || str.includes('"') || str.includes("\n")
+        ? `"${str.replace(/"/g, '""')}"`
+        : str;
+    })
+  );
+
+  const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `broken-links-${scanDate.slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export const BrokenLinks = () => {
   const [report, setReport] = useState<BrokenLinksReport | null>(null);
   const [loading, setLoading] = useState(true);
@@ -88,8 +134,10 @@ export const BrokenLinks = () => {
 
   const filteredEntries = report
     ? report.entries.filter((entry) => {
-        if (statusFilter !== "all" && entry.status !== statusFilter) return false;
-        if (typeFilter !== "all" && entry.documentType !== typeFilter) return false;
+        if (statusFilter !== "all" && entry.status !== statusFilter)
+          return false;
+        if (typeFilter !== "all" && entry.documentType !== typeFilter)
+          return false;
         return true;
       })
     : [];
@@ -133,7 +181,10 @@ export const BrokenLinks = () => {
             Broken Links
           </Heading>
           <Card padding={4} border tone="caution">
-            <Text>No scan has been run yet. The first scan will run automatically on Sunday at 3am UTC.</Text>
+            <Text>
+              No scan has been run yet. The first scan will run automatically on
+              Sunday at 3am UTC.
+            </Text>
           </Card>
         </Stack>
       </Card>
@@ -146,9 +197,7 @@ export const BrokenLinks = () => {
         <Heading as="h3" size={2}>
           Broken Links
         </Heading>
-        <Text muted>
-          Automated weekly scan of all published resource URLs.
-        </Text>
+        <Text muted>Automated weekly scan of all published resource URLs.</Text>
 
         {/* Summary */}
         <Card border padding={3} tone="transparent">
@@ -182,7 +231,9 @@ export const BrokenLinks = () => {
             <Flex gap={3} wrap="wrap" align="center">
               <Box>
                 <Stack space={2}>
-                  <Text size={1} weight="medium">Status</Text>
+                  <Text size={1} weight="medium">
+                    Status
+                  </Text>
                   <Select
                     fontSize={1}
                     value={statusFilter}
@@ -200,7 +251,9 @@ export const BrokenLinks = () => {
               </Box>
               <Box>
                 <Stack space={2}>
-                  <Text size={1} weight="medium">Document Type</Text>
+                  <Text size={1} weight="medium">
+                    Document Type
+                  </Text>
                   <Select
                     fontSize={1}
                     value={typeFilter}
@@ -217,10 +270,25 @@ export const BrokenLinks = () => {
                   </Select>
                 </Stack>
               </Box>
-
             </Flex>
           </Stack>
         </Card>
+
+        {/* Export */}
+        {report.entries.length > 0 && (
+          <div>
+            <Button
+              text={`Export ${
+                filteredEntries.length === report.entries.length
+                  ? ""
+                  : "filtered "
+              }CSV (${filteredEntries.length} entries)`}
+              fontSize={1}
+              padding={3}
+              onClick={() => exportToCsv(filteredEntries, report.lastScanAt)}
+            />
+          </div>
+        )}
 
         {/* Results */}
         {filteredEntries.length === 0 ? (
@@ -237,7 +305,10 @@ export const BrokenLinks = () => {
               Showing {filteredEntries.length} of {report.entries.length} issues
             </Text>
             {filteredEntries.map((entry, i) => (
-              <BrokenLinkCard key={`${entry.documentId}-${entry.urlField}-${i}`} entry={entry} />
+              <BrokenLinkCard
+                key={`${entry.documentId}-${entry.urlField}-${i}`}
+                entry={entry}
+              />
             ))}
           </Stack>
         )}
@@ -256,9 +327,7 @@ function BrokenLinkCard({ entry }: { entry: BrokenLinkEntry }) {
           </Badge>
           <Badge>{entry.documentType}</Badge>
           {entry.consecutiveFailures >= 2 && (
-            <Badge tone="critical">
-              {entry.consecutiveFailures}x failed
-            </Badge>
+            <Badge tone="critical">{entry.consecutiveFailures}x failed</Badge>
           )}
         </Flex>
         <Text size={1} weight="medium">
