@@ -114,9 +114,8 @@ export default defineType({
             return true;
           }
 
-          const queryParts = resources.map(
-            (r: { _ref: string }) => `_id == "${r._ref}"`
-          );
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const queryParts = resources.map((r: any) => `_id == "${r._ref}"`);
           const query = `*[${queryParts.join(" || ")}]`;
 
           const client = context.getClient({
