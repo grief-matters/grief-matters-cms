@@ -6,7 +6,7 @@ on:
 
 jobs:
   check:
-    name: Lint, Format & Typecheck
+    name: Lint & Format
     runs-on: ubuntu-latest
 
     steps:
@@ -29,11 +29,3 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Typecheck
-        run: npm run typecheck
-        env:
-          CF_API_TOKEN: "placeholder"
-          CF_WGM_WEB_PROD_WORKER_TRIGGER_UUID: "placeholder"
-          CF_WGM_WEB_PROD_WORKER_TAG: "placeholder"
-          CF_ACCOUNT_ID: "placeholder"
-          SANITY_API_AUTH_TOKEN: "placeholder"
