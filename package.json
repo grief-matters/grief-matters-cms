@@ -21,7 +21,6 @@
   ],
   "dependencies": {
     "@sanity/client": "^7.15.0",
-    "@sanity/dashboard": "5.0.1",
     "@sanity/icons": "3.7.4",
     "@sanity/ui": "3.1.11",
     "@sanity/vision": "5.8.1",

@@ -1,9 +1,7 @@
 import { type DocumentActionComponent, defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
-import { dashboardTool } from "@sanity/dashboard";
-
-import websiteManagementTool from "./tools/website-tools/plugin";
+import managementTools from "./management-tools/plugin";
 
 import { structure } from "./structure";
 import {
@@ -12,8 +10,6 @@ import {
   singletonDocumentTypes,
 } from "./schemas";
 import { ConvertAction } from "./actions";
-import { resourceTypeOverviewWidget } from "./dashboard-widgets/resource-type-overview/plugin";
-import { categoryTreeWidget } from "./dashboard-widgets/category-tree/plugin";
 
 const singletonTypes: Set<string> = new Set([
   ...singletonDocumentTypes.map((t) => t.name),
@@ -34,18 +30,8 @@ export default defineConfig({
     structureTool({
       structure,
     }),
-    dashboardTool({
-      widgets: [
-        resourceTypeOverviewWidget({
-          layout: { width: "medium", height: "medium" },
-        }),
-        categoryTreeWidget({
-          layout: { width: "medium", height: "medium" },
-        }),
-      ],
-    }),
     visionTool(),
-    websiteManagementTool(),
+    managementTools(),
   ],
   schema: {
     types: schemaTypes,
