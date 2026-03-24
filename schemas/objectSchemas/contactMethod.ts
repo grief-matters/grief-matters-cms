@@ -36,9 +36,9 @@ export default defineType({
       title: "ContactType",
       type: "string",
       options: {
-        list: Object.entries(contactTypesLabels).map(([value, title]) => ({
+        list: contactTypes.map((value) => ({
           value,
-          title,
+          title: contactTypesLabels[value],
         })),
       },
       validation: (rule) => rule.required(),
@@ -58,9 +58,9 @@ export default defineType({
           const { parent } = context;
 
           if (
-            (parent as any)?.contactType === "tel" ||
-            (parent as any)?.contactType === "sms" ||
-            (parent as any)?.contactType === "tty"
+            (parent as { contactType?: string })?.contactType === "tel" ||
+            (parent as { contactType?: string })?.contactType === "sms" ||
+            (parent as { contactType?: string })?.contactType === "tty"
           ) {
             return typeof value === "string" && value.trim() !== ""
               ? true
@@ -87,7 +87,7 @@ export default defineType({
         rule.custom((value, context) => {
           const { parent } = context;
 
-          if ((parent as any)?.contactType === "email") {
+          if ((parent as { contactType?: string })?.contactType === "email") {
             return typeof value === "string" && value.trim() !== ""
               ? true
               : "An email address is required for email contact methods";
@@ -105,7 +105,9 @@ export default defineType({
         rule.custom((value, context) => {
           const { parent } = context;
 
-          if ((parent as any)?.contactType === "contactForm") {
+          if (
+            (parent as { contactType?: string })?.contactType === "contactForm"
+          ) {
             return typeof value === "string" && value.trim() !== ""
               ? true
               : "A URL is required for a contact form";
@@ -123,7 +125,9 @@ export default defineType({
         rule.custom((value, context) => {
           const { parent } = context;
 
-          if ((parent as any)?.contactType === "liveChat") {
+          if (
+            (parent as { contactType?: string })?.contactType === "liveChat"
+          ) {
             return typeof value === "string" && value.trim() !== ""
               ? true
               : "A URL is required for live chat contact methods";

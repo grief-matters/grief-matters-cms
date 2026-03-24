@@ -1,9 +1,8 @@
-import { Card, Stack, Text } from "@sanity/ui";
-import React from "react";
-import { PreviewLayoutKey, PreviewProps, useFormValue } from "sanity";
+import { Stack, Text } from "@sanity/ui";
+import { PreviewProps } from "sanity";
 
 type CastPreviewProps = PreviewProps & {
-  days?: any;
+  days?: string[];
   from?: string;
   to?: string;
   timezone?: string;

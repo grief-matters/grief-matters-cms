@@ -1,9 +1,9 @@
 import { Card, Stack, Text } from "@sanity/ui";
-import React from "react";
 import { StringFieldProps } from "sanity";
 
 function FilterOperatorField(props: StringFieldProps) {
-  const { description, title, ...restProps } = props;
+  const { title, ...restProps } = props;
+
   return (
     <Card>
       <Stack space={3} marginBottom={3}>

@@ -12,7 +12,7 @@ import { BookIcon } from "@sanity/icons";
 import { docs } from "./documentation/docs";
 import { DocumentationPane } from "./documentation/DocumentationPane";
 
-export const structure: StructureResolver = (S, context) =>
+export const structure: StructureResolver = (S) =>
   S.list()
     .title("Content")
     .items([

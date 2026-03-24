@@ -37,10 +37,10 @@ Image Collections are groups of images used as **fallback images**. When a resou
 
 ### Image Collection Fields
 
-| Field | Purpose |
-|-------|---------|
-| **Title** | Name of the collection (for Studio organization) |
-| **Images** | Array of images with alt text |
+| Field      | Purpose                                          |
+| ---------- | ------------------------------------------------ |
+| **Title**  | Name of the collection (for Studio organization) |
+| **Images** | Array of images with alt text                    |
 
 ## Technical Details
 

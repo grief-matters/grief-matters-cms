@@ -1,8 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { DashboardWidgetContainer } from "@sanity/dashboard";
 import { Box, Inline, Spinner, Button, Stack } from "@sanity/ui";
-import styled from "styled-components";
 import { Feedback, useListeningQuery } from "sanity-plugin-utils";
 import { useRouter } from "sanity/router";
 import {
@@ -11,17 +9,13 @@ import {
   CloseIcon,
   RemoveIcon,
 } from "@sanity/icons";
+import ToolWrapper from "../../management-tools/components/ToolWrapper";
 
 type CategoryNode = {
   _id: string;
   title: string;
   subtopicIds: string[];
 };
-
-const ScrollableBox = styled(Box)`
-  max-height: 50rem;
-  overflow-y: auto;
-`;
 
 const QUERY = `*[_type == "category"] { _id, title, "subtopicIds": subtopics[]._ref }`;
 
@@ -54,18 +48,16 @@ const CategoryTree = () => {
   const roots = categories.filter((c) => !childIds.has(c._id));
 
   return (
-    <DashboardWidgetContainer header="Category Tree">
-      <ScrollableBox padding={3}>
-        {roots.map((root) => (
-          <CategoryTreeItem
-            key={root._id}
-            category={root}
-            categoryMap={categoryMap}
-            onNavigate={navigateToCategory}
-          />
-        ))}
-      </ScrollableBox>
-    </DashboardWidgetContainer>
+    <ToolWrapper title={"Category Tree"}>
+      {roots.map((root) => (
+        <CategoryTreeItem
+          key={root._id}
+          category={root}
+          categoryMap={categoryMap}
+          onNavigate={navigateToCategory}
+        />
+      ))}
+    </ToolWrapper>
   );
 };
 

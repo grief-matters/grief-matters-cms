@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { NumberInputProps, PatchEvent, unset } from "sanity";
 import { Button, Inline, Stack } from "@sanity/ui";
 import { ResetIcon } from "@sanity/icons";

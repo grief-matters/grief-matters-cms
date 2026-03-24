@@ -1,4 +1,3 @@
-import React from "react";
 import { UrlInputProps } from "sanity";
 import { Flex, Stack, Text } from "@sanity/ui";
 import { ArrowRightIcon } from "@sanity/icons";

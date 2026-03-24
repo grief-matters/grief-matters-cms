@@ -8,6 +8,7 @@ import {
 } from "../api-client/api-client";
 import type { Build } from "../../shared/types/build";
 import DeploymentDetails from "./DeploymentDetails";
+import ToolWrapper from "./ToolWrapper";
 
 const SpinnerIconComponent = () => (
   <Box
@@ -69,7 +70,7 @@ export const WebsiteDeployment = () => {
           setLatestBuild(b);
           setCurrentBuild(null);
         }
-      } catch (error) {
+      } catch (_error) {
         setCurrentBuildError(new Error("Error polling build"));
       }
     }, 30000);
@@ -89,74 +90,69 @@ export const WebsiteDeployment = () => {
   };
 
   return (
-    <Card border padding={4} margin={3}>
-      <Stack space={4}>
-        <Heading as="h3" size={2}>
-          Website Deployment
-        </Heading>
-        <Text>
-          Tools and information regarding the current deployment state of the
-          website
-        </Text>
-        <Card border padding={3}>
-          <Stack space={4}>
-            <Heading as="h3" size={1}>
-              Latest Deployment
-            </Heading>
-            <Text>Information on latest deployment</Text>
-            {latestBuildError ? (
+    <ToolWrapper
+      title="Website Deployment"
+      description="Tools and information regarding the current deployment state of the
+          website"
+    >
+      <Card border padding={3}>
+        <Stack space={4}>
+          <Heading as="h3" size={1}>
+            Latest Deployment
+          </Heading>
+          <Text>Information on latest deployment</Text>
+          {latestBuildError ? (
+            <Card border padding={3} tone="critical">
+              {latestBuildError.message}
+            </Card>
+          ) : (
+            <DeploymentDetails
+              createdAt={
+                latestBuild?.created_on
+                  ? new Date(latestBuild.created_on).toLocaleString()
+                  : "Unknown"
+              }
+              status={latestBuild?.status ?? null}
+              buildOutcome={latestBuild?.build_outcome ?? null}
+            />
+          )}
+        </Stack>
+      </Card>
+      <Card border padding={3}>
+        <Stack space={4}>
+          <Heading as="h3" size={1}>
+            Deploy Website
+          </Heading>
+          <Text>Deploy the website using the current main branch</Text>
+          <Box>
+            <Button
+              icon={deploying ? SpinnerIconComponent : RocketIcon}
+              disabled={deploying}
+              onClick={handleDeployClick}
+              text={"Deploy Website"}
+              fontSize={2}
+              paddingX={4}
+            />
+          </Box>
+          {deploying &&
+            (currentBuildError ? (
               <Card border padding={3} tone="critical">
-                {latestBuildError.message}
+                {currentBuildError.message}
               </Card>
             ) : (
               <DeploymentDetails
                 createdAt={
-                  latestBuild?.created_on
-                    ? new Date(latestBuild.created_on).toLocaleString()
+                  currentBuild?.created_on
+                    ? new Date(currentBuild.created_on).toLocaleString()
                     : "Unknown"
                 }
-                status={latestBuild?.status ?? null}
-                buildOutcome={latestBuild?.build_outcome ?? null}
+                status={currentBuild?.status ?? null}
+                buildOutcome={currentBuild?.build_outcome ?? null}
               />
-            )}
-          </Stack>
-        </Card>
-        <Card border padding={3}>
-          <Stack space={4}>
-            <Heading as="h3" size={1}>
-              Deploy Website
-            </Heading>
-            <Text>Deploy the website using the current main branch</Text>
-            <Box>
-              <Button
-                icon={deploying ? SpinnerIconComponent : RocketIcon}
-                disabled={deploying}
-                onClick={handleDeployClick}
-                text={"Deploy Website"}
-                fontSize={2}
-                paddingX={4}
-              />
-            </Box>
-            {deploying &&
-              (currentBuildError ? (
-                <Card border padding={3} tone="critical">
-                  {currentBuildError.message}
-                </Card>
-              ) : (
-                <DeploymentDetails
-                  createdAt={
-                    currentBuild?.created_on
-                      ? new Date(currentBuild.created_on).toLocaleString()
-                      : "Unknown"
-                  }
-                  status={currentBuild?.status ?? null}
-                  buildOutcome={currentBuild?.build_outcome ?? null}
-                />
-              ))}
-          </Stack>
-        </Card>
-      </Stack>
-    </Card>
+            ))}
+        </Stack>
+      </Card>
+    </ToolWrapper>
   );
 };
 

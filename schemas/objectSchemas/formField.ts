@@ -73,6 +73,7 @@ export default defineType({
             return true;
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if (options.some((o: any) => (o ?? "").length === 0)) {
             return "You cannot have an empty option";
           }
@@ -95,7 +96,8 @@ export default defineType({
       name: "placeholder",
       type: "string",
       title: "Placeholder",
-      description: "Placeholder text shown inside the input before the user types",
+      description:
+        "Placeholder text shown inside the input before the user types",
       hidden: ({ parent }) =>
         ["checkbox", "radio", "select"].includes(parent?.type),
     }),

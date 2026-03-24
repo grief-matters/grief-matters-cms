@@ -57,10 +57,10 @@ Combined category x population pages (like `/coping-strategies/lgbtq-community`)
 
 ## How They Affect the Website
 
-| Page Type | URL Pattern | What Visitors See |
-|-----------|-------------|-------------------|
-| Root category | `/topics/`, `/types-of-loss/`, `/supporting-the-bereaved/` | Subcategory summaries with resource counts |
-| Category page | `/{category-slug}/` | Category description, featured resources carousel, all tagged resources grouped by type with client-side filtering |
-| Population page | `/{population-slug}` | Pruned category tree showing only branches with resources for that population |
-| Category x Population | `/{category-slug}/{population-slug}` | Resources filtered by both category and population, grouped by type |
-| Root x Population | `/topics/{population-slug}` | Filtered subcategory view |
+| Page Type             | URL Pattern                                                | What Visitors See                                                                                                  |
+| --------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Root category         | `/topics/`, `/types-of-loss/`, `/supporting-the-bereaved/` | Subcategory summaries with resource counts                                                                         |
+| Category page         | `/{category-slug}/`                                        | Category description, featured resources carousel, all tagged resources grouped by type with client-side filtering |
+| Population page       | `/{population-slug}`                                       | Pruned category tree showing only branches with resources for that population                                      |
+| Category x Population | `/{category-slug}/{population-slug}`                       | Resources filtered by both category and population, grouped by type                                                |
+| Root x Population     | `/topics/{population-slug}`                                | Filtered subcategory view                                                                                          |

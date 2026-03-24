@@ -1,21 +1,35 @@
 import { startCase } from "lodash";
 import pluralize from "pluralize";
+import styled from "styled-components";
 
-import { DashboardWidgetContainer } from "@sanity/dashboard";
-import {
-  Box,
-  Card,
-  Container,
-  Grid,
-  Heading,
-  Inline,
-  Spinner,
-  Stack,
-  Text,
-} from "@sanity/ui";
+import { Spinner, Text } from "@sanity/ui";
 import { Feedback, useListeningQuery } from "sanity-plugin-utils";
 
 import { INTERNET_RESOURCE_TYPES } from "../../constants";
+import ToolWrapper from "../../management-tools/components/ToolWrapper";
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  th {
+    border-bottom: 2px solid var(--card-border-color);
+  }
+
+  td {
+    border-bottom: 1px solid var(--card-border-color);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+`;
 
 type Overview = {
   type: string | null;
@@ -59,61 +73,54 @@ const ResourceTypeOverview = ({
   }
 
   return (
-    <DashboardWidgetContainer header={title}>
-      <Container height="fill" width="auto">
-        <Box padding={3}>
-          <Card border tone="positive" padding={2} radius={2}>
-            <Heading as={"h3"} size={1}>
-              Key Terms
-            </Heading>
-            <Stack space={3} marginTop={3}>
-              <Inline space={1}>
-                <Text size={1} weight="bold">
-                  Total
-                </Text>
-                <Text size={1}>
-                  Total number of resources, regardless of state.
-                </Text>
-              </Inline>
-
-              <Inline space={1}>
-                <Text size={1} weight="bold">
-                  Published
-                </Text>
-                <Text size={1}>
-                  Total number of resources that have a currently published
-                  version.
-                </Text>
-              </Inline>
-
-              <Inline space={1}>
-                <Text size={1} weight="bold">
-                  Drafts
-                </Text>
-                <Text size={1}>
-                  Total number of resources with unpublished changes (may have a
-                  previously published version still active).
-                </Text>
-              </Inline>
-            </Stack>
-          </Card>
-        </Box>
-        <Grid columns={[2, 4]} padding={3} gap={4}>
+    <ToolWrapper title={title}>
+      <StyledTable>
+        <thead>
+          <tr>
+            <th>
+              <Text size={1} weight="bold">
+                Type
+              </Text>
+            </th>
+            <th>
+              <Text size={1} weight="bold">
+                Total
+              </Text>
+            </th>
+            <th>
+              <Text size={1} weight="bold">
+                Published
+              </Text>
+            </th>
+            <th>
+              <Text size={1} weight="bold">
+                Draft
+              </Text>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
           {(data as Overview[])?.map((overview: Overview) => (
-            <Card border={true} key={overview.type} padding={3}>
-              <Stack space={3}>
-                <Heading as="h4" size={1}>
-                  {startCase(pluralize(overview?.type ?? ""))}:
-                </Heading>
-                <Text>Total: {overview.total}</Text>
-                <Text>Published: {overview.published}</Text>
-                <Text>Draft: {overview.draft}</Text>
-              </Stack>
-            </Card>
+            <tr key={overview.type}>
+              <td>
+                <Text size={1}>
+                  {startCase(pluralize(overview?.type ?? ""))}
+                </Text>
+              </td>
+              <td>
+                <Text size={1}>{overview.total}</Text>
+              </td>
+              <td>
+                <Text size={1}>{overview.published}</Text>
+              </td>
+              <td>
+                <Text size={1}>{overview.draft}</Text>
+              </td>
+            </tr>
           ))}
-        </Grid>
-      </Container>
-    </DashboardWidgetContainer>
+        </tbody>
+      </StyledTable>
+    </ToolWrapper>
   );
 };
 

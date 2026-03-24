@@ -6,7 +6,10 @@ const markdownFiles = import.meta.glob("/docs/**/*.md", {
   import: "default",
 }) as Record<string, string>;
 
-function parseFrontmatter(raw: string): { data: Record<string, string>; content: string } {
+function parseFrontmatter(raw: string): {
+  data: Record<string, string>;
+  content: string;
+} {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!match) return { data: {}, content: raw };
 

@@ -27,8 +27,8 @@ const DeploymentDetails = (props: Props) => {
   const tone = props.buildOutcome
     ? outcomeToneMap[props.buildOutcome]
     : props.status
-      ? statusToneMap[props.status]
-      : undefined;
+    ? statusToneMap[props.status]
+    : undefined;
 
   return (
     <Card border padding={3}>
