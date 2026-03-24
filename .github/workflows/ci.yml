@@ -33,7 +33,6 @@ jobs:
         run: npm run typecheck
         env:
           CF_API_TOKEN: "placeholder"
-          CF_ACCOUNT_ID: "placeholder"
           CF_WGM_WEB_PROD_WORKER_TRIGGER_UUID: "placeholder"
           CF_WGM_WEB_PROD_WORKER_TAG: "placeholder"
           CF_ACCOUNT_ID: "placeholder"
