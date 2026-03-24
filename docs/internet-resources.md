@@ -45,6 +45,7 @@ Resources show up on the website in several ways:
 **In search results** — The website has a search feature (powered by Pagefind) that indexes all content. Keywords and SEO phrases you add to a resource help it surface in searches.
 
 **Special rendering for some types:**
+
 - **Apps** display with links to the Apple App Store and/or Google Play Store
 - **Websites** display with their name and logo rather than a title and image
 

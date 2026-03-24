@@ -13,9 +13,7 @@ export interface UrlCheckResult {
   status: LinkCheckStatus | "ok" | "skipped";
 }
 
-function classifyResponse(
-  status: number,
-): LinkCheckStatus | "ok" | "skipped" {
+function classifyResponse(status: number): LinkCheckStatus | "ok" | "skipped" {
   if (status === 429) return "skipped";
   if (status === 404 || status === 410) return "broken";
   if (status >= 500 || status === 403) return "warning";
@@ -50,14 +48,22 @@ async function checkSingleUrl(url: string): Promise<UrlCheckResult> {
     return {
       url,
       httpStatus: response.status,
-      error: status === "ok" || status === "skipped" ? "" : `HTTP ${response.status}`,
+      error:
+        status === "ok" || status === "skipped"
+          ? ""
+          : `HTTP ${response.status}`,
       status,
     };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
 
     if (message.includes("abort") || message.includes("timed out")) {
-      return { url, httpStatus: null, error: "Request timed out", status: "timeout" };
+      return {
+        url,
+        httpStatus: null,
+        error: "Request timed out",
+        status: "timeout",
+      };
     }
 
     if (
@@ -79,7 +85,7 @@ function sleep(ms: number): Promise<void> {
 }
 
 export async function checkUrls(
-  urls: string[],
+  urls: string[]
 ): Promise<Map<string, UrlCheckResult>> {
   const unique = [...new Set(urls)];
   const results = new Map<string, UrlCheckResult>();

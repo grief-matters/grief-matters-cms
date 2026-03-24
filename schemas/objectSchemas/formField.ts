@@ -95,7 +95,8 @@ export default defineType({
       name: "placeholder",
       type: "string",
       title: "Placeholder",
-      description: "Placeholder text shown inside the input before the user types",
+      description:
+        "Placeholder text shown inside the input before the user types",
       hidden: ({ parent }) =>
         ["checkbox", "radio", "select"].includes(parent?.type),
     }),
