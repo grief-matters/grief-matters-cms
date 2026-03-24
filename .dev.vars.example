@@ -1,0 +1,12 @@
+# Cloudflare Worker local dev variables
+# Copy this file to .dev.vars and fill in the secret values.
+# These are used by the worker (`npm run worker-dev`).
+
+# Sanity API auth token (secret) — request from maintainers
+SANITY_API_AUTH_TOKEN=""
+
+# Cloudflare API (secret) — request from maintainers
+CF_API_TOKEN=""
+CF_ACCOUNT_ID=""
+CF_WGM_WEB_PROD_WORKER_TAG=""
+CF_WGM_WEB_PROD_WORKER_TRIGGER_UUID=""
