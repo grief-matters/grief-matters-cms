@@ -73,6 +73,7 @@ export default defineType({
             return true;
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if (options.some((o: any) => (o ?? "").length === 0)) {
             return "You cannot have an empty option";
           }

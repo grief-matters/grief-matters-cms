@@ -1,12 +1,7 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
 
-import {
-  featuredResourcesField,
-  portableTextDescriptionField,
-  slugField,
-  titleField,
-} from "../fields";
+import { portableTextDescriptionField, slugField, titleField } from "../fields";
 import { INTERNET_RESOURCE_TYPES } from "../../constants";
 
 export default defineType({
@@ -72,7 +67,7 @@ export default defineType({
           }
 
           return subcategories.some((st) =>
-            ctx.document?._id.includes((st as any)._ref)
+            ctx.document?._id.includes((st as { _ref: string })._ref)
           )
             ? "A Category cannot be a Subcategory of itself"
             : true;
@@ -119,7 +114,9 @@ export default defineType({
             return true;
           }
 
-          const queryParts = resources.map((r: any) => `_id == "${r._ref}"`);
+          const queryParts = resources.map(
+            (r: { _ref: string }) => `_id == "${r._ref}"`
+          );
           const query = `*[${queryParts.join(" || ")}]`;
 
           const client = context.getClient({
@@ -142,7 +139,7 @@ export default defineType({
             }
 
             return true;
-          } catch (error) {
+          } catch (_error) {
             return "Error validating this field";
           }
         }).warning(),

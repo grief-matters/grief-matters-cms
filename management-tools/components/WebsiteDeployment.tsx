@@ -42,7 +42,6 @@ export const WebsiteDeployment = () => {
         if (!ignore) {
           setLatestBuild(b);
         }
-        // eslint-disable-next-line typescript/no-unused-vars
       } catch (_) {
         setLatestBuildError(new Error("Failed to get latest build"));
       }
@@ -71,8 +70,7 @@ export const WebsiteDeployment = () => {
           setLatestBuild(b);
           setCurrentBuild(null);
         }
-        // eslint-disable-next-line typescript/no-unused-vars
-      } catch (error) {
+      } catch (_error) {
         setCurrentBuildError(new Error("Error polling build"));
       }
     }, 30000);
@@ -86,7 +84,6 @@ export const WebsiteDeployment = () => {
     try {
       const build = await deployWebsite();
       setCurrentBuild(build ?? null);
-      // eslint-disable-next-line typescript/no-unused-vars
     } catch (_) {
       setCurrentBuildError(new Error("Could not trigger build"));
     }

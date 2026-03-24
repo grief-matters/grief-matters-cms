@@ -1,5 +1,4 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { portableTextDescriptionField } from "../fields";
 import startCase from "lodash/startCase";
 
 export default defineType({
@@ -15,7 +14,9 @@ export default defineType({
     },
     prepare: ({ name, content }) => ({
       title: name,
-      subtitle: content?.map((x: any) => startCase(x._type)).join(", "),
+      subtitle: content
+        ?.map((x: { _type: string }) => startCase(x._type))
+        .join(", "),
     }),
   },
   fields: [

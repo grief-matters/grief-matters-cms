@@ -37,6 +37,7 @@ export default defineType({
             return "At least one field is required";
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const fieldNames = fields.map((field: any) => field.name);
           const duplicates = fieldNames.filter(
             (name, index) => fieldNames.indexOf(name) !== index

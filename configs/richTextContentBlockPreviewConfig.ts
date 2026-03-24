@@ -6,15 +6,18 @@ export const richTextContentBlockPreviewConfig: PreviewConfig = {
   },
   prepare: ({ portableText }) => {
     const block = (portableText || []).find(
-      (block: any) => block._type === "block"
+      (block: {
+        _type: string;
+        children?: Array<{ _type: string; text?: string }>;
+      }) => block._type === "block"
     );
 
     return {
       title: "Rich Text Content Block",
       subtitle: block
         ? `Preview: ${block.children
-            .filter((child: any) => child._type === "span")
-            .map((span: any) => span.text)
+            .filter((child: { _type: string }) => child._type === "span")
+            .map((span: { text?: string }) => span.text)
             .join("")}`
         : "No preview available",
     };

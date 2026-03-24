@@ -37,10 +37,10 @@ const fromOwnCategoriesFilter = (
     };
   }
 
-  const categories = document.categories as any;
+  const categories = document.categories as Array<{ _ref: string }>;
 
   const queryString = categories
-    .map((c: any) => `'${c._ref}' in categories[]._ref`)
+    .map((c: { _ref: string }) => `'${c._ref}' in categories[]._ref`)
     .join(" || ");
 
   return {
@@ -78,6 +78,7 @@ export default (
           return true;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const queryParts = resources.map((r: any) => `_id == "${r._ref}"`);
         const query = `*[${queryParts.join(" || ")}]`;
         console.log(query);
@@ -102,7 +103,7 @@ export default (
           }
 
           return true;
-        } catch (error) {
+        } catch (_error) {
           return "Error validating this field";
         }
       }).warning(),

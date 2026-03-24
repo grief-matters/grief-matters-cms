@@ -1,5 +1,4 @@
 import { BlockElementIcon, DashboardIcon } from "@sanity/icons";
-import React from "react";
 
 interface IProps {
   slug?: string;
