@@ -1,0 +1,20 @@
+name: Content
+description: Create an Issue to track a CMS content editing related task.
+labels: ["cms"]
+type: Content
+projects: ["grief-matters/1"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A **Content** issue should only be used to track Content related work e.g. issues within the Sanity dataset itself.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the nature of the issue
+      placeholder: |
+        e.g...
+        There are issues with the 'resourceUrl' field in the 'exampleSchema' file causing X, Y and Z
+    validations:
+      required: true
