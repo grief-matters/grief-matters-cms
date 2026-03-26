@@ -6,6 +6,7 @@ import {
   hasSpanishVersionField,
   populationsField,
   simpleDescriptionField,
+  titleField,
   urlField,
 } from "../fields";
 
@@ -15,12 +16,7 @@ export default defineType({
   type: "document",
   icon: EarthGlobeIcon,
   fields: [
-    defineField({
-      title: "Website Name",
-      name: "name",
-      type: "string",
-      validation: (rule) => rule.required(),
-    }),
+    titleField,
     simpleDescriptionField,
     hasSpanishVersionField,
     defineField({
