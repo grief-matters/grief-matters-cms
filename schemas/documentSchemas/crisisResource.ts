@@ -4,6 +4,7 @@ import {
   categoriesField,
   populationsField,
   portableTextDescriptionField,
+  titleField,
   urlField,
 } from "../fields";
 
@@ -12,13 +13,7 @@ export default defineType({
   name: "crisisResource",
   title: "Crisis Resource",
   fields: [
-    defineField({
-      type: "string",
-      name: "name",
-      title: "Name",
-      description:
-        "The name of the crisis resource (this might be different from the website name)",
-    }),
+    titleField,
     portableTextDescriptionField,
     urlField,
     defineField({
