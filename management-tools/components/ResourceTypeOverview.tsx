@@ -6,7 +6,7 @@ import { Spinner, Text } from "@sanity/ui";
 import { Feedback, useListeningQuery } from "sanity-plugin-utils";
 
 import { INTERNET_RESOURCE_TYPES } from "../../constants";
-import ToolWrapper from "../../management-tools/components/ToolWrapper";
+import ToolWrapper from "./ToolWrapper";
 
 const StyledTable = styled.table`
   width: 100%;

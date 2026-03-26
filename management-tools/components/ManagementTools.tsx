@@ -1,8 +1,8 @@
 import { Box, Grid, Heading } from "@sanity/ui";
-import ResourceTypeOverview from "../../dashboard-widgets/resource-type-overview/ResourceTypeOverview";
-import CategoryTree from "../../dashboard-widgets/category-tree/CategoryTree";
+import ResourceTypeOverview from "./ResourceTypeOverview";
 import WebsiteDeployment from "./WebsiteDeployment";
 import BrokenLinks from "./BrokenLinks";
+import CategoryTree from "./CategoryTree";
 
 export const ManagementTools = () => {
   return (
