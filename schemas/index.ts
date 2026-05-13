@@ -1,4 +1,5 @@
 import category from "./documentSchemas/category";
+import causeOfDeath from "./documentSchemas/causeOfDeath";
 import contentBlock from "./documentSchemas/contentBlock";
 import contentFunction from "./documentSchemas/contentFunction";
 import contentGroup from "./documentSchemas/contentGroup";
@@ -8,12 +9,14 @@ import form from "./documentSchemas/form";
 import griefPhase from "./documentSchemas/griefPhase";
 import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
+import lossRelationship from "./documentSchemas/lossRelationship";
 import organization from "./documentSchemas/organization";
 import person from "./documentSchemas/person";
 import personGroup from "./documentSchemas/personGroup";
 import population from "./documentSchemas/population";
 import resourceEvaluation from "./documentSchemas/resourceEvaluation";
 import tone from "./documentSchemas/tone";
+import topic from "./documentSchemas/topic";
 import wdynrnEntry from "./documentSchemas/wdynrnEntry";
 import website from "./documentSchemas/website";
 
@@ -125,9 +128,12 @@ export const documentTypes = [
 
 export const classificationDocumentTypes = [
   category,
+  causeOfDeath,
   contentFunction,
   griefPhase,
+  lossRelationship,
   tone,
+  topic,
 ];
 
 export const singletonDocumentTypes = [organization];
