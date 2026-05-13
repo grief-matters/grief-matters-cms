@@ -1,6 +1,7 @@
 import { StructureResolver } from "sanity/structure";
 
 import {
+  classificationDocumentTypes,
   documentTypes,
   internetResourceDocumentTypes,
   singletonDocumentTypes,
@@ -27,6 +28,12 @@ export const structure: StructureResolver = (S) =>
       ),
       S.divider(),
       ...documentTypes.map((t) =>
+        S.documentTypeListItem(t.name).title(
+          startCase(pluralize(t.title ?? t.name))
+        )
+      ),
+      S.divider(),
+      ...classificationDocumentTypes.map((t) =>
         S.documentTypeListItem(t.name).title(
           startCase(pluralize(t.title ?? t.name))
         )

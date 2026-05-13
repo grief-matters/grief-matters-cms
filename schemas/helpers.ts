@@ -7,6 +7,9 @@ import {
   websiteReferenceField,
   categoriesField,
   populationsField,
+  griefPhasesField,
+  contentFunctionsField,
+  tonesField,
   ratingField,
   urlField,
   accessibleImageField,
@@ -36,6 +39,10 @@ export const createBaseInternetResourceSchema = (
     icon: params.icon,
     groups: [
       {
+        name: "classification",
+        title: "Classification",
+      },
+      {
         name: "search",
         title: "Search & SEO",
       },
@@ -45,8 +52,26 @@ export const createBaseInternetResourceSchema = (
       simpleDescriptionField,
       urlF,
       websiteReferenceField,
-      categoriesField,
-      populationsField,
+      defineField({
+        group: "classification",
+        ...categoriesField,
+      }),
+      defineField({
+        group: "classification",
+        ...populationsField,
+      }),
+      defineField({
+        group: "classification",
+        ...griefPhasesField,
+      }),
+      defineField({
+        group: "classification",
+        ...contentFunctionsField,
+      }),
+      defineField({
+        group: "classification",
+        ...tonesField,
+      }),
       ratingField,
       accessibleImageField,
       defineField({

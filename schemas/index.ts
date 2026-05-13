@@ -1,9 +1,11 @@
 import category from "./documentSchemas/category";
 import contentBlock from "./documentSchemas/contentBlock";
+import contentFunction from "./documentSchemas/contentFunction";
 import contentGroup from "./documentSchemas/contentGroup";
 import crisisResource from "./documentSchemas/crisisResource";
 import endorsement from "./documentSchemas/endorsement";
 import form from "./documentSchemas/form";
+import griefPhase from "./documentSchemas/griefPhase";
 import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
 import organization from "./documentSchemas/organization";
@@ -11,6 +13,7 @@ import person from "./documentSchemas/person";
 import personGroup from "./documentSchemas/personGroup";
 import population from "./documentSchemas/population";
 import resourceEvaluation from "./documentSchemas/resourceEvaluation";
+import tone from "./documentSchemas/tone";
 import wdynrnEntry from "./documentSchemas/wdynrnEntry";
 import website from "./documentSchemas/website";
 
@@ -91,6 +94,7 @@ export const internetResourceDocumentTypes = [
   book,
   community,
   course,
+  crisisResource,
   forum,
   memorial,
   peerSupport,
@@ -102,13 +106,12 @@ export const internetResourceDocumentTypes = [
   therapyResource,
   video,
   webinar,
+  website,
 ];
 
 export const documentTypes = [
-  category,
   contentBlock,
   contentGroup,
-  crisisResource,
   endorsement,
   form,
   imageCollection,
@@ -117,8 +120,14 @@ export const documentTypes = [
   personGroup,
   population,
   resourceEvaluation,
-  website,
   wdynrnEntry,
+];
+
+export const classificationDocumentTypes = [
+  category,
+  contentFunction,
+  griefPhase,
+  tone,
 ];
 
 export const singletonDocumentTypes = [organization];
@@ -128,4 +137,5 @@ export const schemaTypes = [
   ...objectTypes,
   ...internetResourceDocumentTypes,
   ...documentTypes,
+  ...classificationDocumentTypes,
 ];
