@@ -10,6 +10,10 @@ export default defineType({
   description: `A category used to classify resources. Not to be confused with "Topics" which is a specific 'category' itself`,
   icon: TagsIcon,
   type: "document",
+  deprecated: {
+    reason:
+      "Being decomposed into Loss Relationship, Cause of Death, and Topic taxonomies. Do not create new categories. Existing categories will be migrated and this type removed in a later phase.",
+  },
   preview: {
     select: {
       displayTitle: "displayTitle",
