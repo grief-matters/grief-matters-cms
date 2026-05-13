@@ -6,6 +6,9 @@ import {
   requiredUrlField,
   websiteReferenceField,
   categoriesField,
+  lossRelationshipsField,
+  causesOfDeathField,
+  topicsField,
   populationsField,
   griefPhasesField,
   contentFunctionsField,
@@ -55,6 +58,18 @@ export const createBaseInternetResourceSchema = (
       defineField({
         group: "classification",
         ...categoriesField,
+      }),
+      defineField({
+        group: "classification",
+        ...lossRelationshipsField,
+      }),
+      defineField({
+        group: "classification",
+        ...causesOfDeathField,
+      }),
+      defineField({
+        group: "classification",
+        ...topicsField,
       }),
       defineField({
         group: "classification",

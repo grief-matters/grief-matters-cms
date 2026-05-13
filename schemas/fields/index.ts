@@ -1,8 +1,10 @@
 export { default as accessibleImageField } from "./accessibleImageField";
 export { default as categoriesField } from "./categoriesField";
+export { default as causesOfDeathField } from "./causesOfDeathField";
 export { default as contentFunctionsField } from "./contentFunctionsField";
 export { default as griefPhasesField } from "./griefPhasesField";
 export { default as hasSpanishVersionField } from "./hasSpanishVersionField";
+export { default as lossRelationshipsField } from "./lossRelationshipsField";
 export { default as populationsField } from "./populationsField";
 export { default as portableTextDescriptionField } from "./portableTextDescriptionField";
 export { default as ratingField } from "./ratingField";
@@ -11,6 +13,7 @@ export { default as slugField } from "./slugField";
 export { default as supportFormatField } from "./supportFormatField";
 export { default as titleField } from "./titleField";
 export { default as tonesField } from "./tonesField";
+export { default as topicsField } from "./topicsField";
 export { default as typeFilterField } from "./typeFilterField";
 export { default as urlField, requiredUrlField } from "./urlField";
 export { default as websiteReferenceField } from "./websiteReferenceField";
