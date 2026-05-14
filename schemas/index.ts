@@ -15,6 +15,7 @@ import organization from "./documentSchemas/organization";
 import person from "./documentSchemas/person";
 import personGroup from "./documentSchemas/personGroup";
 import resourceEvaluation from "./documentSchemas/resourceEvaluation";
+import searchConfiguration from "./documentSchemas/searchConfiguration";
 import tone from "./documentSchemas/tone";
 import topic from "./documentSchemas/topic";
 import wdynrnEntry from "./documentSchemas/wdynrnEntry";
@@ -136,7 +137,7 @@ export const classificationDocumentTypes = [
   topic,
 ];
 
-export const singletonDocumentTypes = [organization];
+export const singletonDocumentTypes = [organization, searchConfiguration];
 
 export const schemaTypes = [
   ...singletonDocumentTypes,

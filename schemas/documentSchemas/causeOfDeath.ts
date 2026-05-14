@@ -1,7 +1,12 @@
 import { defineField, defineType } from "sanity";
 import { WarningOutlineIcon } from "@sanity/icons";
 
-import { portableTextDescriptionField, slugField, titleField } from "../fields";
+import {
+  portableTextDescriptionField,
+  slugField,
+  tagSearchAliasesField,
+  titleField,
+} from "../fields";
 import {
   featuredResourcesArrayField,
   secondaryFeaturedResourcesArrayField,
@@ -63,6 +68,7 @@ export default defineType({
       type: "accessibleImage",
       description: "A cover image to associate with this cause of death.",
     }),
+    tagSearchAliasesField,
     featuredResourcesArrayField({ tagFieldName: "causesOfDeath" }),
     secondaryFeaturedResourcesArrayField({ tagFieldName: "causesOfDeath" }),
   ],

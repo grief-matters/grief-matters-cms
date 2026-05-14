@@ -14,6 +14,7 @@ import {
   contentFunctionsField,
   tonesField,
   ratingField,
+  searchAliasesField,
   urlField,
   accessibleImageField,
 } from "./fields";
@@ -89,6 +90,10 @@ export const createBaseInternetResourceSchema = (
       }),
       ratingField,
       accessibleImageField,
+      defineField({
+        group: "search",
+        ...searchAliasesField,
+      }),
       defineField({
         group: "search",
         ...keywordsField,

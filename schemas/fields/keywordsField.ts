@@ -5,6 +5,7 @@ export default defineField({
   name: "keywords",
   description: "A list of keywords to be used in search and SEO",
   type: "array",
+  deprecated: { reason: "Use search aliases instead" },
   of: [
     {
       type: "string",

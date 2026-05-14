@@ -1,6 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { BulbOutlineIcon } from "@sanity/icons";
-import { slugField } from "../fields";
+import { slugField, tagSearchAliasesField } from "../fields";
 
 export default defineType({
   name: "contentFunction",
@@ -22,6 +22,7 @@ export default defineType({
         "Editor-facing guidance: what is the reader trying to accomplish when this resource serves them well?",
       type: "text",
     }),
+    tagSearchAliasesField,
   ],
   preview: {
     select: { title: "title", subtitle: "description" },

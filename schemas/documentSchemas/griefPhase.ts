@@ -1,6 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { ClockIcon } from "@sanity/icons";
-import { slugField } from "../fields";
+import { slugField, tagSearchAliasesField } from "../fields";
 
 export default defineType({
   name: "griefPhase",
@@ -22,6 +22,7 @@ export default defineType({
         "When does this phase apply? Cite the framework (e.g. Stroebe & Schut, Neimeyer, Shear) if useful.",
       type: "text",
     }),
+    tagSearchAliasesField,
   ],
   preview: {
     select: { title: "title", subtitle: "description" },

@@ -8,6 +8,8 @@ export { default as hasSpanishVersionField } from "./hasSpanishVersionField";
 export { default as lossRelationshipsField } from "./lossRelationshipsField";
 export { default as portableTextDescriptionField } from "./portableTextDescriptionField";
 export { default as ratingField } from "./ratingField";
+export { default as searchAliasesField } from "./searchAliasesField";
+export { default as tagSearchAliasesField } from "./tagSearchAliasesField";
 export { default as simpleDescriptionField } from "./simpleDescriptionField";
 export { default as slugField } from "./slugField";
 export { default as supportFormatField } from "./supportFormatField";

@@ -1,6 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { SparkleIcon } from "@sanity/icons";
-import { slugField } from "../fields";
+import { slugField, tagSearchAliasesField } from "../fields";
 
 export default defineType({
   name: "tone",
@@ -21,6 +21,7 @@ export default defineType({
       description: "The emotional register or resonance the resource conveys.",
       type: "text",
     }),
+    tagSearchAliasesField,
   ],
   preview: {
     select: { title: "title", subtitle: "description" },
