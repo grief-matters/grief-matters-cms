@@ -2,6 +2,7 @@ import { defineField } from "sanity";
 import { RatingInput } from "../../components";
 
 export default defineField({
+  deprecated: { reason: "never used" },
   title: "Rating",
   name: "rating",
   type: "number",

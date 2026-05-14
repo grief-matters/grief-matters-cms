@@ -20,7 +20,7 @@ import {
 } from "./fields";
 import keywordsField from "./fields/keywordsField";
 import seoPhrasesField from "./fields/seoPhrasesField";
-import skipLinkReportField from "./fields/skipLinkReportField";
+import skipLinkFetchField from "./fields/skipLinkFetchField";
 import freeRegistrationField from "./fields/freeRegistrationField";
 import paywallField from "./fields/paywallField";
 
@@ -43,6 +43,10 @@ export const createBaseInternetResourceSchema = (
     icon: params.icon,
     groups: [
       {
+        name: "attributes",
+        title: "Resource Attributes",
+      },
+      {
         name: "classification",
         title: "Classification",
       },
@@ -52,10 +56,38 @@ export const createBaseInternetResourceSchema = (
       },
     ],
     fields: [
-      titleField,
-      simpleDescriptionField,
-      urlF,
-      websiteReferenceField,
+      defineField({
+        group: "attributes",
+        ...titleField,
+      }),
+      defineField({
+        group: "attributes",
+        ...simpleDescriptionField,
+      }),
+      defineField({
+        group: "attributes",
+        ...urlF,
+      }),
+      defineField({
+        group: "attributes",
+        ...websiteReferenceField,
+      }),
+      defineField({
+        group: "attributes",
+        ...accessibleImageField,
+      }),
+      defineField({
+        group: "attributes",
+        ...skipLinkFetchField,
+      }),
+      defineField({
+        group: "attributes",
+        ...paywallField,
+      }),
+      defineField({
+        group: "attributes",
+        ...freeRegistrationField,
+      }),
       defineField({
         group: "classification",
         ...categoriesField,
@@ -88,8 +120,7 @@ export const createBaseInternetResourceSchema = (
         group: "classification",
         ...tonesField,
       }),
-      ratingField,
-      accessibleImageField,
+
       defineField({
         group: "search",
         ...searchAliasesField,
@@ -102,9 +133,7 @@ export const createBaseInternetResourceSchema = (
         group: "search",
         ...seoPhrasesField,
       }),
-      freeRegistrationField,
-      paywallField,
-      skipLinkReportField,
+      ratingField,
     ],
   });
 };
