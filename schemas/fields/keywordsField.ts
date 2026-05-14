@@ -5,12 +5,15 @@ export default defineField({
   name: "keywords",
   description: "A list of keywords to be used in search and SEO",
   type: "array",
+  deprecated: { reason: "Use search aliases instead" },
   of: [
     {
       type: "string",
       validation: (rule) =>
         rule.custom((value) => {
-          if (!value) return true;
+          if (!value) {
+            return true;
+          }
 
           // Disallow spaces
           if (/\s/.test(value as string)) {

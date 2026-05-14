@@ -35,9 +35,9 @@ Here's a high-level view of how different CMS documents feed into the website:
 
 **Root category pages** (`/topics/`, `/types-of-loss/`, `/supporting-the-bereaved/`) — Show summaries of each subcategory with resource counts, giving visitors an overview of what's available.
 
-**Population pages** (e.g., `/lgbtq-community/`) — Show a pruned version of the category tree containing only branches that have resources for that population. This ensures every link leads somewhere useful.
+**Audience pages** (e.g., `/lgbtq-community/`) — Show a pruned version of the category tree containing only branches that have resources for that audience. This ensures every link leads somewhere useful.
 
-**Category x Population pages** (e.g., `/coping-strategies/lgbtq-community`) — Show resources that match both the category and population, grouped by type. These pages are only generated when matching resources exist.
+**Category x Audience pages** (e.g., `/coping-strategies/lgbtq-community`) — Show resources that match both the category and audience, grouped by type. These pages are only generated when matching resources exist.
 
 **About page** (`/about/`) — The Content Group with slug `about` provides the page header and content sections. Below that, team members from the core team Person Group are displayed with their avatars, roles, short bios, and social links. Members with a Personal Story get a "Read More" link to their dedicated page.
 
@@ -47,18 +47,18 @@ Here's a high-level view of how different CMS documents feed into the website:
 
 ## URL Patterns
 
-| Page                    | URL                                  | Content Source                                                            |
-| ----------------------- | ------------------------------------ | ------------------------------------------------------------------------- |
-| Homepage                | `/`                                  | Content Group with slug `home` + Organization branding                    |
-| Topics                  | `/topics/`                           | Root category "Topics" — subcategory summaries with resource counts       |
-| Types of Loss           | `/types-of-loss/`                    | Root category "Types of Loss" — subcategory summaries                     |
-| Supporting the Bereaved | `/supporting-the-bereaved/`          | Root category "Supporting the Bereaved" — subcategory summaries           |
-| Category page           | `/{category-slug}/`                  | Individual category — info, featured resources, resources grouped by type |
-| Population page         | `/{population-slug}`                 | Population — pruned category tree with only relevant branches             |
-| Category x Population   | `/{category-slug}/{population-slug}` | Resources matching both the category tree and population                  |
-| Root x Population       | `/topics/{population-slug}`          | Filtered subcategory view for a population                                |
-| Person page             | `/about/{name}`                      | Person with a personal story                                              |
-| About / Team page       | `/about/`                            | Content Group with slug `about` + Person Groups                           |
+| Page                    | URL                                | Content Source                                                            |
+| ----------------------- | ---------------------------------- | ------------------------------------------------------------------------- |
+| Homepage                | `/`                                | Content Group with slug `home` + Organization branding                    |
+| Topics                  | `/topics/`                         | Root category "Topics" — subcategory summaries with resource counts       |
+| Types of Loss           | `/types-of-loss/`                  | Root category "Types of Loss" — subcategory summaries                     |
+| Supporting the Bereaved | `/supporting-the-bereaved/`        | Root category "Supporting the Bereaved" — subcategory summaries           |
+| Category page           | `/{category-slug}/`                | Individual category — info, featured resources, resources grouped by type |
+| Audience page           | `/{audience-slug}`                 | Audience — pruned category tree with only relevant branches               |
+| Category x Audience     | `/{category-slug}/{audience-slug}` | Resources matching both the category tree and audience                    |
+| Root x Audience         | `/topics/{audience-slug}`          | Filtered subcategory view for an audience                                 |
+| Person page             | `/about/{name}`                    | Person with a personal story                                              |
+| About / Team page       | `/about/`                          | Content Group with slug `about` + Person Groups                           |
 
 ## Key Behaviors
 
@@ -68,15 +68,15 @@ When you tag a resource with a subcategory, it automatically appears on all pare
 
 ### Empty Pages Are Not Generated
 
-Category x Population pages are only created when resources actually exist for that combination. If no resources match a particular category and population pair, no page is generated. This keeps the site clean and avoids dead-end pages.
+Category x Audience pages are only created when resources actually exist for that combination. If no resources match a particular category and audience pair, no page is generated. This keeps the site clean and avoids dead-end pages.
 
-### Population Pages Prune Empty Branches
+### Audience Pages Prune Empty Branches
 
-Population landing pages show a filtered version of the category tree. Branches with no resources for that population are removed entirely, so users only see navigation paths that lead to actual content.
+Audience landing pages show a filtered version of the category tree. Branches with no resources for that audience are removed entirely, so users only see navigation paths that lead to actual content.
 
 ### Slugs Are URL Segments
 
-Category and population slugs become part of the page URL. **Don't change slugs** on published content without good reason — it will break existing links, bookmarks, and search engine references to those pages.
+Category and audience slugs become part of the page URL. **Don't change slugs** on published content without good reason — it will break existing links, bookmarks, and search engine references to those pages.
 
 ### Featured Resources Appear Prominently
 

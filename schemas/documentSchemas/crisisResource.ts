@@ -2,7 +2,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 
 import {
   categoriesField,
-  populationsField,
+  audiencesField,
   portableTextDescriptionField,
   titleField,
   urlField,
@@ -24,7 +24,7 @@ export default defineType({
       to: [{ type: "website" }],
     }),
     { ...categoriesField, validation: undefined },
-    populationsField,
+    audiencesField,
     defineField({
       type: "array",
       name: "contactMethods",

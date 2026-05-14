@@ -1,15 +1,19 @@
 import { defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
-import { accessibleImageField, slugField } from "../fields";
+import {
+  accessibleImageField,
+  slugField,
+  tagSearchAliasesField,
+} from "../fields";
 
 export default defineType({
-  name: "population",
-  title: "Population",
+  name: "audience",
+  title: "Audience",
   icon: TagsIcon,
   type: "document",
   fields: [
     defineField({
-      title: "Population Name",
+      title: "Audience Name",
       name: "name",
       type: "string",
       validation: (rule) => rule.required(),
@@ -25,6 +29,7 @@ export default defineType({
       name: "description",
       type: "text",
     }),
+    tagSearchAliasesField,
     defineField({
       name: "underserved",
       title: "Underserved",

@@ -6,14 +6,21 @@ import {
   requiredUrlField,
   websiteReferenceField,
   categoriesField,
-  populationsField,
+  lossRelationshipsField,
+  causesOfDeathField,
+  topicsField,
+  audiencesField,
+  griefPhasesField,
+  contentFunctionsField,
+  tonesField,
   ratingField,
+  searchAliasesField,
   urlField,
   accessibleImageField,
 } from "./fields";
 import keywordsField from "./fields/keywordsField";
 import seoPhrasesField from "./fields/seoPhrasesField";
-import skipLinkReportField from "./fields/skipLinkReportField";
+import skipLinkFetchField from "./fields/skipLinkFetchField";
 import freeRegistrationField from "./fields/freeRegistrationField";
 import paywallField from "./fields/paywallField";
 
@@ -36,19 +43,88 @@ export const createBaseInternetResourceSchema = (
     icon: params.icon,
     groups: [
       {
+        name: "attributes",
+        title: "Resource Attributes",
+      },
+      {
+        name: "classification",
+        title: "Classification",
+      },
+      {
         name: "search",
         title: "Search & SEO",
       },
     ],
     fields: [
-      titleField,
-      simpleDescriptionField,
-      urlF,
-      websiteReferenceField,
-      categoriesField,
-      populationsField,
-      ratingField,
-      accessibleImageField,
+      defineField({
+        group: "attributes",
+        ...titleField,
+      }),
+      defineField({
+        group: "attributes",
+        ...simpleDescriptionField,
+      }),
+      defineField({
+        group: "attributes",
+        ...urlF,
+      }),
+      defineField({
+        group: "attributes",
+        ...websiteReferenceField,
+      }),
+      defineField({
+        group: "attributes",
+        ...accessibleImageField,
+      }),
+      defineField({
+        group: "attributes",
+        ...skipLinkFetchField,
+      }),
+      defineField({
+        group: "attributes",
+        ...paywallField,
+      }),
+      defineField({
+        group: "attributes",
+        ...freeRegistrationField,
+      }),
+      defineField({
+        group: "classification",
+        ...categoriesField,
+      }),
+      defineField({
+        group: "classification",
+        ...lossRelationshipsField,
+      }),
+      defineField({
+        group: "classification",
+        ...causesOfDeathField,
+      }),
+      defineField({
+        group: "classification",
+        ...topicsField,
+      }),
+      defineField({
+        group: "classification",
+        ...audiencesField,
+      }),
+      defineField({
+        group: "classification",
+        ...griefPhasesField,
+      }),
+      defineField({
+        group: "classification",
+        ...contentFunctionsField,
+      }),
+      defineField({
+        group: "classification",
+        ...tonesField,
+      }),
+
+      defineField({
+        group: "search",
+        ...searchAliasesField,
+      }),
       defineField({
         group: "search",
         ...keywordsField,
@@ -57,9 +133,7 @@ export const createBaseInternetResourceSchema = (
         group: "search",
         ...seoPhrasesField,
       }),
-      freeRegistrationField,
-      paywallField,
-      skipLinkReportField,
+      ratingField,
     ],
   });
 };

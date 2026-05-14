@@ -10,6 +10,10 @@ export default defineType({
   description: `A category used to classify resources. Not to be confused with "Topics" which is a specific 'category' itself`,
   icon: TagsIcon,
   type: "document",
+  deprecated: {
+    reason:
+      "Being decomposed into Loss Relationship, Cause of Death, and Topic taxonomies. Do not create new categories. Existing categories will be migrated and this type removed in a later phase.",
+  },
   preview: {
     select: {
       displayTitle: "displayTitle",
@@ -84,7 +88,8 @@ export default defineType({
       name: "featuredResources",
       title: "Featured Resources",
       type: "array",
-      description: "Select a maximum of 3 Featured Resources in this category.",
+      description:
+        "Select a maximum of 3 Featured Resources in this category. These will be displayed as the most prominent resources on the page.",
       of: [
         defineArrayMember({
           type: "reference",
@@ -109,6 +114,24 @@ export default defineType({
       validation: (Rule) => [
         Rule.max(3),
         Rule.unique(),
+        Rule.custom((resources, context) => {
+          if (typeof resources === "undefined" || resources.length < 1) {
+            return true;
+          }
+
+          const secondary =
+            (context.document?.secondaryFeaturedResources as
+              | { _ref: string }[]
+              | undefined) ?? [];
+          const secondaryRefs = new Set(secondary.map((r) => r._ref));
+          const overlap = (resources as { _ref: string }[]).filter((r) =>
+            secondaryRefs.has(r._ref)
+          );
+
+          return overlap.length > 0
+            ? "Resources cannot appear in both Featured and Secondary Featured Resources"
+            : true;
+        }),
         Rule.custom(async (resources, context) => {
           if (typeof resources === "undefined" || resources.length < 1) {
             return true;
@@ -142,6 +165,56 @@ export default defineType({
             return "Error validating this field";
           }
         }).warning(),
+      ],
+    }),
+    defineField({
+      name: "secondaryFeaturedResources",
+      title: "Secondary Featured Resources",
+      type: "array",
+      description:
+        "Select a maximum of 10 Secondary Featured Resources in this category. These will likely be shown without images.",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: INTERNET_RESOURCE_TYPES.map((resourceType) => ({
+            type: resourceType,
+          })),
+          options: {
+            filter: (resolverCtx) => {
+              const { document } = resolverCtx;
+              if (!document._id) {
+                return { filter: undefined, params: undefined };
+              }
+              const idParam = document._id.replace("drafts.", "");
+              return {
+                filter: "$id in categories[]._ref",
+                params: { id: idParam },
+              };
+            },
+          },
+        }),
+      ],
+      validation: (Rule) => [
+        Rule.max(10),
+        Rule.unique(),
+        Rule.custom((resources, context) => {
+          if (typeof resources === "undefined" || resources.length < 1) {
+            return true;
+          }
+
+          const featured =
+            (context.document?.featuredResources as
+              | { _ref: string }[]
+              | undefined) ?? [];
+          const featuredRefs = new Set(featured.map((r) => r._ref));
+          const overlap = (resources as { _ref: string }[]).filter((r) =>
+            featuredRefs.has(r._ref)
+          );
+
+          return overlap.length > 0
+            ? "Resources cannot appear in both Featured and Secondary Featured Resources"
+            : true;
+        }),
       ],
     }),
   ],

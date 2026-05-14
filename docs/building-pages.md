@@ -60,7 +60,7 @@ Each content item type renders differently for visitors. Here's what each one lo
 ### Links
 
 - **Relative Link** — Renders as a simple text link to an internal page (the URL must start with `/`).
-- **Resource Page Link** — Renders as a link to a filtered resource listing page. The filters you set (category, resource type, population) control which resources the visitor will see on that page.
+- **Resource Page Link** — Renders as a link to a filtered resource listing page. The filters you set (category, resource type, audience) control which resources the visitor will see on that page.
 - **Category Page Link** — Renders as a link to a category page. You can optionally set a custom label.
 - **Page Links** — Renders as a collection of links. When "show images" is enabled, links appear as image cards in a grid (1 column on mobile, 2 on medium, 3 on large screens). Without images, links appear as a text list — marking them as "prominent" makes them more visually prominent.
 

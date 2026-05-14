@@ -18,7 +18,7 @@ The Studio sidebar groups content into four sections:
 2. **Documents** — Core content types that structure the site:
 
    - **Categories** — The hierarchical topic tree that organizes all content
-   - **Populations** — Audience segments for filtering resources
+   - **Audiences** — Audience segments for filtering resources
    - **Content Blocks** — Reusable page sections made of text, images, and links
    - **Content Groups** — Page-level containers that arrange content blocks
    - **Crisis Resources** — Emergency support services with contact information
@@ -36,7 +36,7 @@ The Studio sidebar groups content into four sections:
 Everything you create or edit in this Studio feeds into the whygriefmatters.org website. The key things to understand:
 
 - **Categories** define the site's navigation structure. Resources tagged with categories appear on those category pages.
-- **Populations** enable filtered views of content for specific audiences.
+- **Audiences** enable filtered views of content for specific groups.
 - **Content Blocks and Content Groups** let you compose custom page layouts or change content on existing pages.
 - **Internet Resources** are the core content — curated links to external grief support materials.
 

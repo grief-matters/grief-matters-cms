@@ -10,7 +10,9 @@ export default defineType({
     "An entry to appear as part of the 'What Do You Need Right Now?' feature",
   validation: (rule) =>
     rule.custom((doc) => {
-      if (!doc) return true;
+      if (!doc) {
+        return true;
+      }
       const hasCategory = !!(doc as Record<string, unknown>).category;
       const hasUrl = !!(doc as Record<string, unknown>).url;
       if (!hasCategory && !hasUrl) {

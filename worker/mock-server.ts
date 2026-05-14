@@ -165,7 +165,9 @@ const server = createServer((req: IncomingMessage, res: ServerResponse) => {
   const deploymentMatch = pathname.match(/^\/api\/deployments\/(.+)$/);
   if (method === "GET" && deploymentMatch) {
     const build = builds.find((b) => b.build_uuid === deploymentMatch[1]);
-    if (build) return json(res, build);
+    if (build) {
+      return json(res, build);
+    }
     return json(res, { error: "Not found" }, 404);
   }
 

@@ -35,7 +35,9 @@ const STATUS_LABELS: Record<LinkCheckStatus, string> = {
 };
 
 function formatDate(iso: string): string {
-  if (!iso) return "Never";
+  if (!iso) {
+    return "Never";
+  }
   return new Date(iso).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -135,10 +137,12 @@ export const BrokenLinks = () => {
 
   const filteredEntries = report
     ? report.entries.filter((entry) => {
-        if (statusFilter !== "all" && entry.status !== statusFilter)
+        if (statusFilter !== "all" && entry.status !== statusFilter) {
           return false;
-        if (typeFilter !== "all" && entry.documentType !== typeFilter)
+        }
+        if (typeFilter !== "all" && entry.documentType !== typeFilter) {
           return false;
+        }
         return true;
       })
     : [];

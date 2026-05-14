@@ -1,16 +1,23 @@
+import audience from "./documentSchemas/audience";
 import category from "./documentSchemas/category";
+import causeOfDeath from "./documentSchemas/causeOfDeath";
 import contentBlock from "./documentSchemas/contentBlock";
+import contentFunction from "./documentSchemas/contentFunction";
 import contentGroup from "./documentSchemas/contentGroup";
 import crisisResource from "./documentSchemas/crisisResource";
 import endorsement from "./documentSchemas/endorsement";
 import form from "./documentSchemas/form";
+import griefPhase from "./documentSchemas/griefPhase";
 import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
+import lossRelationship from "./documentSchemas/lossRelationship";
 import organization from "./documentSchemas/organization";
 import person from "./documentSchemas/person";
 import personGroup from "./documentSchemas/personGroup";
-import population from "./documentSchemas/population";
 import resourceEvaluation from "./documentSchemas/resourceEvaluation";
+import searchConfiguration from "./documentSchemas/searchConfiguration";
+import tone from "./documentSchemas/tone";
+import topic from "./documentSchemas/topic";
 import wdynrnEntry from "./documentSchemas/wdynrnEntry";
 import website from "./documentSchemas/website";
 
@@ -91,6 +98,7 @@ export const internetResourceDocumentTypes = [
   book,
   community,
   course,
+  crisisResource,
   forum,
   memorial,
   peerSupport,
@@ -102,30 +110,39 @@ export const internetResourceDocumentTypes = [
   therapyResource,
   video,
   webinar,
+  website,
 ];
 
 export const documentTypes = [
-  category,
   contentBlock,
   contentGroup,
-  crisisResource,
   endorsement,
   form,
   imageCollection,
   imageSource,
   person,
   personGroup,
-  population,
   resourceEvaluation,
-  website,
   wdynrnEntry,
 ];
 
-export const singletonDocumentTypes = [organization];
+export const classificationDocumentTypes = [
+  audience,
+  category,
+  causeOfDeath,
+  contentFunction,
+  griefPhase,
+  lossRelationship,
+  tone,
+  topic,
+];
+
+export const singletonDocumentTypes = [organization, searchConfiguration];
 
 export const schemaTypes = [
   ...singletonDocumentTypes,
   ...objectTypes,
   ...internetResourceDocumentTypes,
   ...documentTypes,
+  ...classificationDocumentTypes,
 ];

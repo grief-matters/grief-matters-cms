@@ -6,7 +6,9 @@ const isUniqueUrl: CustomValidator<string | undefined> = async (
   url,
   context
 ) => {
-  if (!url) return true;
+  if (!url) {
+    return true;
+  }
 
   const { document, getClient } = context;
   const client = getClient({
@@ -14,7 +16,9 @@ const isUniqueUrl: CustomValidator<string | undefined> = async (
   });
   const id = document?._id?.replace(/^drafts\./, "");
 
-  if (!id) return true;
+  if (!id) {
+    return true;
+  }
 
   const params = {
     draft: `drafts.${id}`,

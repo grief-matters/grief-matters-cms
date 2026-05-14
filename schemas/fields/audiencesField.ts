@@ -1,14 +1,14 @@
 import { defineArrayMember, defineField } from "sanity";
 
 export default defineField({
-  name: "populations",
-  title: "Populations",
+  name: "audiences",
+  title: "Audiences",
   type: "array",
-  description: "Specific population groups that this resource will apply to",
+  description: "Specific audiences that this resource will apply to",
   of: [
     defineArrayMember({
       type: "reference",
-      to: [{ type: "population" }],
+      to: [{ type: "audience" }],
     }),
   ],
   validation: (Rule) => Rule.unique(),

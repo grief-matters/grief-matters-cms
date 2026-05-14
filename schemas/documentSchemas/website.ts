@@ -4,7 +4,7 @@ import { EarthGlobeIcon } from "@sanity/icons";
 import {
   categoriesField,
   hasSpanishVersionField,
-  populationsField,
+  audiencesField,
   simpleDescriptionField,
   titleField,
   urlField,
@@ -47,6 +47,6 @@ export default defineType({
       type: "image",
     }),
     categoriesField,
-    populationsField,
+    audiencesField,
   ],
 });
