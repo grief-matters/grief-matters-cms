@@ -23,9 +23,9 @@ export default defineField({
 
       if (
         typeof categories === "undefined" &&
-        typeof context.document?.populations === "undefined"
+        typeof context.document?.audiences === "undefined"
       ) {
-        return "You must select a category or population, or the resource will not show anywhere on the website";
+        return "You must select a category or audience, or the resource will not show anywhere on the website";
       }
 
       return true;

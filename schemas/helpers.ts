@@ -9,7 +9,7 @@ import {
   lossRelationshipsField,
   causesOfDeathField,
   topicsField,
-  populationsField,
+  audiencesField,
   griefPhasesField,
   contentFunctionsField,
   tonesField,
@@ -73,7 +73,7 @@ export const createBaseInternetResourceSchema = (
       }),
       defineField({
         group: "classification",
-        ...populationsField,
+        ...audiencesField,
       }),
       defineField({
         group: "classification",

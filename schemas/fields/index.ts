@@ -1,11 +1,11 @@
 export { default as accessibleImageField } from "./accessibleImageField";
+export { default as audiencesField } from "./audiencesField";
 export { default as categoriesField } from "./categoriesField";
 export { default as causesOfDeathField } from "./causesOfDeathField";
 export { default as contentFunctionsField } from "./contentFunctionsField";
 export { default as griefPhasesField } from "./griefPhasesField";
 export { default as hasSpanishVersionField } from "./hasSpanishVersionField";
 export { default as lossRelationshipsField } from "./lossRelationshipsField";
-export { default as populationsField } from "./populationsField";
 export { default as portableTextDescriptionField } from "./portableTextDescriptionField";
 export { default as ratingField } from "./ratingField";
 export { default as simpleDescriptionField } from "./simpleDescriptionField";

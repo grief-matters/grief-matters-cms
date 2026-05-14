@@ -3,13 +3,13 @@ import { TagsIcon } from "@sanity/icons";
 import { accessibleImageField, slugField } from "../fields";
 
 export default defineType({
-  name: "population",
-  title: "Population",
+  name: "audience",
+  title: "Audience",
   icon: TagsIcon,
   type: "document",
   fields: [
     defineField({
-      title: "Population Name",
+      title: "Audience Name",
       name: "name",
       type: "string",
       validation: (rule) => rule.required(),

@@ -1,3 +1,4 @@
+import audience from "./documentSchemas/audience";
 import category from "./documentSchemas/category";
 import causeOfDeath from "./documentSchemas/causeOfDeath";
 import contentBlock from "./documentSchemas/contentBlock";
@@ -13,7 +14,6 @@ import lossRelationship from "./documentSchemas/lossRelationship";
 import organization from "./documentSchemas/organization";
 import person from "./documentSchemas/person";
 import personGroup from "./documentSchemas/personGroup";
-import population from "./documentSchemas/population";
 import resourceEvaluation from "./documentSchemas/resourceEvaluation";
 import tone from "./documentSchemas/tone";
 import topic from "./documentSchemas/topic";
@@ -121,12 +121,12 @@ export const documentTypes = [
   imageSource,
   person,
   personGroup,
-  population,
   resourceEvaluation,
   wdynrnEntry,
 ];
 
 export const classificationDocumentTypes = [
+  audience,
   category,
   causeOfDeath,
   contentFunction,

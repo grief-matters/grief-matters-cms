@@ -79,7 +79,7 @@ export function ConvertAction(props: DocumentActionProps) {
       [newTypeNameKey]: props.draft![currentTypeNameKey],
       description: props.draft?.description,
       categories: props.draft?.categories,
-      populations: props.draft?.populations,
+      audiences: props.draft?.audiences,
       resourceUrl: props.draft?.resourceUrl,
       sourceWebsite: props.draft?.sourceWebsite,
       rating: props.draft?.rating,

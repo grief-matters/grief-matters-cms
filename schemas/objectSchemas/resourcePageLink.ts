@@ -64,11 +64,11 @@ export default defineType({
       fieldset: "filters",
     }),
     defineField({
-      name: "population",
-      title: "Population",
-      description: "The specific population that resources shown will apply to",
+      name: "audience",
+      title: "Audience",
+      description: "The specific audience that resources shown will apply to",
       type: "reference",
-      to: [{ type: "population" }],
+      to: [{ type: "audience" }],
       options: {
         disableNew: true,
       },
@@ -84,10 +84,10 @@ export default defineType({
       const hasLinkedContent =
         typeof fields?.category !== "undefined" ||
         typeof fields?.type !== "undefined" ||
-        typeof fields?.population !== "undefined";
+        typeof fields?.audience !== "undefined";
 
       return hasLinkedContent
         ? true
-        : "You must link to either a category, a resource type, or a population";
+        : "You must link to either a category, a resource type, or an audience";
     }),
 });

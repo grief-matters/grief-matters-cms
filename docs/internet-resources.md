@@ -5,7 +5,7 @@ order: 5
 
 # Internet Resources
 
-Internet resources are the core content of the site — curated links to external grief support materials. Each resource points to something useful on the web and is organized by type, category, and population.
+Internet resources are the core content of the site — curated links to external grief support materials. Each resource points to something useful on the web and is organized by type, category, and audience.
 
 ## Resource Types
 
@@ -40,7 +40,7 @@ Resources show up on the website in several ways:
 
 **As featured content** — Resources marked as "featured" on a category appear in a scrollable carousel at the top of the category page. Featured resources display as cards with their image, title, and description. Make sure featured resources have images for the best visual impact.
 
-**On population-filtered pages** — Resources tagged with a population appear on population pages and category x population pages.
+**On audience-filtered pages** — Resources tagged with an audience appear on audience pages and category x audience pages.
 
 **In search results** — The website has a search feature (powered by Pagefind) that indexes all content. Keywords and SEO phrases you add to a resource help it surface in searches.
 
@@ -66,4 +66,4 @@ Shared fields (title, URL, description, categories, etc.) are preserved. Type-sp
 - **Write concise descriptions** — Describe what the resource offers, not just what it is
 - **Always assign categories** — Resources without categories won't appear in the site's navigation. Tag with the most specific category; the resource will bubble up to parent categories automatically
 - **Add images for featured placement** — If a resource might be featured on a category page, make sure it has an image. You'll see a warning when featuring resources without images
-- **Use populations thoughtfully** — Tagging a resource with a population adds it to population-filtered pages and can trigger new page generation (see [Categories & Populations](categories-and-populations))
+- **Use audiences thoughtfully** — Tagging a resource with an audience adds it to audience-filtered pages and can trigger new page generation (see [Categories & Audiences](categories-and-audiences))

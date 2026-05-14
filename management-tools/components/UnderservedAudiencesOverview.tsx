@@ -35,7 +35,7 @@ const StyledTable = styled.table`
   }
 `;
 
-type PopulationOverview = {
+type AudienceOverview = {
   _id: string;
   name: string;
   total: number;
@@ -46,15 +46,15 @@ const perTypeCounts = INTERNET_RESOURCE_TYPES.map(
   (type) => `"${type}": count(*[_type == "${type}" && references(^._id)])`
 ).join(",\n  ");
 
-const query = `*[_type == "population" && underserved == true] | order(name asc) {
+const query = `*[_type == "audience" && underserved == true] | order(name asc) {
   _id,
   name,
   "total": count(*[_type in $resourceTypes && references(^._id)]),
   ${perTypeCounts}
 }`;
 
-const UnderservedPopulationsOverview = () => {
-  const { data, loading, error } = useListeningQuery<PopulationOverview[]>(
+const UnderservedAudiencesOverview = () => {
+  const { data, loading, error } = useListeningQuery<AudienceOverview[]>(
     query,
     {
       params: { resourceTypes: [...INTERNET_RESOURCE_TYPES] },
@@ -72,7 +72,7 @@ const UnderservedPopulationsOverview = () => {
 
   return (
     <ToolWrapper
-      title="Underserved Populations Overview"
+      title="Underserved Communities Overview"
       description="Showing distribution of resources across our underserved groups, broken down by type"
     >
       <StyledTable>
@@ -80,7 +80,7 @@ const UnderservedPopulationsOverview = () => {
           <tr>
             <th>
               <Text size={1} weight="bold">
-                Population
+                Audience
               </Text>
             </th>
             <th>
@@ -98,17 +98,17 @@ const UnderservedPopulationsOverview = () => {
           </tr>
         </thead>
         <tbody>
-          {(data as PopulationOverview[])?.map((pop) => (
-            <tr key={pop._id}>
+          {(data as AudienceOverview[])?.map((audience) => (
+            <tr key={audience._id}>
               <td>
-                <Text size={1}>{pop.name}</Text>
+                <Text size={1}>{audience.name}</Text>
               </td>
               <td>
-                <Text size={1}>{pop.total}</Text>
+                <Text size={1}>{audience.total}</Text>
               </td>
               {INTERNET_RESOURCE_TYPES.map((type) => (
                 <td key={type}>
-                  <Text size={1}>{pop[type] as number}</Text>
+                  <Text size={1}>{audience[type] as number}</Text>
                 </td>
               ))}
             </tr>
@@ -119,4 +119,4 @@ const UnderservedPopulationsOverview = () => {
   );
 };
 
-export default UnderservedPopulationsOverview;
+export default UnderservedAudiencesOverview;
