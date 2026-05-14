@@ -18,8 +18,6 @@ import {
   urlField,
   accessibleImageField,
 } from "./fields";
-import keywordsField from "./fields/keywordsField";
-import seoPhrasesField from "./fields/seoPhrasesField";
 import skipLinkFetchField from "./fields/skipLinkFetchField";
 import freeRegistrationField from "./fields/freeRegistrationField";
 import paywallField from "./fields/paywallField";
@@ -124,14 +122,6 @@ export const createBaseInternetResourceSchema = (
       defineField({
         group: "search",
         ...searchAliasesField,
-      }),
-      defineField({
-        group: "search",
-        ...keywordsField,
-      }),
-      defineField({
-        group: "search",
-        ...seoPhrasesField,
       }),
       ratingField,
     ],
