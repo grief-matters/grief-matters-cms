@@ -48,7 +48,9 @@ const resourceNameKeyMap: TypedMap<InternetResourceType> = {
 };
 
 function convertCamelCaseToSentence(value: string) {
-  if (!value) return "";
+  if (!value) {
+    return "";
+  }
   const withSpaces = value.replace(/([A-Z])/g, " $1");
   return startCase(withSpaces);
 }

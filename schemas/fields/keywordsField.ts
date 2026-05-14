@@ -10,7 +10,9 @@ export default defineField({
       type: "string",
       validation: (rule) =>
         rule.custom((value) => {
-          if (!value) return true;
+          if (!value) {
+            return true;
+          }
 
           // Disallow spaces
           if (/\s/.test(value as string)) {

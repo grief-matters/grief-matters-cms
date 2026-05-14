@@ -14,10 +14,18 @@ export interface UrlCheckResult {
 }
 
 function classifyResponse(status: number): LinkCheckStatus | "ok" | "skipped" {
-  if (status === 429) return "skipped";
-  if (status === 404 || status === 410) return "broken";
-  if (status >= 500 || status === 403) return "warning";
-  if (status >= 200 && status < 400) return "ok";
+  if (status === 429) {
+    return "skipped";
+  }
+  if (status === 404 || status === 410) {
+    return "broken";
+  }
+  if (status >= 500 || status === 403) {
+    return "warning";
+  }
+  if (status >= 200 && status < 400) {
+    return "ok";
+  }
   return "warning";
 }
 
