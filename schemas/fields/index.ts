@@ -1,4 +1,5 @@
 export { default as accessibleImageField } from "./accessibleImageField";
+export { default as imageAssetField } from "./imageAssetField";
 export { default as audiencesField } from "./audiencesField";
 export { default as categoriesField } from "./categoriesField";
 export { default as causesOfDeathField } from "./causesOfDeathField";

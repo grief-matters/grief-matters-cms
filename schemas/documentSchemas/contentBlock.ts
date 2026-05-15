@@ -38,6 +38,11 @@ export default defineType({
         defineArrayMember({ type: "richTextContentBlock" }),
         defineArrayMember({ type: "richTextWithHeading" }),
         defineArrayMember({ type: "accessibleImage" }),
+        defineArrayMember({
+          type: "reference",
+          name: "imageAssetRef",
+          to: [{ type: "imageAsset" }],
+        }),
         defineArrayMember({ type: "imageRow" }),
         defineArrayMember({ type: "featuredResource" }),
         defineArrayMember({ type: "featuredResources" }),

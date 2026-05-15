@@ -67,6 +67,17 @@ export default defineType({
       title: "Cover Image",
       type: "accessibleImage",
       description: "A cover image to associate with this cause of death.",
+      deprecated: {
+        reason:
+          "Replaced by coverImageRef (reference to an imageAsset document). Old data has been migrated; this field will be removed in a future release.",
+      },
+    }),
+    defineField({
+      name: "coverImageRef",
+      title: "Cover Image",
+      type: "reference",
+      to: [{ type: "imageAsset" }],
+      description: "A cover image to associate with this cause of death.",
     }),
     tagSearchAliasesField,
     featuredResourcesArrayField({ tagFieldName: "causesOfDeath" }),
