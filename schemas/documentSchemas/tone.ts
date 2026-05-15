@@ -1,6 +1,7 @@
 import { defineField, defineType } from "sanity";
 import { SparkleIcon } from "@sanity/icons";
-import { slugField, tagSearchAliasesField } from "../fields";
+import slugField from "../fields/slugField";
+import tagSearchAliasesField from "../fields/tagSearchAliasesField";
 
 export default defineType({
   name: "tone",

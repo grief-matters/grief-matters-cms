@@ -1,25 +1,22 @@
 import type { ComponentType, ReactNode } from "react";
 import { defineField, defineType } from "sanity";
-import {
-  titleField,
-  simpleDescriptionField,
-  requiredUrlField,
-  websiteReferenceField,
-  categoriesField,
-  lossRelationshipsField,
-  causesOfDeathField,
-  topicsField,
-  audiencesField,
-  griefPhasesField,
-  contentFunctionsField,
-  tonesField,
-  searchAliasesField,
-  urlField,
-  imageAssetField,
-} from "./fields";
-import skipLinkFetchField from "./fields/skipLinkFetchField";
+
+import audiencesField from "./fields/audiencesField";
+import causesOfDeathField from "./fields/causesOfDeathField";
+import contentFunctionsField from "./fields/contentFunctionsField";
 import freeRegistrationField from "./fields/freeRegistrationField";
+import griefPhasesField from "./fields/griefPhasesField";
+import imageAssetField from "./fields/imageAssetField";
+import lossRelationshipsField from "./fields/lossRelationshipsField";
 import paywallField from "./fields/paywallField";
+import searchAliasesField from "./fields/searchAliasesField";
+import simpleDescriptionField from "./fields/simpleDescriptionField";
+import skipLinkFetchField from "./fields/skipLinkFetchField";
+import titleField from "./fields/titleField";
+import tonesField from "./fields/tonesField";
+import topicsField from "./fields/topicsField";
+import urlField, { requiredUrlField } from "./fields/urlField";
+import websiteReferenceField from "./fields/websiteReferenceField";
 
 export type CreateBaseInternetResourceParams = {
   name: string;
@@ -84,10 +81,6 @@ export const createBaseInternetResourceSchema = (
       defineField({
         group: "attributes",
         ...freeRegistrationField,
-      }),
-      defineField({
-        group: "classification",
-        ...categoriesField,
       }),
       defineField({
         group: "classification",

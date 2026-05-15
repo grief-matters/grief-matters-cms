@@ -1,12 +1,8 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-
-import {
-  categoriesField,
-  audiencesField,
-  portableTextDescriptionField,
-  titleField,
-  urlField,
-} from "../fields";
+import audiencesField from "../fields/audiencesField";
+import portableTextDescriptionField from "../fields/portableTextDescriptionField";
+import titleField from "../fields/titleField";
+import urlField from "../fields/urlField";
 
 export default defineType({
   type: "document",
@@ -23,7 +19,6 @@ export default defineType({
       description: "The source website for the crisis resource (if we have it)",
       to: [{ type: "website" }],
     }),
-    { ...categoriesField, validation: undefined },
     audiencesField,
     defineField({
       type: "array",

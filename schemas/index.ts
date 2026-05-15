@@ -1,5 +1,4 @@
 import audience from "./documentSchemas/audience";
-import category from "./documentSchemas/category";
 import causeOfDeath from "./documentSchemas/causeOfDeath";
 import contentBlock from "./documentSchemas/contentBlock";
 import contentFunction from "./documentSchemas/contentFunction";
@@ -42,7 +41,6 @@ import webinar from "./internetResourceDocumentSchemas/webinar";
 
 import availability from "./objectSchemas/availability";
 import contactMethod from "./objectSchemas/contactMethod";
-import customResourceCollection from "./objectSchemas/customResourceCollection";
 import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
 import featuredResource from "./objectSchemas/featuredResource";
 import featuredResources from "./objectSchemas/featuredResources";
@@ -66,7 +64,6 @@ import telephoneNumber from "./objectSchemas/telephoneNumber";
 export const objectTypes = [
   availability,
   contactMethod,
-  customResourceCollection,
   featuredCrisisResource,
   featuredResource,
   featuredResources,
@@ -126,7 +123,6 @@ export const documentTypes = [
 
 export const classificationDocumentTypes = [
   audience,
-  category,
   causeOfDeath,
   contentFunction,
   griefPhase,

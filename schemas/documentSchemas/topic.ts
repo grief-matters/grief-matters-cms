@@ -2,15 +2,13 @@ import { defineField, defineType } from "sanity";
 import { BookmarkIcon } from "@sanity/icons";
 
 import {
-  portableTextDescriptionField,
-  slugField,
-  tagSearchAliasesField,
-  titleField,
-} from "../fields";
-import {
   featuredResourcesArrayField,
   secondaryFeaturedResourcesArrayField,
 } from "../fields/taxonomyFeaturedResourcesFields";
+import portableTextDescriptionField from "../fields/portableTextDescriptionField";
+import slugField from "../fields/slugField";
+import tagSearchAliasesField from "../fields/tagSearchAliasesField";
+import titleField from "../fields/titleField";
 
 const maxTopicDepth = 3;
 
