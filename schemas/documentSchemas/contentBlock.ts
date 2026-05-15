@@ -49,7 +49,6 @@ export default defineType({
         defineArrayMember({ type: "featuredCrisisResource" }),
         defineArrayMember({ type: "relativeLink" }),
         defineArrayMember({ type: "resourcePageLink" }),
-        defineArrayMember({ type: "categoryPageLink" }),
         defineArrayMember({ type: "pageLinks" }),
         defineArrayMember({ type: "featuredWebsite" }),
         defineArrayMember({ type: "featuredWebsites" }),
