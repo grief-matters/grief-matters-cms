@@ -126,13 +126,13 @@ The Studio is the content management UI where editors curate grief support resou
 - **Document schemas** (`schemas/documentSchemas/`) — Top-level document types like `category`, `contentBlock`, `crisisResource`, `organization`, `person`, `website`, etc.
 - **Internet resource schemas** (`schemas/internetResourceDocumentSchemas/`) — 17 resource types (app, article, blog, book, community, course, forum, memorial, podcast, story, video, etc.) that all extend a base schema created by `createBaseInternetResourceSchema()` in `schemas/helpers.ts`. Each type adds specialized fields on top of the shared base.
 - **Object schemas** (`schemas/objectSchemas/`) — Reusable nested types (links, content blocks, collections, contact methods).
-- **Shared fields** (`schemas/fields/`) — Field definitions reused across schemas (titleField, slugField, categoriesField, ratingField, etc.).
+- **Shared fields** (`schemas/fields/`) — Field definitions reused across schemas (titleField, slugField, categoriesField, etc.).
 
 **Key patterns:**
 
 - **Internet resource factory** — All internet resource types share a base schema. The `ConvertAction` (`actions/convertAction.tsx`) allows converting documents between resource types.
 - **Singleton pattern** — The `organization` document type is a singleton with restricted actions (no create/delete).
-- **Custom components** — `components/` contains custom input and preview components (RatingInput, TimeInput, ResourceUrlInput, etc.).
+- **Custom components** — `components/` contains custom input and preview components (TimeInput, ResourceUrlInput, etc.).
 - **Dashboard widgets** — Resource type overview and category tree widgets on the Studio dashboard.
 - **Structure customization** — `structure/` defines the sidebar navigation layout (singletons, document groups, internet resources).
 

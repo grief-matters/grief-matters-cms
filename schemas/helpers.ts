@@ -13,7 +13,6 @@ import {
   griefPhasesField,
   contentFunctionsField,
   tonesField,
-  ratingField,
   searchAliasesField,
   urlField,
   accessibleImageField,
@@ -128,7 +127,6 @@ export const createBaseInternetResourceSchema = (
         group: "search",
         ...searchAliasesField,
       }),
-      ratingField,
     ],
   });
 };

@@ -84,7 +84,6 @@ export function ConvertAction(props: DocumentActionProps) {
       audiences: props.draft?.audiences,
       resourceUrl: props.draft?.resourceUrl,
       sourceWebsite: props.draft?.sourceWebsite,
-      rating: props.draft?.rating,
     };
 
     client
