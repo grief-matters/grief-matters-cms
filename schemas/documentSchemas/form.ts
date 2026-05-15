@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
-import { simpleDescriptionField, titleField } from "../fields";
+import simpleDescriptionField from "../fields/simpleDescriptionField";
+import titleField from "../fields/titleField";
 
 export default defineType({
   name: "form",

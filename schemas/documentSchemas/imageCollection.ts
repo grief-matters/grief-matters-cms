@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { titleField } from "../fields";
 import { ImageIcon } from "@sanity/icons";
+import titleField from "../fields/titleField";
 
 export default defineType({
   type: "document",

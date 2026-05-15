@@ -1,8 +1,9 @@
 import { defineField, defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
-import { hasSpanishVersionField, supportFormatField } from "../fields";
 
 import { createBaseInternetResourceSchema } from "../helpers";
+import supportFormatField from "../fields/supportFormatField";
+import hasSpanishVersionField from "../fields/hasSpanishVersionField";
 
 const base = createBaseInternetResourceSchema({
   name: "therapyResource",

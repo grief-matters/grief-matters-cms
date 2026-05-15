@@ -1,7 +1,8 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-import { simpleDescriptionField, slugField } from "../fields";
 import { ContentGroupPreview } from "../../components";
+import simpleDescriptionField from "../fields/simpleDescriptionField";
+import slugField from "../fields/slugField";
 
 export default defineType({
   type: "document",

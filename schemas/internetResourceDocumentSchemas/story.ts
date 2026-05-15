@@ -2,7 +2,7 @@ import { defineType } from "sanity";
 import { DocumentTextIcon } from "@sanity/icons";
 
 import { createBaseInternetResourceSchema } from "../helpers";
-import { hasSpanishVersionField } from "../fields";
+import hasSpanishVersionField from "../fields/hasSpanishVersionField";
 
 const base = createBaseInternetResourceSchema({
   name: "story",

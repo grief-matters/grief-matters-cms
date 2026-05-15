@@ -1,8 +1,8 @@
 import { defineType } from "sanity";
 import { UsersIcon } from "@sanity/icons";
 
-import { supportFormatField } from "../fields";
 import { createBaseInternetResourceSchema } from "../helpers";
+import supportFormatField from "../fields/supportFormatField";
 
 const base = createBaseInternetResourceSchema({
   name: "supportGroup",

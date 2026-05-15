@@ -1,14 +1,14 @@
 import { defineField, defineType } from "sanity";
 import { EarthGlobeIcon } from "@sanity/icons";
 
-import {
-  categoriesField,
-  hasSpanishVersionField,
-  audiencesField,
-  simpleDescriptionField,
-  titleField,
-  urlField,
-} from "../fields";
+import urlField from "../fields/urlField";
+import titleField from "../fields/titleField";
+import topicsField from "../fields/topicsField";
+import audiencesField from "../fields/audiencesField";
+import hasSpanishVersionField from "../fields/hasSpanishVersionField";
+import simpleDescriptionField from "../fields/simpleDescriptionField";
+import lossRelationshipsField from "../fields/lossRelationshipsField";
+import causesOfDeathField from "../fields/causesOfDeathField";
 
 export default defineType({
   name: "website",
@@ -46,7 +46,9 @@ export default defineType({
       name: "logo",
       type: "image",
     }),
-    categoriesField,
     audiencesField,
+    topicsField,
+    lossRelationshipsField,
+    causesOfDeathField,
   ],
 });

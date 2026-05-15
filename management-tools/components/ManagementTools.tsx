@@ -2,7 +2,7 @@ import { Box, Grid, Heading } from "@sanity/ui";
 import ResourceTypeOverview from "./ResourceTypeOverview";
 import WebsiteDeployment from "./WebsiteDeployment";
 import BrokenLinks from "./BrokenLinks";
-import CategoryTree from "./CategoryTree";
+// import CategoryTree from "./CategoryTree";
 import UnderservedAudiencesOverview from "./UnderservedAudiencesOverview";
 
 export const ManagementTools = () => {
@@ -15,7 +15,7 @@ export const ManagementTools = () => {
         <Grid columns={[1, 1, 2]} gap={4}>
           <ResourceTypeOverview />
           <UnderservedAudiencesOverview />
-          <CategoryTree />
+          {/* <CategoryTree /> */}
           <WebsiteDeployment />
           <BrokenLinks />
         </Grid>
