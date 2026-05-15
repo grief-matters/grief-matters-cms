@@ -52,6 +52,10 @@ export default defineType({
       type: "accessibleImage",
       description:
         "A cover image to to be used for this Content Group if appropriate",
+      deprecated: {
+        reason:
+          "Replaced by imageRef (reference to an imageAsset document). Old data has been migrated; this field will be removed in a future release.",
+      },
     }),
     defineField({
       name: "imageRef",

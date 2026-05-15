@@ -6,6 +6,10 @@ export default defineType({
   name: "accessibleImage",
   title: "Image",
   icon: ImageIcon,
+  deprecated: {
+    reason:
+      "Replaced by the imageAsset document and *Ref fields. Old data has been migrated; this type will be removed in a future release.",
+  },
   options: {
     collapsible: true,
     collapsed: true,

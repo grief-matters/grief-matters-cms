@@ -21,6 +21,10 @@ export default defineType({
         },
       ],
       validation: (rule) => rule.required(),
+      deprecated: {
+        reason:
+          "Replaced by imagesRef (array of references to imageAsset documents). Old data has been migrated; this field will be removed in a future release.",
+      },
     }),
     defineField({
       name: "imagesRef",

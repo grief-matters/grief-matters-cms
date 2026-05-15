@@ -16,6 +16,10 @@ export default defineType({
       type: "array",
       of: [defineArrayMember({ type: "accessibleImage" })],
       validation: (Rule) => Rule.min(2).max(6),
+      deprecated: {
+        reason:
+          "Replaced by imagesRef (array of references to imageAsset documents). Old data has been migrated; this field will be removed in a future release.",
+      },
     }),
     defineField({
       name: "imagesRef",
