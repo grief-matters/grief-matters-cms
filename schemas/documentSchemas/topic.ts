@@ -161,6 +161,13 @@ export default defineType({
       type: "accessibleImage",
       description: "A cover image to associate with this topic.",
     }),
+    defineField({
+      name: "coverImageRef",
+      title: "Cover Image",
+      type: "reference",
+      to: [{ type: "imageAsset" }],
+      description: "A cover image to associate with this topic.",
+    }),
     tagSearchAliasesField,
     featuredResourcesArrayField({ tagFieldName: "topics" }),
     secondaryFeaturedResourcesArrayField({ tagFieldName: "topics" }),

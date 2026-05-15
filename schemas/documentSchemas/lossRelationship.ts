@@ -68,6 +68,13 @@ export default defineType({
       type: "accessibleImage",
       description: "A cover image to associate with this loss relationship.",
     }),
+    defineField({
+      name: "coverImageRef",
+      title: "Cover Image",
+      type: "reference",
+      to: [{ type: "imageAsset" }],
+      description: "A cover image to associate with this loss relationship.",
+    }),
     tagSearchAliasesField,
     featuredResourcesArrayField({ tagFieldName: "lossRelationships" }),
     secondaryFeaturedResourcesArrayField({ tagFieldName: "lossRelationships" }),

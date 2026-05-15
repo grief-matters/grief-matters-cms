@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
 import {
   accessibleImageField,
+  imageAssetField,
   slugField,
   tagSearchAliasesField,
 } from "../fields";
@@ -37,5 +38,6 @@ export default defineType({
       initialValue: false,
     }),
     accessibleImageField,
+    imageAssetField,
   ],
 });

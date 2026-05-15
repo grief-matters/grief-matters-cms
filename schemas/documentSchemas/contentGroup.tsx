@@ -54,6 +54,14 @@ export default defineType({
         "A cover image to to be used for this Content Group if appropriate",
     }),
     defineField({
+      name: "imageRef",
+      title: "Content Group Cover Image",
+      type: "reference",
+      to: [{ type: "imageAsset" }],
+      description:
+        "A cover image to to be used for this Content Group if appropriate",
+    }),
+    defineField({
       name: "contentBlocks",
       title: "Content Blocks",
       description: `Build a Content Group from Content Blocks. You can think of a Content Block as a "section" within the group`,

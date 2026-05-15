@@ -8,6 +8,7 @@ import crisisResource from "./documentSchemas/crisisResource";
 import endorsement from "./documentSchemas/endorsement";
 import form from "./documentSchemas/form";
 import griefPhase from "./documentSchemas/griefPhase";
+import imageAsset from "./documentSchemas/imageAsset";
 import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
 import lossRelationship from "./documentSchemas/lossRelationship";
@@ -118,6 +119,7 @@ export const documentTypes = [
   contentGroup,
   endorsement,
   form,
+  imageAsset,
   imageCollection,
   imageSource,
   person,

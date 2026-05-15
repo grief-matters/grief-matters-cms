@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 import { titleField } from "../fields";
 import { ImageIcon } from "@sanity/icons";
 
@@ -21,6 +21,18 @@ export default defineType({
         },
       ],
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "imagesRef",
+      title: "Images",
+      description: "The images assigned to this collection.",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "imageAsset" }],
+        }),
+      ],
     }),
   ],
 });

@@ -17,6 +17,7 @@ import {
   searchAliasesField,
   urlField,
   accessibleImageField,
+  imageAssetField,
 } from "./fields";
 import skipLinkFetchField from "./fields/skipLinkFetchField";
 import freeRegistrationField from "./fields/freeRegistrationField";
@@ -73,6 +74,10 @@ export const createBaseInternetResourceSchema = (
       defineField({
         group: "attributes",
         ...accessibleImageField,
+      }),
+      defineField({
+        group: "attributes",
+        ...imageAssetField,
       }),
       defineField({
         group: "attributes",

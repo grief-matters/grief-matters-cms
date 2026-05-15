@@ -85,6 +85,13 @@ export default defineType({
       description: "A cover image to associate with this category",
     }),
     defineField({
+      name: "imageRef",
+      title: "Category Cover Image",
+      type: "reference",
+      to: [{ type: "imageAsset" }],
+      description: "A cover image to associate with this category",
+    }),
+    defineField({
       name: "featuredResources",
       title: "Featured Resources",
       type: "array",
