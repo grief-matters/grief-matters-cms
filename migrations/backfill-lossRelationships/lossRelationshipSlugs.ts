@@ -1,0 +1,16 @@
+export const lossRelationshipSlugs = [
+  "general-pregnancy-loss",
+  "loss-from-miscarriage",
+  "loss-of-a-child",
+  "loss-of-a-co-worker",
+  "loss-of-a-friend",
+  "loss-of-a-grandchild",
+  "loss-of-a-grandparent",
+  "loss-of-a-parent",
+  "loss-of-a-pet",
+  "loss-of-a-sibling",
+  "loss-of-a-spouse-or-partner",
+  "loss-relating-to-infertility",
+  "neonatal-loss",
+  "stillbirth-loss",
+] as const;
