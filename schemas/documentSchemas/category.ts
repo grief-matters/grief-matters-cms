@@ -79,16 +79,6 @@ export default defineType({
       ],
     }),
     defineField({
-      name: "image",
-      title: "Category Cover Image",
-      type: "accessibleImage",
-      description: "A cover image to associate with this category",
-      deprecated: {
-        reason:
-          "Replaced by imageRef (reference to an imageAsset document). Old data has been migrated; this field will be removed in a future release.",
-      },
-    }),
-    defineField({
       name: "imageRef",
       title: "Category Cover Image",
       type: "reference",
@@ -161,7 +151,7 @@ export default defineType({
 
             if (Array.isArray(docs)) {
               const resourcesWithoutImages = docs
-                .filter((doc) => typeof doc?.image?.asset === "undefined")
+                .filter((doc) => typeof doc?.imageRef?._ref === "undefined")
                 .map((doc) => doc.title.substring(0, 15) + "...");
 
               return resourcesWithoutImages.length > 0

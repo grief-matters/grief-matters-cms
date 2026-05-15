@@ -37,7 +37,6 @@ export default defineType({
         defineArrayMember({ type: "headingText" }),
         defineArrayMember({ type: "richTextContentBlock" }),
         defineArrayMember({ type: "richTextWithHeading" }),
-        defineArrayMember({ type: "accessibleImage" }),
         defineArrayMember({
           type: "reference",
           name: "imageAssetRef",

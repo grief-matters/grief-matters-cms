@@ -63,16 +63,6 @@ export default defineType({
         "A longer description for this cause of death (will appear on its page as lead-in text).",
     }),
     defineField({
-      name: "coverImage",
-      title: "Cover Image",
-      type: "accessibleImage",
-      description: "A cover image to associate with this cause of death.",
-      deprecated: {
-        reason:
-          "Replaced by coverImageRef (reference to an imageAsset document). Old data has been migrated; this field will be removed in a future release.",
-      },
-    }),
-    defineField({
       name: "coverImageRef",
       title: "Cover Image",
       type: "reference",

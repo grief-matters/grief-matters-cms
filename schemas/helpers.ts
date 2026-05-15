@@ -15,7 +15,6 @@ import {
   tonesField,
   searchAliasesField,
   urlField,
-  accessibleImageField,
   imageAssetField,
 } from "./fields";
 import skipLinkFetchField from "./fields/skipLinkFetchField";
@@ -69,10 +68,6 @@ export const createBaseInternetResourceSchema = (
       defineField({
         group: "attributes",
         ...websiteReferenceField,
-      }),
-      defineField({
-        group: "attributes",
-        ...accessibleImageField,
       }),
       defineField({
         group: "attributes",

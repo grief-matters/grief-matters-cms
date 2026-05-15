@@ -11,22 +11,6 @@ export default defineType({
   fields: [
     titleField,
     defineField({
-      name: "images",
-      title: "Images",
-      description: "The images assigned to this collection.",
-      type: "array",
-      of: [
-        {
-          type: "accessibleImage",
-        },
-      ],
-      validation: (rule) => rule.required(),
-      deprecated: {
-        reason:
-          "Replaced by imagesRef (array of references to imageAsset documents). Old data has been migrated; this field will be removed in a future release.",
-      },
-    }),
-    defineField({
       name: "imagesRef",
       title: "Images",
       description: "The images assigned to this collection.",
@@ -37,6 +21,7 @@ export default defineType({
           to: [{ type: "imageAsset" }],
         }),
       ],
+      validation: (rule) => rule.required(),
     }),
   ],
 });

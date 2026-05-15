@@ -40,7 +40,6 @@ import therapyResource from "./internetResourceDocumentSchemas/therapyResource";
 import video from "./internetResourceDocumentSchemas/video";
 import webinar from "./internetResourceDocumentSchemas/webinar";
 
-import accessibleImage from "./objectSchemas/accessibleImage";
 import availability from "./objectSchemas/availability";
 import categoryPageLink from "./objectSchemas/categoryPageLink";
 import contactMethod from "./objectSchemas/contactMethod";
@@ -66,7 +65,6 @@ import socials from "./objectSchemas/socials";
 import telephoneNumber from "./objectSchemas/telephoneNumber";
 
 export const objectTypes = [
-  accessibleImage,
   availability,
   categoryPageLink,
   contactMethod,

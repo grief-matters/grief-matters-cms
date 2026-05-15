@@ -1,11 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
-import {
-  accessibleImageField,
-  imageAssetField,
-  slugField,
-  tagSearchAliasesField,
-} from "../fields";
+import { imageAssetField, slugField, tagSearchAliasesField } from "../fields";
 
 export default defineType({
   name: "audience",
@@ -37,7 +32,6 @@ export default defineType({
       type: "boolean",
       initialValue: false,
     }),
-    accessibleImageField,
     imageAssetField,
   ],
 });

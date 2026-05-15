@@ -2,7 +2,7 @@ import { PreviewConfig } from "sanity";
 
 export const imageRowPreviewConfig: PreviewConfig = {
   select: {
-    image: "images.0.image",
+    image: "imagesRef.0->image",
   },
   prepare: ({ image }) => ({
     title: "Image Row",
