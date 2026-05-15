@@ -13,10 +13,14 @@ export default defineType({
       if (!doc) {
         return true;
       }
-      const hasCategory = !!(doc as Record<string, unknown>).category;
-      const hasUrl = !!(doc as Record<string, unknown>).url;
-      if (!hasCategory && !hasUrl) {
-        return "Either a category or a page URL must be set";
+      const record = doc as Record<string, unknown>;
+      const hasDestination =
+        !!record.topic ||
+        !!record.causeOfDeath ||
+        !!record.lossRelationship ||
+        !!record.url;
+      if (!hasDestination) {
+        return "A destination must be set — choose a topic, cause of death, loss relationship, or page URL";
       }
       return true;
     }),
@@ -25,7 +29,7 @@ export default defineType({
       name: "destination",
       title: "Destination",
       description:
-        "Choose where this entry takes the user. Set either a category or a page URL — not both. To switch, clear the current value first.",
+        "Choose where this entry takes the user. Set exactly one of topic, cause of death, loss relationship, or page URL. To switch, clear the current value first.",
     },
   ],
   fields: [
@@ -36,16 +40,50 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "category",
-      title: "Category",
-      description: "The category page to take the user to",
+      name: "topic",
+      title: "Topic",
+      description: "The topic page to take the user to",
       type: "reference",
-      to: [{ type: "category" }],
+      to: [{ type: "topic" }],
       fieldset: "destination",
       options: {
         disableNew: true,
       },
-      hidden: ({ document }) => !!document?.url,
+      hidden: ({ document }) =>
+        !document?.topic &&
+        !!(
+          document?.causeOfDeath ||
+          document?.lossRelationship ||
+          document?.url
+        ),
+    }),
+    defineField({
+      name: "causeOfDeath",
+      title: "Cause of Death",
+      description: "The cause of death page to take the user to",
+      type: "reference",
+      to: [{ type: "causeOfDeath" }],
+      fieldset: "destination",
+      options: {
+        disableNew: true,
+      },
+      hidden: ({ document }) =>
+        !document?.causeOfDeath &&
+        !!(document?.topic || document?.lossRelationship || document?.url),
+    }),
+    defineField({
+      name: "lossRelationship",
+      title: "Loss Relationship",
+      description: "The loss relationship page to take the user to",
+      type: "reference",
+      to: [{ type: "lossRelationship" }],
+      fieldset: "destination",
+      options: {
+        disableNew: true,
+      },
+      hidden: ({ document }) =>
+        !document?.lossRelationship &&
+        !!(document?.topic || document?.causeOfDeath || document?.url),
     }),
     defineField({
       name: "url",
@@ -53,7 +91,13 @@ export default defineType({
       description: "A relative path for the desired page",
       type: "url",
       fieldset: "destination",
-      hidden: ({ document }) => !!document?.category,
+      hidden: ({ document }) =>
+        !document?.url &&
+        !!(
+          document?.topic ||
+          document?.causeOfDeath ||
+          document?.lossRelationship
+        ),
       validation: (rule) =>
         rule
           .uri({ allowRelative: true, relativeOnly: true })

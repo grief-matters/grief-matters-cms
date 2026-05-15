@@ -41,7 +41,6 @@ import video from "./internetResourceDocumentSchemas/video";
 import webinar from "./internetResourceDocumentSchemas/webinar";
 
 import availability from "./objectSchemas/availability";
-import categoryPageLink from "./objectSchemas/categoryPageLink";
 import contactMethod from "./objectSchemas/contactMethod";
 import customResourceCollection from "./objectSchemas/customResourceCollection";
 import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
@@ -66,7 +65,6 @@ import telephoneNumber from "./objectSchemas/telephoneNumber";
 
 export const objectTypes = [
   availability,
-  categoryPageLink,
   contactMethod,
   customResourceCollection,
   featuredCrisisResource,

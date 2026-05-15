@@ -18,7 +18,7 @@ export default defineType({
     {
       name: "filters",
       title: "Resource Page Filters",
-      description: `The following options allow you to link to any kind of resource page. You must select at least one kind of filter. Any options that are left empty will return everything e.g. if you do not select a "category" then resources under ALL categories will be rendered`,
+      description: `The following options allow you to link to any kind of resource page. You must select at least one kind of filter. Any options that are left empty will return everything e.g. if you do not select a "topic" then resources under ALL topics will be rendered`,
     },
   ],
   fields: [
@@ -30,12 +30,36 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "category",
-      title: "Category",
+      name: "topic",
+      title: "Topic",
       description:
-        "The category of resources that will be shown on the linked page",
+        "The topic of resources that will be shown on the linked page",
       type: "reference",
-      to: [{ type: "category" }],
+      to: [{ type: "topic" }],
+      options: {
+        disableNew: true,
+      },
+      fieldset: "filters",
+    }),
+    defineField({
+      name: "causeOfDeath",
+      title: "Cause of Death",
+      description:
+        "The cause of death of resources that will be shown on the linked page",
+      type: "reference",
+      to: [{ type: "causeOfDeath" }],
+      options: {
+        disableNew: true,
+      },
+      fieldset: "filters",
+    }),
+    defineField({
+      name: "lossRelationship",
+      title: "Loss Relationship",
+      description:
+        "The loss relationship of resources that will be shown on the linked page",
+      type: "reference",
+      to: [{ type: "lossRelationship" }],
       options: {
         disableNew: true,
       },
@@ -82,12 +106,14 @@ export default defineType({
       }
 
       const hasLinkedContent =
-        typeof fields?.category !== "undefined" ||
+        typeof fields?.topic !== "undefined" ||
+        typeof fields?.causeOfDeath !== "undefined" ||
+        typeof fields?.lossRelationship !== "undefined" ||
         typeof fields?.type !== "undefined" ||
         typeof fields?.audience !== "undefined";
 
       return hasLinkedContent
         ? true
-        : "You must link to either a category, a resource type, or an audience";
+        : "You must link to at least one of: topic, cause of death, loss relationship, resource type, or audience";
     }),
 });
