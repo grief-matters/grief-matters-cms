@@ -28,6 +28,7 @@ import book from "./internetResourceDocumentSchemas/book";
 import community from "./internetResourceDocumentSchemas/community";
 import course from "./internetResourceDocumentSchemas/course";
 import forum from "./internetResourceDocumentSchemas/forum";
+import listicle from "./internetResourceDocumentSchemas/listicle";
 import memorial from "./internetResourceDocumentSchemas/memorial";
 import peerSupport from "./internetResourceDocumentSchemas/peerSupport";
 import podcast from "./internetResourceDocumentSchemas/podcast";
@@ -94,6 +95,7 @@ export const internetResourceDocumentTypes = [
   course,
   crisisResource,
   forum,
+  listicle,
   memorial,
   peerSupport,
   podcast,
