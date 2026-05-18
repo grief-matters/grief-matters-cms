@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity";
 import { BookIcon } from "@sanity/icons";
 
 import { createBaseInternetResourceSchema } from "../helpers";
+import audienceRoleField from "../fields/audienceRoleField";
 
 const base = createBaseInternetResourceSchema({
   name: "book",
@@ -15,6 +16,7 @@ const bookSchema = defineType({
 
   fields: [
     ...base.fields,
+    defineField({ group: "classification", ...audienceRoleField }),
     defineField({
       title: "Author",
       name: "author",

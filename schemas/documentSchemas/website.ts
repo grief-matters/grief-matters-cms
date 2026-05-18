@@ -5,6 +5,7 @@ import urlField from "../fields/urlField";
 import titleField from "../fields/titleField";
 import topicsField from "../fields/topicsField";
 import audiencesField from "../fields/audiencesField";
+import audienceRoleField from "../fields/audienceRoleField";
 import hasSpanishVersionField from "../fields/hasSpanishVersionField";
 import simpleDescriptionField from "../fields/simpleDescriptionField";
 import lossRelationshipsField from "../fields/lossRelationshipsField";
@@ -47,6 +48,7 @@ export default defineType({
       type: "image",
     }),
     audiencesField,
+    audienceRoleField,
     topicsField,
     lossRelationshipsField,
     causesOfDeathField,

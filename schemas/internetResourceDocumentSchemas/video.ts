@@ -1,7 +1,8 @@
 import { DocumentVideoIcon } from "@sanity/icons";
-import { defineType } from "sanity";
+import { defineField, defineType } from "sanity";
 
 import { createBaseInternetResourceSchema } from "../helpers";
+import audienceRoleField from "../fields/audienceRoleField";
 
 const base = createBaseInternetResourceSchema({
   name: "video",
@@ -12,6 +13,11 @@ const base = createBaseInternetResourceSchema({
 
 const videoSchema = defineType({
   ...base,
+
+  fields: [
+    ...base.fields,
+    defineField({ group: "classification", ...audienceRoleField }),
+  ],
 });
 
 export default videoSchema;

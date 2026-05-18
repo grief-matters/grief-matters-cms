@@ -1,7 +1,8 @@
-import { defineType } from "sanity";
+import { defineField, defineType } from "sanity";
 import { DocumentIcon } from "@sanity/icons";
 
 import { createBaseInternetResourceSchema } from "../helpers";
+import audienceRoleField from "../fields/audienceRoleField";
 import hasSpanishVersionField from "../fields/hasSpanishVersionField";
 
 const base = createBaseInternetResourceSchema({
@@ -16,6 +17,7 @@ const articleSchema = defineType({
 
   fields: [
     ...base.fields,
+    defineField({ group: "classification", ...audienceRoleField }),
     hasSpanishVersionField,
     // Future enhancement
     // defineField({

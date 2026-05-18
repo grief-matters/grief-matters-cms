@@ -1,7 +1,8 @@
 import { PresentationIcon } from "@sanity/icons";
-import { defineType } from "sanity";
+import { defineField, defineType } from "sanity";
 
 import { createBaseInternetResourceSchema } from "../helpers";
+import audienceRoleField from "../fields/audienceRoleField";
 
 const base = createBaseInternetResourceSchema({
   name: "webinar",
@@ -12,6 +13,11 @@ const base = createBaseInternetResourceSchema({
 
 const webinarSchema = defineType({
   ...base,
+
+  fields: [
+    ...base.fields,
+    defineField({ group: "classification", ...audienceRoleField }),
+  ],
 });
 
 export default webinarSchema;
