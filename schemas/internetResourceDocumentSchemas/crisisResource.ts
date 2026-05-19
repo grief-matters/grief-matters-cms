@@ -14,14 +14,6 @@ export default defineType({
   fields: [
     ...base.fields,
     defineField({
-      deprecated: { reason: "moved to source" },
-      type: "reference",
-      name: "website",
-      title: "Website",
-      description: "The source website for the crisis resource (if we have it)",
-      to: [{ type: "website" }],
-    }),
-    defineField({
       type: "array",
       name: "contactMethods",
       title: "Contact Methods",

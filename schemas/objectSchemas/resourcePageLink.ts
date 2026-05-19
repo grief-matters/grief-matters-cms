@@ -29,18 +29,18 @@ export default defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: "topic",
-      title: "Topic",
-      description:
-        "The topic of resources that will be shown on the linked page",
-      type: "reference",
-      to: [{ type: "topic" }],
-      options: {
-        disableNew: true,
-      },
-      fieldset: "filters",
-    }),
+    // defineField({
+    //   name: "topic",
+    //   title: "Topic",
+    //   description:
+    //     "The topic of resources that will be shown on the linked page",
+    //   type: "reference",
+    //   to: [{ type: "topic" }],
+    //   options: {
+    //     disableNew: true,
+    //   },
+    //   fieldset: "filters",
+    // }),
     defineField({
       name: "causeOfDeath",
       title: "Cause of Death",
@@ -79,25 +79,25 @@ export default defineType({
             title: startCase(resourceType),
           })),
           { value: "crisisResource", title: "Crisis Resource" },
-          {
-            value: "website",
-            title: "Website",
-          },
+          // {
+          //   value: "website",
+          //   title: "Website",
+          // },
         ],
       },
       fieldset: "filters",
     }),
-    defineField({
-      name: "audience",
-      title: "Audience",
-      description: "The specific audience that resources shown will apply to",
-      type: "reference",
-      to: [{ type: "audience" }],
-      options: {
-        disableNew: true,
-      },
-      fieldset: "filters",
-    }),
+    // defineField({
+    //   name: "audience",
+    //   title: "Audience",
+    //   description: "The specific audience that resources shown will apply to",
+    //   type: "reference",
+    //   to: [{ type: "audience" }],
+    //   options: {
+    //     disableNew: true,
+    //   },
+    //   fieldset: "filters",
+    // }),
   ],
   validation: (Rule) =>
     Rule.custom((fields) => {

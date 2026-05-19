@@ -39,24 +39,24 @@ export default defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: "topic",
-      title: "Topic",
-      description: "The topic page to take the user to",
-      type: "reference",
-      to: [{ type: "topic" }],
-      fieldset: "destination",
-      options: {
-        disableNew: true,
-      },
-      hidden: ({ document }) =>
-        !document?.topic &&
-        !!(
-          document?.causeOfDeath ||
-          document?.lossRelationship ||
-          document?.url
-        ),
-    }),
+    // defineField({
+    //   name: "topic",
+    //   title: "Topic",
+    //   description: "The topic page to take the user to",
+    //   type: "reference",
+    //   to: [{ type: "topic" }],
+    //   fieldset: "destination",
+    //   options: {
+    //     disableNew: true,
+    //   },
+    //   hidden: ({ document }) =>
+    //     !document?.topic &&
+    //     !!(
+    //       document?.causeOfDeath ||
+    //       document?.lossRelationship ||
+    //       document?.url
+    //     ),
+    // }),
     defineField({
       name: "causeOfDeath",
       title: "Cause of Death",

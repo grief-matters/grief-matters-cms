@@ -6,14 +6,14 @@ export default defineType({
   description: "Highlight a specific website to be shown on its own",
   title: "Featured Website",
   fields: [
-    defineField({
-      name: "resource",
-      title: "Website",
-      description: "Select the specific Website to be highlighted",
-      type: "reference",
-      to: [{ type: "website" }],
-      validation: (rule) => rule.required(),
-    }),
+    // defineField({
+    //   name: "resource",
+    //   title: "Website",
+    //   description: "Select the specific Website to be highlighted",
+    //   type: "reference",
+    //   to: [{ type: "website" }],
+    //   validation: (rule) => rule.required(),
+    // }),
     defineField({
       type: "boolean",
       name: "showLogo",

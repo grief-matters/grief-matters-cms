@@ -12,10 +12,10 @@ export default defineType({
       description: "Select individual websites to appear in this collection",
       type: "array",
       of: [
-        defineArrayMember({
-          type: "reference",
-          to: [{ type: "website" }],
-        }),
+        // defineArrayMember({
+        //   type: "reference",
+        //   to: [{ type: "website" }],
+        // }),
       ],
       validation: (Rule) => [Rule.min(1), Rule.unique()],
     }),
