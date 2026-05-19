@@ -1,7 +1,6 @@
 import type { ComponentType, ReactNode } from "react";
 import { defineField, defineType } from "sanity";
 
-import audiencesField from "./fields/audiencesField";
 import causesOfDeathField from "./fields/causesOfDeathField";
 import contentFunctionsField from "./fields/contentFunctionsField";
 import freeRegistrationField from "./fields/freeRegistrationField";
@@ -14,7 +13,6 @@ import skipLinkFetchField from "./fields/skipLinkFetchField";
 import titleField from "./fields/titleField";
 import emotionalStatesField from "./fields/emotionalStatesField";
 import urlField, { requiredUrlField } from "./fields/urlField";
-import websiteReferenceField from "./fields/websiteReferenceField";
 import requiredSimpleDescriptionField from "./fields/requiredSimpleDescriptionField";
 import themesField from "./fields/themesField";
 import sourceOrgField from "./fields/sourceOrgField";
@@ -97,11 +95,6 @@ export const createBaseInternetResourceSchema = ({
       }),
       sourceField,
       defineField({
-        deprecated: { reason: "replaced by source org" },
-        group: "attributes",
-        ...websiteReferenceField,
-      }),
-      defineField({
         group: "attributes",
         ...imageAssetField,
       }),
@@ -132,13 +125,6 @@ export const createBaseInternetResourceSchema = ({
       }),
       demographicsField,
       audienceRoleField,
-      defineField({
-        deprecated: {
-          reason: "replaced by demographics",
-        },
-        group: "classification",
-        ...audiencesField,
-      }),
       defineField({
         group: "classification",
         ...griefPhasesField,

@@ -1,4 +1,3 @@
-import audience from "./documentSchemas/audience";
 import causeOfDeath from "./documentSchemas/causeOfDeath";
 import contentBlock from "./documentSchemas/contentBlock";
 import contentFunction from "./documentSchemas/contentFunction";
@@ -22,7 +21,6 @@ import searchConfiguration from "./documentSchemas/searchConfiguration";
 import emotionalState from "./documentSchemas/emotionalState";
 import theme from "./documentSchemas/theme";
 import wdynrnEntry from "./documentSchemas/wdynrnEntry";
-import website from "./documentSchemas/website";
 
 import app from "./internetResourceDocumentSchemas/app";
 import article from "./internetResourceDocumentSchemas/article";
@@ -111,7 +109,6 @@ export const internetResourceDocumentTypes = [
   therapyResource,
   video,
   webinar,
-  website,
 ];
 
 export const documentTypes = [
@@ -137,7 +134,6 @@ export const classificationDocumentTypes = [
   griefType,
   emotionalState,
   contentFunction,
-  audience,
 ];
 
 export const singletonDocumentTypes = [organization, searchConfiguration];
