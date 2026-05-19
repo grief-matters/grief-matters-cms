@@ -23,6 +23,7 @@ import languagesField from "./fields/languagesField";
 import demographicsField from "./fields/demographicsField";
 import audienceRoleFieldDef from "./fields/audienceRoleField";
 import portableTextDescriptionField from "./fields/portableTextDescriptionField";
+import griefTypesField from "./fields/griefTypesField";
 
 export type CreateBaseInternetResourceParams = {
   name: string;
@@ -147,6 +148,10 @@ export const createBaseInternetResourceSchema = ({
       defineField({
         group: "classification",
         ...griefPhasesField,
+      }),
+      defineField({
+        group: "classification",
+        ...griefTypesField,
       }),
       defineField({
         group: "classification",
