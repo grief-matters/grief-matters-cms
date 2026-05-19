@@ -21,7 +21,6 @@ import resourceEvaluation from "./documentSchemas/resourceEvaluation";
 import searchConfiguration from "./documentSchemas/searchConfiguration";
 import emotionalState from "./documentSchemas/emotionalState";
 import theme from "./documentSchemas/theme";
-import topic from "./documentSchemas/topic";
 import wdynrnEntry from "./documentSchemas/wdynrnEntry";
 import website from "./documentSchemas/website";
 
@@ -139,7 +138,6 @@ export const classificationDocumentTypes = [
   emotionalState,
   contentFunction,
   audience,
-  topic,
 ];
 
 export const singletonDocumentTypes = [organization, searchConfiguration];

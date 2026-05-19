@@ -13,7 +13,6 @@ import searchAliasesField from "./fields/searchAliasesField";
 import skipLinkFetchField from "./fields/skipLinkFetchField";
 import titleField from "./fields/titleField";
 import emotionalStatesField from "./fields/emotionalStatesField";
-import topicsField from "./fields/topicsField";
 import urlField, { requiredUrlField } from "./fields/urlField";
 import websiteReferenceField from "./fields/websiteReferenceField";
 import requiredSimpleDescriptionField from "./fields/requiredSimpleDescriptionField";
@@ -126,11 +125,6 @@ export const createBaseInternetResourceSchema = ({
       defineField({
         group: "classification",
         ...causesOfDeathField,
-      }),
-      defineField({
-        deprecated: { reason: "replaced by themes" },
-        group: "classification",
-        ...topicsField,
       }),
       defineField({
         group: "classification",
