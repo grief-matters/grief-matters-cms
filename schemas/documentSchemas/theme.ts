@@ -10,12 +10,11 @@ import slugField from "../fields/slugField";
 import tagSearchAliasesField from "../fields/tagSearchAliasesField";
 import titleField from "../fields/titleField";
 
-const maxTopicDepth = 3;
+const maxThemeDepth = 3;
 
 export default defineType({
-  deprecated: { reason: "replaced by themes" },
-  name: "topic",
-  title: "Topic",
+  name: "theme",
+  title: "Theme",
   description:
     "A subject matter or theme covered by a resource (e.g. anger, self-care, funerals & memorials).",
   icon: BookmarkIcon,
@@ -36,7 +35,7 @@ export default defineType({
     defineField({
       ...titleField,
       description:
-        "The topic title. Used when this taxonomy is referenced in lists and navigation.",
+        "The theme title. Used when this taxonomy is referenced in lists and navigation.",
     }),
     defineField({
       title: "Display Title",
@@ -46,11 +45,11 @@ export default defineType({
         "A preferred display title. Used when displayed outside of lists (e.g. as a page heading).",
     }),
     defineField({
-      name: "parentTopic",
-      title: "Parent Topic",
+      name: "parentTheme",
+      title: "Parent Theme",
       type: "reference",
-      description: `The broader topic this one falls under (e.g. 'guilt' has 'emotional responses to grief' as its parent). Topics form a strict tree with a maximum of ${maxTopicDepth} levels. If you're not seeing a topic in the list that you expect check the Topic tree in Management Tools`,
-      to: [{ type: "topic" }],
+      description: `The broader theme this one falls under (e.g. 'guilt' has 'emotional responses to grief' as its parent). Topics form a strict tree with a maximum of ${maxThemeDepth} levels. If you're not seeing a theme in the list that you expect check the Theme tree in Management Tools`,
+      to: [{ type: "theme" }],
       options: {
         filter: ({ document }) => {
           if (!document?._id) {
@@ -59,7 +58,7 @@ export default defineType({
           const selfId = document._id.replace(/^drafts\./, "");
           return {
             filter:
-              "_id != $selfId && !defined(parentTopic->parentTopic) && (!defined(parentTopic) || parentTopic._ref != $selfId)",
+              "_id != $selfId && !defined(parentTheme->parentTheme) && (!defined(parentTheme) || parentTheme._ref != $selfId)",
             params: { selfId },
           };
         },
@@ -75,18 +74,18 @@ export default defineType({
             return true;
           }
           if (ref === selfId) {
-            return "A topic cannot be its own parent";
+            return "A theme cannot be its own parent";
           }
 
           const client = context.getClient({
             apiVersion: process.env.SANITY_STUDIO_API_VERSION!,
           });
           const parentParentRef = await client.fetch<string | null>(
-            `*[_id == $ref][0].parentTopic._ref`,
+            `*[_id == $ref][0].parentTheme._ref`,
             { ref }
           );
           if (parentParentRef === selfId) {
-            return "Cycle detected — this would make the topic its own ancestor";
+            return "Cycle detected — this would make the theme its own ancestor";
           }
           return true;
         }),
@@ -109,13 +108,13 @@ export default defineType({
           }>(
             `{
               "parentDepth": select(
-                defined(*[_id == $ref][0].parentTopic->parentTopic) => 2,
-                defined(*[_id == $ref][0].parentTopic) => 1,
+                defined(*[_id == $ref][0].parentTheme->parentTheme) => 2,
+                defined(*[_id == $ref][0].parentTheme) => 1,
                 0
               ),
               "subtreeDepth": select(
-                count(*[_type == "topic" && parentTopic->parentTopic._ref == $selfId]) > 0 => 2,
-                count(*[_type == "topic" && parentTopic._ref == $selfId]) > 0 => 1,
+                count(*[_type == "theme" && parentTheme->parentTheme._ref == $selfId]) > 0 => 2,
+                count(*[_type == "theme" && parentTheme._ref == $selfId]) > 0 => 1,
                 0
               )
             }`,
@@ -123,14 +122,14 @@ export default defineType({
           );
 
           const newOwnDepth = parentDepth + 1;
-          if (newOwnDepth + subtreeDepth >= maxTopicDepth) {
+          if (newOwnDepth + subtreeDepth >= maxThemeDepth) {
             const subtreePhrase =
               subtreeDepth === 0
-                ? "this topic has no descendants"
-                : `this topic's subtree extends ${subtreeDepth} level${
+                ? "this theme has no descendants"
+                : `this theme's subtree extends ${subtreeDepth} level${
                     subtreeDepth === 1 ? "" : "s"
                   } below`;
-            return `Setting this parent would exceed the ${maxTopicDepth}-level depth cap (parent is at depth ${parentDepth}, ${subtreePhrase})`;
+            return `Setting this parent would exceed the ${maxThemeDepth}-level depth cap (parent is at depth ${parentDepth}, ${subtreePhrase})`;
           }
           return true;
         }),
@@ -152,17 +151,17 @@ export default defineType({
     defineField({
       ...portableTextDescriptionField,
       description:
-        "A longer description for this topic (will appear on its page as lead-in text).",
+        "A longer description for this theme (will appear on its page as lead-in text).",
     }),
     defineField({
       name: "coverImageRef",
       title: "Cover Image",
       type: "reference",
       to: [{ type: "imageAsset" }],
-      description: "A cover image to associate with this topic.",
+      description: "A cover image to associate with this theme.",
     }),
     tagSearchAliasesField,
-    featuredResourcesArrayField({ tagFieldName: "topics" }),
-    secondaryFeaturedResourcesArrayField({ tagFieldName: "topics" }),
+    featuredResourcesArrayField({ tagFieldName: "themes" }),
+    secondaryFeaturedResourcesArrayField({ tagFieldName: "themes" }),
   ],
 });

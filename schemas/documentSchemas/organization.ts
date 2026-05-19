@@ -3,7 +3,7 @@ import { HomeIcon } from "@sanity/icons";
 
 export default defineType({
   name: "organization",
-  title: "Organization",
+  title: "Why Grief Matters Org Info",
   type: "document",
   icon: HomeIcon,
   fields: [

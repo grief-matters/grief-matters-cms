@@ -12,7 +12,7 @@ import titleField from "../fields/titleField";
 
 export default defineType({
   name: "lossRelationship",
-  title: "Loss Relationship",
+  title: "Primary Loss Type",
   description:
     "The relationship to the person, being, or aspect of self that has been lost (e.g. parent, spouse, pet).",
   icon: UsersIcon,
@@ -33,7 +33,7 @@ export default defineType({
     defineField({
       ...titleField,
       description:
-        "The loss relationship title. Used when this taxonomy is referenced in lists and navigation.",
+        "The Primary Loss Type title. Used when this taxonomy is referenced in lists and navigation.",
     }),
     defineField({
       title: "Display Title",
@@ -58,14 +58,14 @@ export default defineType({
     defineField({
       ...portableTextDescriptionField,
       description:
-        "A longer description for this loss relationship (will appear on its page as lead-in text).",
+        "A longer description for this Primary Loss Type (will appear on its page as lead-in text).",
     }),
     defineField({
       name: "coverImageRef",
       title: "Cover Image",
       type: "reference",
       to: [{ type: "imageAsset" }],
-      description: "A cover image to associate with this loss relationship.",
+      description: "A cover image to associate with this Primary Loss Type.",
     }),
     tagSearchAliasesField,
     featuredResourcesArrayField({ tagFieldName: "lossRelationships" }),

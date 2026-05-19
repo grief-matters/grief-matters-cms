@@ -3,16 +3,18 @@ import { TagsIcon } from "@sanity/icons";
 import imageAssetField from "../fields/imageAssetField";
 import slugField from "../fields/slugField";
 import tagSearchAliasesField from "../fields/tagSearchAliasesField";
+import requiredSimpleDescriptionField from "../fields/requiredSimpleDescriptionField";
 
 export default defineType({
-  deprecated: { reason: "replaced by demographic" },
-  name: "audience",
-  title: "Audience",
+  name: "demographic",
+  title: "Demographic",
+  description:
+    "A demographic describes a specific identity or community of people",
   icon: TagsIcon,
   type: "document",
   fields: [
     defineField({
-      title: "Audience Name",
+      title: "Demographic Name",
       name: "name",
       type: "string",
       validation: (rule) => rule.required(),
@@ -23,11 +25,7 @@ export default defineType({
         source: "name",
       },
     },
-    defineField({
-      title: "Description",
-      name: "description",
-      type: "text",
-    }),
+    requiredSimpleDescriptionField,
     tagSearchAliasesField,
     defineField({
       name: "underserved",

@@ -8,6 +8,7 @@ const base = createBaseInternetResourceSchema({
   title: "App",
   icon: MobileDeviceIcon,
   isUrlRequired: false,
+  includeAudienceRole: false,
 });
 
 // TODO - we'll need to migrate the 'name' field to 'title'

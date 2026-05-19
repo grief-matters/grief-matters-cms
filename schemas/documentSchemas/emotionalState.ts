@@ -4,8 +4,8 @@ import slugField from "../fields/slugField";
 import tagSearchAliasesField from "../fields/tagSearchAliasesField";
 
 export default defineType({
-  name: "tone",
-  title: "Tone",
+  name: "emotionalState",
+  title: "Emotional State",
   icon: SparkleIcon,
   type: "document",
   fields: [
@@ -19,7 +19,6 @@ export default defineType({
     defineField({
       title: "Description",
       name: "description",
-      description: "The emotional register or resonance the resource conveys.",
       type: "text",
     }),
     tagSearchAliasesField,

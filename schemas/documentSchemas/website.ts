@@ -5,16 +5,38 @@ import urlField from "../fields/urlField";
 import titleField from "../fields/titleField";
 import topicsField from "../fields/topicsField";
 import audiencesField from "../fields/audiencesField";
+import audienceRoleField from "../fields/audienceRoleField";
 import hasSpanishVersionField from "../fields/hasSpanishVersionField";
 import simpleDescriptionField from "../fields/simpleDescriptionField";
 import lossRelationshipsField from "../fields/lossRelationshipsField";
 import causesOfDeathField from "../fields/causesOfDeathField";
 
 export default defineType({
+  deprecated: {
+    reason: "Too abstract, to be replaced by 'external org'",
+  },
   name: "website",
   title: "Website",
   type: "document",
   icon: EarthGlobeIcon,
+  groups: [
+    {
+      name: "attributes",
+      title: "Resource Attributes",
+    },
+    {
+      name: "classification",
+      title: "Classification",
+    },
+    {
+      name: "search",
+      title: "Search & SEO",
+    },
+    {
+      name: "access",
+      title: "Access Restrictions",
+    },
+  ],
   fields: [
     titleField,
     simpleDescriptionField,
@@ -47,6 +69,7 @@ export default defineType({
       type: "image",
     }),
     audiencesField,
+    audienceRoleField,
     topicsField,
     lossRelationshipsField,
     causesOfDeathField,

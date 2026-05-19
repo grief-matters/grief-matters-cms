@@ -1,15 +1,15 @@
 import { defineArrayMember, defineField } from "sanity";
 
 export default defineField({
-  deprecated: { reason: "replaced by demographic" },
-  name: "audiences",
-  title: "Audiences",
+  group: "classification",
+  name: "demographics",
+  title: "Demographics",
   type: "array",
-  description: "Specific audiences that this resource will apply to",
+  description: "Specific demographics that this resource is targeted towards",
   of: [
     defineArrayMember({
       type: "reference",
-      to: [{ type: "audience" }],
+      to: [{ type: "demographic" }],
     }),
   ],
   validation: (Rule) => Rule.unique(),

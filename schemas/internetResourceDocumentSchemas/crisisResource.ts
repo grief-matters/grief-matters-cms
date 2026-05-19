@@ -1,25 +1,26 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import audiencesField from "../fields/audiencesField";
-import portableTextDescriptionField from "../fields/portableTextDescriptionField";
-import titleField from "../fields/titleField";
-import urlField from "../fields/urlField";
+import { createBaseInternetResourceSchema } from "../helpers";
 
-export default defineType({
-  type: "document",
+const base = createBaseInternetResourceSchema({
   name: "crisisResource",
   title: "Crisis Resource",
+  includeAudienceRole: false,
+  includeRichTextDescription: true,
+  isUrlRequired: false,
+});
+
+export default defineType({
+  ...base,
   fields: [
-    titleField,
-    portableTextDescriptionField,
-    urlField,
+    ...base.fields,
     defineField({
+      deprecated: { reason: "moved to source" },
       type: "reference",
       name: "website",
       title: "Website",
       description: "The source website for the crisis resource (if we have it)",
       to: [{ type: "website" }],
     }),
-    audiencesField,
     defineField({
       type: "array",
       name: "contactMethods",
@@ -34,15 +35,6 @@ export default defineType({
       title: "Logo",
       name: "logo",
       type: "image",
-    }),
-    defineField({
-      type: "array",
-      name: "languages",
-      title: "Available Languages",
-      of: [defineArrayMember({ type: "string" })],
-      options: {
-        list: ["English", "Spanish"],
-      },
     }),
   ],
 });

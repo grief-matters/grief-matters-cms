@@ -8,7 +8,6 @@ const base = createBaseInternetResourceSchema({
   name: "supportGroup",
   title: "Support Group",
   icon: UsersIcon,
-  isUrlRequired: true,
 });
 
 const supportGroupSchema = defineType({

@@ -7,7 +7,6 @@ const base = createBaseInternetResourceSchema({
   name: "podcastEpisode",
   title: "Podcast Episode",
   icon: PlayIcon,
-  isUrlRequired: true,
 });
 
 const podcastEpSchema = defineType({

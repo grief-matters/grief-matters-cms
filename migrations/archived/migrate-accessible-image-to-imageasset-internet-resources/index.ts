@@ -6,7 +6,7 @@ import {
   patch,
   set,
 } from "sanity/migrate";
-import { INTERNET_RESOURCE_TYPES } from "../../constants";
+import { INTERNET_RESOURCE_TYPES } from "../../../constants";
 
 type AccessibleImageValue = {
   image?: unknown;

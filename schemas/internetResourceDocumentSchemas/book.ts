@@ -7,7 +7,6 @@ const base = createBaseInternetResourceSchema({
   name: "book",
   title: "Book",
   icon: BookIcon,
-  isUrlRequired: true,
 });
 
 const bookSchema = defineType({

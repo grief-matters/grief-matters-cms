@@ -10,25 +10,52 @@ import imageAssetField from "./fields/imageAssetField";
 import lossRelationshipsField from "./fields/lossRelationshipsField";
 import paywallField from "./fields/paywallField";
 import searchAliasesField from "./fields/searchAliasesField";
-import simpleDescriptionField from "./fields/simpleDescriptionField";
 import skipLinkFetchField from "./fields/skipLinkFetchField";
 import titleField from "./fields/titleField";
-import tonesField from "./fields/tonesField";
+import emotionalStatesField from "./fields/emotionalStatesField";
 import topicsField from "./fields/topicsField";
 import urlField, { requiredUrlField } from "./fields/urlField";
 import websiteReferenceField from "./fields/websiteReferenceField";
+import requiredSimpleDescriptionField from "./fields/requiredSimpleDescriptionField";
+import themesField from "./fields/themesField";
+import sourceOrgField from "./fields/sourceOrgField";
+import languagesField from "./fields/languagesField";
+import demographicsField from "./fields/demographicsField";
+import audienceRoleFieldDef from "./fields/audienceRoleField";
+import portableTextDescriptionField from "./fields/portableTextDescriptionField";
 
 export type CreateBaseInternetResourceParams = {
   name: string;
   title: string;
-  isUrlRequired: boolean;
+  isUrlRequired?: boolean;
+  includeSource?: boolean;
+  includeAudienceRole?: boolean;
+  includeRichTextDescription?: boolean;
   icon?: ComponentType | ReactNode;
 };
 
-export const createBaseInternetResourceSchema = (
-  params: CreateBaseInternetResourceParams
-) => {
-  const urlF = params.isUrlRequired ? requiredUrlField : urlField;
+export const createBaseInternetResourceSchema = ({
+  isUrlRequired = true,
+  includeSource = true,
+  includeAudienceRole = true,
+  includeRichTextDescription = false,
+  ...params
+}: CreateBaseInternetResourceParams) => {
+  const urlF = isUrlRequired ? requiredUrlField : urlField;
+
+  const sourceField = includeSource
+    ? defineField({
+        group: "attributes",
+        ...sourceOrgField,
+      })
+    : null;
+
+  const audienceRoleField = includeAudienceRole
+    ? defineField({
+        group: "classification",
+        ...audienceRoleFieldDef,
+      })
+    : null;
 
   return defineType({
     type: "document",
@@ -48,6 +75,10 @@ export const createBaseInternetResourceSchema = (
         name: "search",
         title: "Search & SEO",
       },
+      {
+        name: "access",
+        title: "Access Restrictions",
+      },
     ],
     fields: [
       defineField({
@@ -56,13 +87,17 @@ export const createBaseInternetResourceSchema = (
       }),
       defineField({
         group: "attributes",
-        ...simpleDescriptionField,
+        ...(includeRichTextDescription
+          ? portableTextDescriptionField
+          : requiredSimpleDescriptionField),
       }),
       defineField({
         group: "attributes",
         ...urlF,
       }),
+      sourceField,
       defineField({
+        deprecated: { reason: "replaced by source org" },
         group: "attributes",
         ...websiteReferenceField,
       }),
@@ -70,16 +105,17 @@ export const createBaseInternetResourceSchema = (
         group: "attributes",
         ...imageAssetField,
       }),
+      languagesField,
       defineField({
-        group: "attributes",
+        group: "access",
         ...skipLinkFetchField,
       }),
       defineField({
-        group: "attributes",
+        group: "access",
         ...paywallField,
       }),
       defineField({
-        group: "attributes",
+        group: "access",
         ...freeRegistrationField,
       }),
       defineField({
@@ -91,10 +127,20 @@ export const createBaseInternetResourceSchema = (
         ...causesOfDeathField,
       }),
       defineField({
+        deprecated: { reason: "replaced by themes" },
         group: "classification",
         ...topicsField,
       }),
       defineField({
+        group: "classification",
+        ...themesField,
+      }),
+      demographicsField,
+      audienceRoleField,
+      defineField({
+        deprecated: {
+          reason: "replaced by demographics",
+        },
         group: "classification",
         ...audiencesField,
       }),
@@ -108,13 +154,12 @@ export const createBaseInternetResourceSchema = (
       }),
       defineField({
         group: "classification",
-        ...tonesField,
+        ...emotionalStatesField,
       }),
-
       defineField({
         group: "search",
         ...searchAliasesField,
       }),
-    ],
+    ].filter((x) => x !== null),
   });
 };
