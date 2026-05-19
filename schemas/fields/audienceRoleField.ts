@@ -4,6 +4,7 @@ export default defineField({
   name: "audienceRole",
   title: "Audience Role",
   type: "array",
+  group: "classification",
   description:
     "Whose lens the resource is produced for: a bereaved person seeking help for themselves, a supporter helping someone else who is grieving, or a professional working with bereaved clients. Typically a single value.",
   of: [{ type: "string" }],

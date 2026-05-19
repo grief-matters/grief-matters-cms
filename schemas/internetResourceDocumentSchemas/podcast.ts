@@ -2,7 +2,6 @@ import { defineField, defineType } from "sanity";
 import { PlayIcon } from "@sanity/icons";
 
 import { createBaseInternetResourceSchema } from "../helpers";
-import audienceRoleField from "../fields/audienceRoleField";
 
 const base = createBaseInternetResourceSchema({
   name: "podcast",
@@ -17,7 +16,6 @@ const podcastSchema = defineType({
 
   fields: [
     ...base.fields,
-    defineField({ group: "classification", ...audienceRoleField }),
     defineField({
       type: "url",
       name: "spotifyUrl",

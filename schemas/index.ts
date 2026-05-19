@@ -3,10 +3,13 @@ import causeOfDeath from "./documentSchemas/causeOfDeath";
 import contentBlock from "./documentSchemas/contentBlock";
 import contentFunction from "./documentSchemas/contentFunction";
 import contentGroup from "./documentSchemas/contentGroup";
-import crisisResource from "./documentSchemas/crisisResource";
+import crisisResource from "./internetResourceDocumentSchemas/crisisResource";
+import demographic from "./documentSchemas/demographic";
 import endorsement from "./documentSchemas/endorsement";
+
 import form from "./documentSchemas/form";
 import griefPhase from "./documentSchemas/griefPhase";
+import griefType from "./documentSchemas/griefType";
 import imageAsset from "./documentSchemas/imageAsset";
 import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
@@ -16,7 +19,8 @@ import person from "./documentSchemas/person";
 import personGroup from "./documentSchemas/personGroup";
 import resourceEvaluation from "./documentSchemas/resourceEvaluation";
 import searchConfiguration from "./documentSchemas/searchConfiguration";
-import tone from "./documentSchemas/tone";
+import emotionalState from "./documentSchemas/emotionalState";
+import theme from "./documentSchemas/theme";
 import topic from "./documentSchemas/topic";
 import wdynrnEntry from "./documentSchemas/wdynrnEntry";
 import website from "./documentSchemas/website";
@@ -27,6 +31,7 @@ import blog from "./internetResourceDocumentSchemas/blog";
 import book from "./internetResourceDocumentSchemas/book";
 import community from "./internetResourceDocumentSchemas/community";
 import course from "./internetResourceDocumentSchemas/course";
+import externalOrg from "./internetResourceDocumentSchemas/externalOrg";
 import forum from "./internetResourceDocumentSchemas/forum";
 import listicle from "./internetResourceDocumentSchemas/listicle";
 import memorial from "./internetResourceDocumentSchemas/memorial";
@@ -94,6 +99,7 @@ export const internetResourceDocumentTypes = [
   community,
   course,
   crisisResource,
+  externalOrg,
   forum,
   listicle,
   memorial,
@@ -124,12 +130,15 @@ export const documentTypes = [
 ];
 
 export const classificationDocumentTypes = [
-  audience,
-  causeOfDeath,
-  contentFunction,
-  griefPhase,
   lossRelationship,
-  tone,
+  causeOfDeath,
+  theme,
+  demographic,
+  griefPhase,
+  griefType,
+  emotionalState,
+  contentFunction,
+  audience,
   topic,
 ];
 

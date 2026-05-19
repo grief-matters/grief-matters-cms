@@ -61,6 +61,19 @@ export default defineType({
         "A longer description for this cause of death (will appear on its page as lead-in text).",
     }),
     defineField({
+      name: "causeCategory",
+      title: "Cause Category",
+      type: "array",
+      description: "Category of cause of death",
+      of: [{ type: "string" }],
+      options: {
+        list: [
+          { title: "Illness", value: "illness" },
+          { title: "Sudden, Traumatic", value: "traumatic" },
+        ],
+      },
+    }),
+    defineField({
       name: "coverImageRef",
       title: "Cover Image",
       type: "reference",

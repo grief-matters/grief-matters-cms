@@ -4,8 +4,8 @@ import slugField from "../fields/slugField";
 import tagSearchAliasesField from "../fields/tagSearchAliasesField";
 
 export default defineType({
-  name: "griefPhase",
-  title: "Grief Phase",
+  name: "griefType",
+  title: "Grief Type",
   icon: ClockIcon,
   type: "document",
   fields: [
@@ -20,7 +20,7 @@ export default defineType({
       title: "Description",
       name: "description",
       description:
-        "When does this phase apply? Cite the framework (e.g. Stroebe & Schut, Neimeyer, Shear) if useful.",
+        "A description for the type of grief that will be useful to editors when tagging resources",
       type: "text",
     }),
     tagSearchAliasesField,

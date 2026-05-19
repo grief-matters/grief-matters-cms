@@ -12,10 +12,31 @@ import lossRelationshipsField from "../fields/lossRelationshipsField";
 import causesOfDeathField from "../fields/causesOfDeathField";
 
 export default defineType({
+  deprecated: {
+    reason: "Too abstract, to be replaced by 'external org'",
+  },
   name: "website",
   title: "Website",
   type: "document",
   icon: EarthGlobeIcon,
+  groups: [
+    {
+      name: "attributes",
+      title: "Resource Attributes",
+    },
+    {
+      name: "classification",
+      title: "Classification",
+    },
+    {
+      name: "search",
+      title: "Search & SEO",
+    },
+    {
+      name: "access",
+      title: "Access Restrictions",
+    },
+  ],
   fields: [
     titleField,
     simpleDescriptionField,

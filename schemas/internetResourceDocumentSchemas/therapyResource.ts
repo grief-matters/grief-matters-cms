@@ -3,13 +3,11 @@ import { UsersIcon } from "@sanity/icons";
 
 import { createBaseInternetResourceSchema } from "../helpers";
 import supportFormatField from "../fields/supportFormatField";
-import hasSpanishVersionField from "../fields/hasSpanishVersionField";
 
 const base = createBaseInternetResourceSchema({
   name: "therapyResource",
   title: "Therapy Resource",
   icon: UsersIcon,
-  isUrlRequired: true,
 });
 
 const therapyResourceSchema = defineType({
@@ -24,7 +22,6 @@ const therapyResourceSchema = defineType({
       description: "Is this resource suitable for budget conscious users.",
       initialValue: false,
     }),
-    hasSpanishVersionField,
   ],
 });
 

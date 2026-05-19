@@ -7,6 +7,7 @@ export default defineField({
   description: `A simple text description field. Avoid adding links and other 'Rich Text' elements.`,
   rows: 5,
   validation: (rule) => [
+    rule.required(),
     rule
       .max(200)
       .warning(
