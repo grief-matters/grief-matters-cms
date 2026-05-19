@@ -45,7 +45,7 @@ const tagTypes = [
   { type: "lossRelationship", field: "lossRelationships" },
   { type: "causeOfDeath", field: "causesOfDeath" },
   { type: "topic", field: "topics" },
-  { type: "audience", field: "audiences" },
+  { type: "demographic", field: "demographics" },
   { type: "griefPhase", field: "griefPhases" },
   { type: "contentFunction", field: "contentFunctions" },
   { type: "tone", field: "tones" },
