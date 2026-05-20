@@ -34,7 +34,7 @@ const listicleSchema = defineType({
           { value: "supportGroup", title: "Support Group" },
           { value: "therapyResource", title: "Therapy Resource" },
           { value: "video", title: "Video" },
-          { value: "website", title: "Website" },
+          { value: "externalOrg", title: "External Org" },
           { value: "mixed", title: "Mixed" },
         ],
       },
