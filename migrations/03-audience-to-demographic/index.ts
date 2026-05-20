@@ -1,10 +1,12 @@
 import { createIfNotExists, defineMigration } from "sanity/migrate";
 
+import { v4 as uuid } from "uuid";
+
 type SlugValue = { _type: "slug"; current: string };
 
 export default defineMigration({
-  title: "Create 'audience' docs from existing 'population' docs",
-  documentTypes: ["population"],
+  title: "Create 'demographic' docs from existing 'audience' docs",
+  documentTypes: ["audience"],
   filter: "defined(slug.current)",
 
   migrate: {
@@ -16,15 +18,12 @@ export default defineMigration({
 
       const name = doc.name as string | undefined;
       if (!name) {
-        console.warn(
-          `[create-audiences-from-populations] population ${doc._id} has slug "${slug}" but no name — skipping`
-        );
         return [];
       }
 
       const newDoc: Record<string, unknown> = {
-        _id: `audience-${slug}`,
-        _type: "audience",
+        _id: uuid(),
+        _type: "demographic",
         name,
         slug: doc.slug as SlugValue,
       };
@@ -35,8 +34,8 @@ export default defineMigration({
       if (typeof doc.underserved === "boolean") {
         newDoc.underserved = doc.underserved;
       }
-      if (doc.image && typeof doc.image === "object") {
-        newDoc.image = doc.image;
+      if (doc.imageRef) {
+        newDoc.imageRef = doc.imageRef;
       }
 
       return [
