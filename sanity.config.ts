@@ -9,7 +9,6 @@ import {
   schemaTypes,
   singletonDocumentTypes,
 } from "./schemas";
-import { ConvertAction } from "./actions";
 
 const singletonTypes: Set<string> = new Set([
   ...singletonDocumentTypes.map((t) => t.name),
@@ -50,7 +49,7 @@ export default defineConfig({
         : prev;
 
       return internetResourceTypes.has(context.schemaType)
-        ? ([...nonSingletonActions, ConvertAction] as DocumentActionComponent[])
+        ? ([...nonSingletonActions] as DocumentActionComponent[])
         : nonSingletonActions;
     },
   },
