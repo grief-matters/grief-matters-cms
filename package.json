@@ -9,7 +9,6 @@
     "worker-dev": "npm run build && npx wrangler dev",
     "start": "wrangler types && sanity start",
     "build": "wrangler types && sanity build",
-    "mock-api": "npx tsx worker/mock-server.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write '**/*.{ts,tsx,css,json,md}'",
@@ -21,6 +20,7 @@
     "sanity"
   ],
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.97.1",
     "@sanity/client": "7.20.0",
     "@sanity/icons": "3.7.4",
     "@sanity/ui": "3.1.14",
@@ -37,9 +37,11 @@
     "react-markdown": "^10.1.0",
     "react-time-picker": "8.0.2",
     "remark-gfm": "^4.0.1",
+    "robots-parser": "^3.0.1",
     "sanity": "5.18.0",
     "sanity-plugin-utils": "1.8.0",
-    "styled-components": "6.3.12"
+    "styled-components": "6.3.12",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@sanity/cli": "6.2.1",
