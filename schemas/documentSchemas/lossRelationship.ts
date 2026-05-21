@@ -49,6 +49,7 @@ export default defineType({
       description:
         "A short description that usually appears close to the header. Keep it short and punchy!",
       validation: (Rule) => [
+        Rule.required(),
         Rule.max(255).warning(
           `This description is a bit too long. Use the main "Description" field for a longer explanation.`
         ),

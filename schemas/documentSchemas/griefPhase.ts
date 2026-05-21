@@ -22,6 +22,10 @@ export default defineType({
       description:
         "When does this phase apply? Cite the framework (e.g. Stroebe & Schut, Neimeyer, Shear) if useful.",
       type: "text",
+      validation: (rule) => [
+        rule.required(),
+        rule.max(255).warning("This description is a bit long"),
+      ],
     }),
     tagSearchAliasesField,
   ],

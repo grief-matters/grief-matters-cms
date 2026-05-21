@@ -20,6 +20,10 @@ export default defineType({
       title: "Description",
       name: "description",
       type: "text",
+      validation: (rule) => [
+        rule.required(),
+        rule.max(255).warning("This description is a bit long"),
+      ],
     }),
     tagSearchAliasesField,
   ],

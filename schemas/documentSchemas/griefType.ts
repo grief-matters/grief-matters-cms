@@ -22,6 +22,10 @@ export default defineType({
       description:
         "A description for the type of grief that will be useful to editors when tagging resources",
       type: "text",
+      validation: (rule) => [
+        rule.required(),
+        rule.max(255).warning("This description is a bit long"),
+      ],
     }),
     tagSearchAliasesField,
   ],
