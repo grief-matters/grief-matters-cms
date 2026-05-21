@@ -19,7 +19,6 @@ import sourceOrgField from "./fields/sourceOrgField";
 import languagesField from "./fields/languagesField";
 import demographicsField from "./fields/demographicsField";
 import audienceRoleFieldDef from "./fields/audienceRoleField";
-import portableTextDescriptionField from "./fields/portableTextDescriptionField";
 import griefTypesField from "./fields/griefTypesField";
 
 export type CreateBaseInternetResourceParams = {
@@ -28,7 +27,6 @@ export type CreateBaseInternetResourceParams = {
   isUrlRequired?: boolean;
   includeSource?: boolean;
   includeAudienceRole?: boolean;
-  includeRichTextDescription?: boolean;
   icon?: ComponentType | ReactNode;
 };
 
@@ -36,7 +34,6 @@ export const createBaseInternetResourceSchema = ({
   isUrlRequired = true,
   includeSource = true,
   includeAudienceRole = true,
-  includeRichTextDescription = false,
   ...params
 }: CreateBaseInternetResourceParams) => {
   const urlF = isUrlRequired ? requiredUrlField : urlField;
@@ -85,9 +82,7 @@ export const createBaseInternetResourceSchema = ({
       }),
       defineField({
         group: "attributes",
-        ...(includeRichTextDescription
-          ? portableTextDescriptionField
-          : requiredSimpleDescriptionField),
+        ...requiredSimpleDescriptionField,
       }),
       defineField({
         group: "attributes",
