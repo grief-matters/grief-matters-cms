@@ -36,7 +36,7 @@ export default defineConfig({
     types: schemaTypes,
     templates: (templates) => {
       const nonSingletonTemplates = templates.filter(
-        ({ schemaType }) => !singletonTypes.has(schemaType)
+        ({ schemaType }) => !singletonTypes.has(schemaType),
       );
 
       return [...nonSingletonTemplates];

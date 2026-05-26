@@ -8,5 +8,5 @@ export default defineType(
     name: "story",
     title: "Story",
     icon: DocumentTextIcon,
-  })
+  }),
 );

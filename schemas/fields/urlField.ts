@@ -1,10 +1,10 @@
-import { CustomValidator, defineField } from "sanity";
+import { type CustomValidator, defineField } from "sanity";
 import ResourceUrlInput from "../../components/ResourceUrlInput";
 import { INTERNET_RESOURCE_TYPES } from "../../constants";
 
 const isUniqueUrl: CustomValidator<string | undefined> = async (
   url,
-  context
+  context,
 ) => {
   if (!url) {
     return true;

@@ -18,7 +18,7 @@ export async function handleAiContentReview(env: Env) {
   const resourceDocs = await getAuditableDocsByTypes(
     env,
     [...INTERNET_RESOURCE_TYPES],
-    3
+    3,
   );
   console.log(resourceDocs);
 
@@ -27,7 +27,7 @@ export async function handleAiContentReview(env: Env) {
 
   // Determine audit actions
   const settledAuditActions = await Promise.allSettled(
-    resourceDocs.map((doc) => getAuditActionForDoc(env, doc))
+    resourceDocs.map((doc) => getAuditActionForDoc(env, doc)),
   );
 
   const docsForAiReview: Array<{ doc: SanityDocument; content: string }> = [];
@@ -63,8 +63,8 @@ export async function handleAiContentReview(env: Env) {
 
   const settledAiReviews = await Promise.allSettled(
     docsForAiReview.map((doc) =>
-      getAiReview(env, doc.doc, doc.content, taxonomyDocs)
-    )
+      getAiReview(env, doc.doc, doc.content, taxonomyDocs),
+    ),
   );
 
   for (let i = 0; i < settledAiReviews.length; i++) {
@@ -111,7 +111,7 @@ export async function handleAiContentReview(env: Env) {
   const transaction = sanityClient.transaction();
 
   Object.entries(docPatches).forEach(([docId, patch]) =>
-    transaction.patch(docId, (p) => p.set(patch))
+    transaction.patch(docId, (p) => p.set(patch)),
   );
 
   // todo - we're failing silently if a draft already exists - is this correct?

@@ -51,7 +51,7 @@ export const featuredResourcesArrayField = ({ tagFieldName }: Params) =>
             | undefined) ?? [];
         const secondaryRefs = new Set(secondary.map((r) => r._ref));
         const overlap = (resources as { _ref: string }[]).filter((r) =>
-          secondaryRefs.has(r._ref)
+          secondaryRefs.has(r._ref),
         );
 
         return overlap.length > 0
@@ -81,7 +81,7 @@ export const featuredResourcesArrayField = ({ tagFieldName }: Params) =>
 
             return resourcesWithoutImages.length > 0
               ? `"${resourcesWithoutImages.join(
-                  `", "`
+                  `", "`,
                 )}" do not have Images - fallbacks will be used`
               : true;
           }
@@ -128,7 +128,7 @@ export const secondaryFeaturedResourcesArrayField = ({
             | undefined) ?? [];
         const featuredRefs = new Set(featured.map((r) => r._ref));
         const overlap = (resources as { _ref: string }[]).filter((r) =>
-          featuredRefs.has(r._ref)
+          featuredRefs.has(r._ref),
         );
 
         return overlap.length > 0

@@ -54,7 +54,7 @@ const ResourceTypeOverview = ({
     "total": count(*[_type == "${type}"]),
     "published": count(*[_type == "${type}" && !(_id in path("drafts.**"))]),
     "draft": count(*[_type == "${type}" && (_id in path("drafts.**"))]),
-  }`
+  }`,
   );
 
   const queryString = `[${queryStringParts.join(",")}]`;

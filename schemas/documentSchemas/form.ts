@@ -41,12 +41,12 @@ export default defineType({
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const fieldNames = fields.map((field: any) => field.name);
           const duplicates = fieldNames.filter(
-            (name, index) => fieldNames.indexOf(name) !== index
+            (name, index) => fieldNames.indexOf(name) !== index,
           );
 
           return duplicates.length > 0
             ? `Duplicate field names found: ${[...new Set(duplicates)].join(
-                ", "
+                ", ",
               )}`
             : true;
         }),

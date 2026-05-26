@@ -9,7 +9,7 @@ export const resourceLinksPreviewConfig: PreviewConfig = {
   },
   prepare: ({ resource0, resource1, resource2, resource3 }) => {
     const resourceTitles = [resource0, resource1, resource2, resource3].filter(
-      Boolean
+      Boolean,
     );
     const subtitle =
       resourceTitles.length > 0 ? `${resourceTitles.join(", ")}` : "";

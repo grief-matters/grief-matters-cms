@@ -1,6 +1,6 @@
 import {
   createClient,
-  SanityDocument,
+  type SanityDocument,
   type SanityClient,
 } from "@sanity/client";
 import groq from "groq";
@@ -78,7 +78,7 @@ export function getSanityClient(env: Env): SanityClient {
 }
 
 export function getReferenceTaxonomies(
-  env: Env
+  env: Env,
 ): Promise<Record<TaxonomyDocType, RefDoc[]>> {
   const client = getSanityClient(env);
 
@@ -97,7 +97,7 @@ export function getReferenceTaxonomies(
 export async function getAuditableDocsByTypes(
   env: Env,
   types: Array<string>,
-  limit: number = 10
+  limit: number = 10,
 ) {
   const client = getSanityClient(env);
 
@@ -108,7 +108,7 @@ export async function getAuditableDocsByTypes(
     {
       docTypes: types,
       limit: limit - 1,
-    }
+    },
   );
 
   return docs;
@@ -116,7 +116,7 @@ export async function getAuditableDocsByTypes(
 
 export function getSanityDocFromReviewAction(
   doc: SanityDocument,
-  patch: SanityInternetResourcePatch
+  patch: SanityInternetResourcePatch,
 ): SanityDocument {
   const { _id, _rev, _createdAt, _updatedAt, ...rest } = doc;
   const result: Record<string, unknown> = { ...rest };

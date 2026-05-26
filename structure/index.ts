@@ -1,4 +1,4 @@
-import { StructureResolver } from "sanity/structure";
+import type { StructureResolver } from "sanity/structure";
 
 import {
   classificationDocumentTypes,
@@ -23,26 +23,26 @@ export const structure: StructureResolver = (S) =>
           .id(`${t.name}-singleton`)
           .icon(t.icon)
           .child(
-            S.document().schemaType(t.name).documentId(`${t.name}-singleton`)
-          )
+            S.document().schemaType(t.name).documentId(`${t.name}-singleton`),
+          ),
       ),
       S.divider(),
       ...documentTypes.map((t) =>
         S.documentTypeListItem(t.name).title(
-          startCase(pluralize(t.title ?? t.name))
-        )
+          startCase(pluralize(t.title ?? t.name)),
+        ),
       ),
       S.divider(),
       ...classificationDocumentTypes.map((t) =>
         S.documentTypeListItem(t.name).title(
-          startCase(pluralize(t.title ?? t.name))
-        )
+          startCase(pluralize(t.title ?? t.name)),
+        ),
       ),
       S.divider(),
       ...internetResourceDocumentTypes.map((t) =>
         S.documentTypeListItem(t.name).title(
-          startCase(pluralize(t.title ?? t.name))
-        )
+          startCase(pluralize(t.title ?? t.name)),
+        ),
       ),
       S.divider(),
       S.listItem()
@@ -59,9 +59,9 @@ export const structure: StructureResolver = (S) =>
                   .child(
                     S.component(DocumentationPane)
                       .title(doc.title)
-                      .options({ documentId: doc.id })
-                  )
-              )
-            )
+                      .options({ documentId: doc.id }),
+                  ),
+              ),
+            ),
         ),
     ]);

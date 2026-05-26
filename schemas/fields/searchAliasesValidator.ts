@@ -83,7 +83,7 @@ async function loadSearchData(client: SanityClient): Promise<SearchData> {
         searchAliases
       }
     }`,
-    { tagTypes: tagDocTypes }
+    { tagTypes: tagDocTypes },
   );
 
   const config = result.config;
@@ -91,8 +91,8 @@ async function loadSearchData(client: SanityClient): Promise<SearchData> {
 
   const noise = new Set<string>(
     [...(config?.stopWords ?? []), ...(config?.domainNoiseWords ?? [])].flatMap(
-      (w) => tokenize(w)
-    )
+      (w) => tokenize(w),
+    ),
   );
 
   const tagsByToken = new Map<string, TagDescriptor[]>();
@@ -116,7 +116,7 @@ async function loadSearchData(client: SanityClient): Promise<SearchData> {
 }
 
 function collectAppliedTagIds(
-  doc: Record<string, unknown> | undefined
+  doc: Record<string, unknown> | undefined,
 ): Set<string> {
   const ids = new Set<string>();
   if (!doc) {
@@ -143,7 +143,7 @@ function collectAppliedTagIds(
 
 function buildAliasContext(
   doc: Record<string, unknown> | undefined,
-  data: SearchData
+  data: SearchData,
 ): AliasContext {
   const title = typeof doc?.title === "string" ? doc.title : "";
   const description =
@@ -188,7 +188,7 @@ function classifyToken(token: string, ctx: AliasContext): TokenDisposition {
 }
 
 function pickMinimalTagCover(
-  unapplied: { token: string; d: UnappliedDisposition }[]
+  unapplied: { token: string; d: UnappliedDisposition }[],
 ): TagDescriptor[] {
   const tagCovers = new Map<
     string,
@@ -215,7 +215,7 @@ function pickMinimalTagCover(
     let bestSize = 0;
     for (const candidate of tagCovers.values()) {
       const overlap = [...candidate.covers].filter((t) =>
-        remaining.has(t)
+        remaining.has(t),
       ).length;
       if (overlap === 0) {
         continue;
@@ -242,7 +242,7 @@ function pickMinimalTagCover(
 }
 
 function collectCoveredSources(
-  dispositions: { token: string; d: TokenDisposition }[]
+  dispositions: { token: string; d: TokenDisposition }[],
 ): string[] {
   const sources = new Set<string>();
   for (const { d } of dispositions) {
@@ -277,7 +277,7 @@ function describeAlias(alias: string, ctx: AliasContext): string | null {
 
   const unapplied = dispositions.filter(
     (e): e is { token: string; d: UnappliedDisposition } =>
-      e.d.kind === "unapplied"
+      e.d.kind === "unapplied",
   );
 
   if (unapplied.length > 0) {
@@ -286,11 +286,11 @@ function describeAlias(alias: string, ctx: AliasContext): string | null {
     const otherSources = collectCoveredSources(dispositions);
     if (otherSources.length > 0) {
       return `"${alias}": consider applying ${tagPhrases.join(
-        " + "
+        " + ",
       )} (other words already covered by ${otherSources.join(" + ")}).`;
     }
     return `"${alias}": consider applying ${tagPhrases.join(
-      " + "
+      " + ",
     )} rather than encoding it as an alias.`;
   }
 

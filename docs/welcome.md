@@ -16,7 +16,6 @@ The Studio sidebar groups content into four sections:
 1. **Singletons** — One-of-a-kind documents. Currently this is just the Organization profile, which controls site-wide branding, logos, and legal text.
 
 2. **Documents** — Core content types that structure the site:
-
    - **Categories** — The hierarchical topic tree that organizes all content
    - **Audiences** — Audience segments for filtering resources
    - **Content Blocks** — Reusable page sections made of text, images, and links

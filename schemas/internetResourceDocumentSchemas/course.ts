@@ -8,5 +8,5 @@ export default defineType(
     name: "course",
     title: "Course",
     icon: PresentationIcon,
-  })
+  }),
 );

@@ -1,5 +1,5 @@
 import { Card, Stack, Text } from "@sanity/ui";
-import { StringFieldProps } from "sanity";
+import type { StringFieldProps } from "sanity";
 
 function FilterOperatorField(props: StringFieldProps) {
   const { title, ...restProps } = props;

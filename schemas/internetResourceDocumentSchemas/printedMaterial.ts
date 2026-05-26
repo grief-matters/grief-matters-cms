@@ -8,5 +8,5 @@ export default defineType(
     name: "printedMaterial",
     title: "Printed Material",
     icon: DocumentPdfIcon,
-  })
+  }),
 );

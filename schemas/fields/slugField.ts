@@ -7,8 +7,8 @@ export default defineField({
   options: {
     source: (doc) =>
       (typeof doc?.title === "undefined"
-        ? doc.name ?? ""
-        : doc.title ?? "") as string,
+        ? (doc.name ?? "")
+        : (doc.title ?? "")) as string,
     slugify: (input) => input.toLowerCase().replace(/\s+/g, "-").slice(0, 200),
     isUnique: async (slug, context) => {
       const { document, getClient } = context;

@@ -15,7 +15,7 @@ function getRefDocsPrompt(refDocs: Record<string, RefDoc[]>): string {
       const docBlocks = docs
         .map(
           (doc) =>
-            `- _id: ${doc._id}\n- title: ${doc.title}\n- description: ${doc.description}\n---`
+            `- _id: ${doc._id}\n- title: ${doc.title}\n- description: ${doc.description}\n---`,
         )
         .join("\n");
       return `### ${type}\n\n${docBlocks}`;
@@ -82,7 +82,7 @@ export async function getAiReview(
   env: Env,
   doc: SanityDocument,
   content: string,
-  refDocs: Record<string, RefDoc[]>
+  refDocs: Record<string, RefDoc[]>,
 ): Promise<AiReview> {
   const client = getClaudeClient(env);
   const { _createdAt, _id, _rev, _updatedAt, ...restDoc } = doc;

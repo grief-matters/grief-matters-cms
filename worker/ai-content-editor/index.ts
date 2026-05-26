@@ -32,7 +32,7 @@ const minContentLength = 250;
 
 export async function getAuditActionForDoc(
   env: Env,
-  doc: SanityDocument
+  doc: SanityDocument,
 ): Promise<DocAuditAction> {
   const url = doc.resourceUrl as string | undefined;
   if (!url || url?.trim().length === 0) {
@@ -68,7 +68,7 @@ export async function getAuditActionForDoc(
  */
 async function fetchPageContent(
   env: Env,
-  resourceUrl: string
+  resourceUrl: string,
 ): Promise<FetchResult> {
   const jinaUrl = `https://r.jina.ai/${encodeURIComponent(resourceUrl)}`;
 

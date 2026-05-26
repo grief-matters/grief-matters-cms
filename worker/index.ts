@@ -12,7 +12,7 @@ router.all("*", handleFallback);
 async function handleScheduled(
   event: ScheduledController,
   env: Env,
-  _ctx: ExecutionContext
+  _ctx: ExecutionContext,
 ): Promise<void> {
   switch (event.cron) {
     case "0 0 * * *":

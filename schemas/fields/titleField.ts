@@ -8,7 +8,7 @@ export default defineField({
   validation: (Rule) => [
     Rule.required(),
     Rule.max(80).warning(
-      "Shorter titles are better for users. Can this title be shortened for readability?"
+      "Shorter titles are better for users. Can this title be shortened for readability?",
     ),
   ],
 });

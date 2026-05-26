@@ -15,7 +15,7 @@ export default defineField({
   validation: (Rule) => [
     Rule.unique(),
     Rule.max(3).warning(
-      "Most resources serve 1-3 functions well; consider trimming."
+      "Most resources serve 1-3 functions well; consider trimming.",
     ),
   ],
 });

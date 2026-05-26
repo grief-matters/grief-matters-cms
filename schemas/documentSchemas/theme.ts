@@ -51,7 +51,7 @@ export default defineType({
       validation: (Rule) => [
         Rule.required(),
         Rule.max(255).warning(
-          `This description is a bit too long. Use the main "Description" field for a longer explanation.`
+          `This description is a bit too long. Use the main "Description" field for a longer explanation.`,
         ),
         Rule.max(1024).error("Description longer than allowed length"),
       ],

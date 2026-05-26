@@ -8,5 +8,5 @@ export default defineType(
     name: "forum",
     title: "Forum",
     icon: UsersIcon,
-  })
+  }),
 );

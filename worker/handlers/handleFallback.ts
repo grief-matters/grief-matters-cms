@@ -1,9 +1,9 @@
-import { IRequest, RequestHandler } from "itty-router";
-import { CFArgs } from "..";
+import type { IRequest, RequestHandler } from "itty-router";
+import type { CFArgs } from "..";
 
 export const handleFallback: RequestHandler<IRequest, CFArgs> = async (
   req,
-  env
+  env,
 ) => {
   const url = new URL(req.url);
 
