@@ -3,11 +3,12 @@ import type { SanityDocument } from "sanity";
 
 import {
   type AiReviewResponse,
+  getOutputSchemaForDocType,
   type RefDoc,
   type SanityInternetResourcePatch,
-  zPatchSchema,
 } from "../utils/sanity";
 import { getClaudeClient } from "../utils/llm-client";
+import type { InternetResourceType } from "../../types";
 
 function getRefDocsPrompt(refDocs: Record<string, RefDoc[]>): string {
   return Object.entries(refDocs)
@@ -23,7 +24,20 @@ function getRefDocsPrompt(refDocs: Record<string, RefDoc[]>): string {
     .join("\n\n");
 }
 
-function getSystemPrompt(refDocs: Record<string, RefDoc[]>): string {
+function getSystemPrompt(
+  docType: InternetResourceType,
+  refDocs: Record<string, RefDoc[]>,
+): string {
+  let additionalFieldInstructions = "";
+  switch (docType) {
+    case "app":
+      additionalFieldInstructions = "";
+    case "crisisResource":
+      additionalFieldInstructions = `- contactMethods: the available contact methods. Add as many as are applicable.\n`;
+    default:
+      additionalFieldInstructions = `- audienceRole: intended audience. Allowed: "bereaved", "supporter", "professional". Usually a single value; multiple only if the resource genuinely speaks to more than one audience.\n`;
+  }
+
   return `
 You are a content editor knowledgeable in grief. You audit curated "internet resource" documents for the Why Grief Matters CMS. You will be given an existing Sanity document and the content of the resource (usually fetched as markdown). It is your job to review the existing document against the content, and create a JSON patch describing any changes.
   
@@ -36,10 +50,10 @@ The existing Sanity document may contain errors, so use your judgement to remove
 - title: this will usually be the actual title of the resource. If the existing title is too vague when viewed out of context (if it were syndicated for example), then try to improve it.
 - description: ~30 words, plain-English web copy. Convey what the resource is about and why a bereaved user, supporter, or professional might find it useful.
 - availableLanguages: languages the resource is actually available in. Allowed: "english", "spanish".
-- audienceRole: intended audience. Allowed: "bereaved", "supporter", "professional". Usually a single value; multiple only if the resource genuinely speaks to more than one audience.
-- searchAliases: up to 5 focused words/phrases a user might search that are NOT already covered by title, description, or reference fields. Used for search index enrichment. Avoid repetition with other fields.
+- searchAliases: Up to 5 focused words or phrases a user might search to find this resource. Only fill this in when you can add genuinely alternative search terms — synonyms, abbreviations, or related concepts that don't already appear in the title, description, or any other field (including reference fields). Leave it empty if you'd only be repeating terms already present elsewhere.
 - paywalled: true if the resource is behind a paywall i.e. requires a paid subscription before being able to view the page.
 - registrationRequired: true if access requires creating a (free) account.
+${additionalFieldInstructions}
 
 ## Reference Fields
 
@@ -92,13 +106,15 @@ export async function getAiReview(
     max_tokens: 4000,
     thinking: { type: "adaptive" },
     output_config: {
-      format: zodOutputFormat(zPatchSchema),
+      format: zodOutputFormat(
+        getOutputSchemaForDocType(doc._type as InternetResourceType),
+      ),
       effort: "medium",
     },
     system: [
       {
         type: "text",
-        text: getSystemPrompt(refDocs),
+        text: getSystemPrompt(doc._type as InternetResourceType, refDocs),
         cache_control: { type: "ephemeral" },
       },
     ],
