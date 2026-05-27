@@ -17,6 +17,16 @@ type ExtendedPatch = SanityInternetResourcePatch & {
   skipLinkCheck?: boolean;
 };
 
+// Each action becomes one per-doc transaction. The published-doc patch is
+// guarded by ifRevisionId so that if the doc was modified between query and
+// commit, the whole transaction fails atomically — no stale draft is created.
+type DocAction = {
+  publishedId: string;
+  publishedRev: string;
+  patch: ExtendedPatch;
+  draft?: SanityDocument;
+};
+
 export async function handleAiContentReview(env: Env, limit: number) {
   logMessage("ai_content_review_start", "starting");
 
@@ -27,15 +37,15 @@ export async function handleAiContentReview(env: Env, limit: number) {
     limit,
   );
 
-  const docPatches: Record<string, ExtendedPatch> = {};
-  const docCreates: Array<SanityDocument> = [];
-
   // Determine audit actions
   const settledAuditActions = await Promise.allSettled(
     resourceDocs.map((doc) => getAuditActionForDoc(env, doc)),
   );
 
+  // Track Sanity mutations
+  const docActions: DocAction[] = [];
   const docsForAiReview: Array<{ doc: SanityDocument; content: string }> = [];
+
   for (let i = 0; i < settledAuditActions.length; i++) {
     const doc = resourceDocs[i];
     const result = settledAuditActions[i];
@@ -58,17 +68,20 @@ export async function handleAiContentReview(env: Env, limit: number) {
     });
 
     if (auditAction.action === "disable") {
-      docPatches[auditAction.id] = {
-        aiAuditStamp: generateKey(),
-        skipLinkCheck: true,
-      };
+      docActions.push({
+        publishedId: doc._id,
+        publishedRev: doc._rev,
+        patch: { aiAuditStamp: generateKey(), skipLinkCheck: true },
+      });
       continue;
     }
 
     if (auditAction.action === "skip") {
-      docPatches[auditAction.id] = {
-        aiAuditStamp: generateKey(),
-      };
+      docActions.push({
+        publishedId: doc._id,
+        publishedRev: doc._rev,
+        patch: { aiAuditStamp: generateKey() },
+      });
       continue;
     }
 
@@ -96,10 +109,7 @@ export async function handleAiContentReview(env: Env, limit: number) {
     }
 
     const reviewAction = result.value;
-
     const aiAuditStamp = { aiAuditStamp: generateKey() };
-    // Always patch the published doc so to send it to the back of the queue
-    docPatches[reviewAction.id] = aiAuditStamp;
 
     if (
       reviewAction.patch === null ||
@@ -109,6 +119,11 @@ export async function handleAiContentReview(env: Env, limit: number) {
         docId: doc.doc._id,
         status: "success",
         detail: "no changes",
+      });
+      docActions.push({
+        publishedId: doc.doc._id,
+        publishedRev: doc.doc._rev,
+        patch: aiAuditStamp,
       });
       continue;
     }
@@ -120,32 +135,47 @@ export async function handleAiContentReview(env: Env, limit: number) {
     });
 
     const newDoc = getSanityDocFromReviewAction(doc.doc, reviewAction.patch);
-    docCreates.push({ ...newDoc, ...aiAuditStamp });
+    docActions.push({
+      publishedId: doc.doc._id,
+      publishedRev: doc.doc._rev,
+      patch: aiAuditStamp,
+      draft: { ...newDoc, ...aiAuditStamp },
+    });
   }
 
   const sanityClient = getSanityClient(env);
 
-  const transaction = sanityClient.transaction();
-
-  Object.entries(docPatches).forEach(([docId, patch]) =>
-    transaction.patch(docId, (p) => p.set(patch)),
+  const settledCommits = await Promise.allSettled(
+    docActions.map((action) => {
+      const tx = sanityClient
+        .transaction()
+        .patch(action.publishedId, (p) =>
+          p.ifRevisionId(action.publishedRev).set(action.patch),
+        );
+      if (action.draft) {
+        tx.createIfNotExists(action.draft);
+      }
+      return tx.commit({ visibility: "async" });
+    }),
   );
 
-  // We're failing silently if a draft already exists; should be fine given we should be excluding drafts to begin with
-  docCreates.forEach((doc) => {
-    return transaction.createIfNotExists(doc);
-  });
-
-  try {
-    const results = await transaction.commit({ visibility: "async" });
-    logMessage(
-      "ai_content_review_ai_sanity_transaction_result",
-      results.results.map((r) => `${r}\n`),
-    );
-  } catch (error) {
-    logMessage(
-      "ai_content_review_ai_sanity_transaction_result",
-      error instanceof Error ? error.message : "Unknown error",
-    );
+  for (let i = 0; i < settledCommits.length; i++) {
+    const action = docActions[i];
+    const result = settledCommits[i];
+    if (result.status === "rejected") {
+      logMessage("ai_content_review_sanity_commit_outcome", {
+        docId: action.publishedId,
+        status: "fail",
+        reason:
+          result.reason instanceof Error
+            ? result.reason.message
+            : String(result.reason),
+      });
+      continue;
+    }
+    logMessage("ai_content_review_sanity_commit_outcome", {
+      docId: action.publishedId,
+      status: "success",
+    });
   }
 }
