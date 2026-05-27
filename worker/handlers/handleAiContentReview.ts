@@ -1,6 +1,7 @@
 import type { SanityDocument } from "sanity";
 import { INTERNET_RESOURCE_TYPES } from "../../constants";
 import {
+  generateKey,
   getAuditableDocsByTypes,
   getReferenceTaxonomies,
   getSanityClient,
@@ -10,6 +11,11 @@ import {
 import { getAuditActionForDoc } from "../ai-content-editor";
 import { getAiReview } from "../ai-content-editor/ai-review";
 import { logMessage } from "../utils/logger";
+
+type ExtendedPatch = SanityInternetResourcePatch & {
+  aiAuditStamp: string;
+  skipLinkCheck?: boolean;
+};
 
 export async function handleAiContentReview(env: Env, limit: number) {
   logMessage("ai_content_review_start", "starting");
@@ -21,10 +27,7 @@ export async function handleAiContentReview(env: Env, limit: number) {
     limit,
   );
 
-  const docPatches: Record<
-    string,
-    SanityInternetResourcePatch & { skipLinkCheck?: boolean }
-  > = {};
+  const docPatches: Record<string, ExtendedPatch> = {};
   const docCreates: Array<SanityDocument> = [];
 
   // Determine audit actions
@@ -55,11 +58,17 @@ export async function handleAiContentReview(env: Env, limit: number) {
     });
 
     if (auditAction.action === "disable") {
-      docPatches[auditAction.id] = { skipLinkCheck: true };
+      docPatches[auditAction.id] = {
+        aiAuditStamp: generateKey(),
+        skipLinkCheck: true,
+      };
       continue;
     }
 
     if (auditAction.action === "skip") {
+      docPatches[auditAction.id] = {
+        aiAuditStamp: generateKey(),
+      };
       continue;
     }
 
@@ -93,39 +102,39 @@ export async function handleAiContentReview(env: Env, limit: number) {
       detail: reviewAction.patch === null ? "no patch" : "patch provided",
     });
 
-    // todo: apparently Sanity is smart enough to no-op a mutation like this so we're gonna need a new field
+    const aiAuditStamp = { aiAuditStamp: generateKey() };
     if (reviewAction.patch === null) {
-      if (
-        typeof doc.doc.title !== "string" ||
-        doc.doc.title.trim().length === 0
-      ) {
-        // Log: we'll need to log this odd failure case out - it should never happen as documents should always have titles
-        continue;
-      }
-
-      docPatches[reviewAction.id] = { title: doc.doc.title };
+      docPatches[reviewAction.id] = aiAuditStamp;
       continue;
     }
 
     const newDoc = getSanityDocFromReviewAction(doc.doc, reviewAction.patch);
-    docCreates.push(newDoc);
+    docCreates.push({ ...newDoc, ...aiAuditStamp });
   }
 
   const sanityClient = getSanityClient(env);
-  // Do all the Sanity work
+
   const transaction = sanityClient.transaction();
 
   Object.entries(docPatches).forEach(([docId, patch]) =>
     transaction.patch(docId, (p) => p.set(patch)),
   );
 
-  // todo - we're failing silently if a draft already exists - is this correct?
+  // We're failing silently if a draft already exists; should be fine given we should be excluding drafts to begin with
   docCreates.forEach((doc) => {
     return transaction.createIfNotExists(doc);
   });
 
-  // todo - also handle failures
-  const results = await transaction.commit({ visibility: "async" });
-  // Log: do something with results once we understand its shape
-  logMessage("ai_content_review_ai_sanity_transaction_result", results);
+  try {
+    const results = await transaction.commit({ visibility: "async" });
+    logMessage(
+      "ai_content_review_ai_sanity_transaction_result",
+      results.results.map((r) => `${r}\n`),
+    );
+  } catch (error) {
+    logMessage(
+      "ai_content_review_ai_sanity_transaction_result",
+      error instanceof Error ? error.message : "Unknown error",
+    );
+  }
 }
