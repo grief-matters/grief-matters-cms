@@ -11,18 +11,20 @@ import { getAuditActionForDoc } from "../ai-content-editor";
 import { getAiReview } from "../ai-content-editor/ai-review";
 import { logMessage } from "../utils/logger";
 
-export async function handleAiContentReview(env: Env) {
+export async function handleAiContentReview(env: Env, limit: number) {
   logMessage("ai_content_review_start", "starting");
 
   const taxonomyDocs = await getReferenceTaxonomies(env);
   const resourceDocs = await getAuditableDocsByTypes(
     env,
     [...INTERNET_RESOURCE_TYPES],
-    3,
+    limit,
   );
-  console.log(resourceDocs);
 
-  const docPatches: Record<string, SanityInternetResourcePatch> = {};
+  const docPatches: Record<
+    string,
+    SanityInternetResourcePatch & { skipLinkCheck?: boolean }
+  > = {};
   const docCreates: Array<SanityDocument> = [];
 
   // Determine audit actions
@@ -52,9 +54,12 @@ export async function handleAiContentReview(env: Env) {
       action: auditAction.action,
     });
 
-    if (auditAction.action !== "review") {
-      // todo: think through conditions for actually skipping
-      // docPatches[auditAction.id] = { skipLinkCheck: true };
+    if (auditAction.action === "disable") {
+      docPatches[auditAction.id] = { skipLinkCheck: true };
+      continue;
+    }
+
+    if (auditAction.action === "skip") {
       continue;
     }
 

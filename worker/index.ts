@@ -16,7 +16,7 @@ async function handleScheduled(
 ): Promise<void> {
   switch (event.cron) {
     case "0 0 * * *":
-      await handleAiContentReview(env);
+      await handleAiContentReview(env, 10);
       break;
     default:
       console.warn(`Unhandled cron: ${event.cron}`);

@@ -7,11 +7,8 @@ export type FetchResult =
   | { ok: false; reason: "http"; status: number }
   | { ok: false; reason: "network" | "timeout" | "empty" };
 
-type DocAuditSkipActionReason =
-  | "no_url"
-  | "robots"
-  | "fetch_content"
-  | "audit_fail";
+type DocAuditSkipActionReason = "no_url" | "fetch_content" | "audit_fail";
+type DocAuditDisableActionReason = "robots" | "http_client_error";
 
 type DocAuditSkipAction = {
   id: string;
@@ -19,9 +16,18 @@ type DocAuditSkipAction = {
   reason: DocAuditSkipActionReason;
   detail?: string;
 };
+type DocAuditDisableAction = {
+  id: string;
+  action: "disable";
+  reason: DocAuditDisableActionReason;
+  detail?: string;
+};
 type DocAuditReviewAction = { id: string; action: "review"; content: string };
 
-type DocAuditAction = DocAuditSkipAction | DocAuditReviewAction;
+type DocAuditAction =
+  | DocAuditSkipAction
+  | DocAuditDisableAction
+  | DocAuditReviewAction;
 
 const userAgent = "WhyGriefMattersBot/1.0 (+https://whygriefmatters.org)";
 const robotsTimeoutMs = 5000;
@@ -41,18 +47,31 @@ export async function getAuditActionForDoc(
 
   const doesAllowBots = await allowsBots(url);
   if (!doesAllowBots) {
-    return { id: doc._id, action: "skip", reason: "robots" };
+    return { id: doc._id, action: "disable", reason: "robots" };
   }
 
   const fetchResult = await fetchPageContent(env, url);
   if (!fetchResult.ok) {
+    if (
+      fetchResult.reason === "http" &&
+      fetchResult.status >= 400 &&
+      fetchResult.status < 500
+    ) {
+      return {
+        id: doc._id,
+        action: "disable",
+        reason: "http_client_error",
+        detail: `${fetchResult.status}`,
+      };
+    }
+
     return {
       id: doc._id,
       action: "skip",
       reason: "fetch_content",
       detail:
         fetchResult.reason +
-        `${fetchResult.reason === "http" ? `: ${fetchResult.status}` : ""}`,
+        (fetchResult.reason === "http" ? `: ${fetchResult.status}` : ""),
     };
   }
 
