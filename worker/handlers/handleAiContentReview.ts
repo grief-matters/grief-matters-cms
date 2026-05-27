@@ -30,6 +30,19 @@ type DocAction = {
 export async function handleAiContentReview(env: Env, limit: number) {
   logMessage("ai_content_review_start", "starting");
 
+  try {
+    await runAiContentReview(env, limit);
+  } catch (error) {
+    // Swallow so Cloudflare doesn't retry the scheduled trigger and re-spend
+    // on Jina + Anthropic for the same batch.
+    logMessage(
+      "ai_content_review_fatal",
+      error instanceof Error ? error.message : String(error),
+    );
+  }
+}
+
+async function runAiContentReview(env: Env, limit: number) {
   const taxonomyDocs = await getReferenceTaxonomies(env);
   const resourceDocs = await getAuditableDocsByTypes(
     env,
