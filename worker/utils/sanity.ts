@@ -184,7 +184,7 @@ export function getReferenceTaxonomies(
     "lossRelationship": *[_type == 'lossRelationship']{_id, title, "description": shortDescription},
     "causeOfDeath": *[_type == 'causeOfDeath']{_id, title, "description": shortDescription},
     "theme": *[_type == 'theme']{_id, title, "description": shortDescription},
-    "demographic": *[_type == 'demographic']{_id, title, description},
+    "demographic": *[_type == 'demographic']{_id, name, description},
     "griefPhase": *[_type == 'griefPhase']{_id, title, description},
     "griefType": *[_type == 'griefType']{_id, title, description},
     "emotionalState": *[_type == 'emotionalState']{_id, title, description},
