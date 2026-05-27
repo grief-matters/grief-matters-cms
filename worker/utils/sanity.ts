@@ -15,6 +15,10 @@ export type RefDoc = {
   description: string;
 };
 
+// Reference array fields are intentionally non-nullable: Anthropic structured
+// outputs has a 16-parameter limit on union-typed fields. The AI always emits
+// the desired final ref list (the existing doc is supplied in the user message),
+// so re-emitting the current refs is a no-op write.
 const zPatchSchema = z.object({
   title: z.string().nullable(),
   description: z.string().nullable(),
@@ -22,14 +26,14 @@ const zPatchSchema = z.object({
   searchAliases: z.array(z.string()).nullable(),
   paywalled: z.boolean().nullable(),
   registrationRequired: z.boolean().nullable(),
-  lossRelationships: z.array(z.string()).nullable(),
-  causesOfDeath: z.array(z.string()).nullable(),
-  themes: z.array(z.string()).nullable(),
-  demographics: z.array(z.string()).nullable(),
-  griefPhases: z.array(z.string()).nullable(),
-  griefTypes: z.array(z.string()).nullable(),
-  contentFunctions: z.array(z.string()).nullable(),
-  emotionalStates: z.array(z.string()).nullable(),
+  lossRelationships: z.array(z.string()),
+  causesOfDeath: z.array(z.string()),
+  themes: z.array(z.string()),
+  demographics: z.array(z.string()),
+  griefPhases: z.array(z.string()),
+  griefTypes: z.array(z.string()),
+  contentFunctions: z.array(z.string()),
+  emotionalStates: z.array(z.string()),
 });
 
 const zPatchWithAudience = z.object({
@@ -39,54 +43,70 @@ const zPatchWithAudience = z.object({
     .nullable(),
 });
 
-const zContactAvailability = z.object({
-  days: z.enum(days),
+// These schemas are simplified vs the Sanity schemas to avoid 'compiled grammar too large' errors with Claude
+const zAvailability = z.object({
+  days: z.array(z.enum(days)),
   availableFrom: z.string(),
   availableTo: z.string(),
   timezone: z.enum(timezones),
 });
 
-const zContactType = z.enum(contactTypes);
-const zTelephoneNumber = z.object({ telephoneNumber: z.string() });
-const zEmail = z.object({ email: z.string() });
-const zContactForm = z.object({ contactForm: z.string() });
-const zLiveChat = z.object({ liveChatUrl: z.string() });
-
-const zContactMethod = z.discriminatedUnion("contactType", [
-  z.object({
-    ...zTelephoneNumber.shape,
-    ...zContactAvailability.shape,
-    contactType: z.literal(zContactType.enum.tel),
-  }),
-  z.object({
-    ...zTelephoneNumber.shape,
-    ...zContactAvailability.shape,
-    contactType: z.literal(zContactType.enum.tty),
-  }),
-  z.object({
-    ...zTelephoneNumber.shape,
-    ...zContactAvailability.shape,
-    contactType: z.literal(zContactType.enum.sms),
-  }),
-  z.object({
-    ...zEmail.shape,
-    contactType: z.literal(zContactType.enum.email),
-  }),
-  z.object({
-    ...zContactForm.shape,
-    contactType: z.literal(zContactType.enum.contactForm),
-  }),
-  z.object({
-    ...zContactAvailability.shape,
-    ...zLiveChat.shape,
-    contactType: z.literal(zContactType.enum.liveChat),
-  }),
-]);
+const zContactMethod = z.object({
+  contactType: z.enum(contactTypes),
+  telephoneNumber: z.string().nullable(),
+  smsBody: z.string().nullable(),
+  email: z.string().nullable(),
+  contactForm: z.string().nullable(),
+  liveChatUrl: z.string().nullable(),
+  availabilities: z.array(zAvailability).nullable(),
+});
 
 const zPatchWithContactMethods = z.object({
   ...zPatchSchema.shape,
   contactMethods: z.array(zContactMethod).nullable(),
 });
+
+type ContactType = (typeof contactTypes)[number];
+type AiContactMethod = z.infer<typeof zContactMethod>;
+
+const contactMethodFieldsByType: Record<
+  ContactType,
+  ReadonlyArray<keyof AiContactMethod>
+> = {
+  tel: ["telephoneNumber", "availabilities"],
+  tty: ["telephoneNumber", "availabilities"],
+  sms: ["telephoneNumber", "smsBody", "availabilities"],
+  email: ["email"],
+  contactForm: ["contactForm"],
+  liveChat: ["liveChatUrl", "availabilities"],
+};
+
+export function normalizeContactMethods(
+  contactMethods: AiContactMethod[] | null,
+): Array<Record<string, unknown>> | null {
+  if (contactMethods === null) {
+    return null;
+  }
+
+  return contactMethods.map((method) => {
+    const allowedFields = new Set<string>([
+      "contactType",
+      ...contactMethodFieldsByType[method.contactType],
+    ]);
+
+    const result: Record<string, unknown> = {
+      _type: "contactMethod",
+      _key: generateKey(),
+    };
+
+    for (const [key, value] of Object.entries(method)) {
+      if (allowedFields.has(key) && value !== null) {
+        result[key] = value;
+      }
+    }
+    return result;
+  });
+}
 
 export type AiReviewResponse =
   | z.infer<typeof zPatchSchema>
@@ -117,6 +137,26 @@ const refFields = new Set([
   "contentFunctions",
   "emotionalStates",
 ]);
+
+export function isRefField(key: string): boolean {
+  return refFields.has(key);
+}
+
+export function refIdsChanged(
+  newIds: readonly string[],
+  existing: unknown,
+): boolean {
+  const current = Array.isArray(existing)
+    ? existing
+        .map((r) => (r as { _ref?: unknown })._ref)
+        .filter((id): id is string => typeof id === "string")
+    : [];
+  if (current.length !== newIds.length) {
+    return true;
+  }
+  const seen = new Set(current);
+  return newIds.some((id) => !seen.has(id));
+}
 
 let client: SanityClient | null = null;
 

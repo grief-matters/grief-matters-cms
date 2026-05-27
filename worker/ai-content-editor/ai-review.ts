@@ -4,6 +4,9 @@ import type { SanityDocument } from "sanity";
 import {
   type AiReviewResponse,
   getOutputSchemaForDocType,
+  isRefField,
+  normalizeContactMethods,
+  refIdsChanged,
   type RefDoc,
   type SanityInternetResourcePatch,
 } from "../utils/sanity";
@@ -32,8 +35,10 @@ function getSystemPrompt(
   switch (docType) {
     case "app":
       additionalFieldInstructions = "";
+      break;
     case "crisisResource":
-      additionalFieldInstructions = `- contactMethods: the available contact methods. Add as many as are applicable.\n`;
+      additionalFieldInstructions = `- contactMethods: the available contact methods. Add as many as are applicable. For each method, set contactType and only the value fields relevant to that type (telephoneNumber for tel/tty/sms, smsBody for sms, email for email, contactForm for contactForm, liveChatUrl for liveChat). Leave the other value fields as null. availabilities applies to all types except email and contactForm.\n`;
+      break;
     default:
       additionalFieldInstructions = `- audienceRole: intended audience. Allowed: "bereaved", "supporter", "professional". Usually a single value; multiple only if the resource genuinely speaks to more than one audience.\n`;
   }
@@ -41,7 +46,7 @@ function getSystemPrompt(
   return `
 You are a content editor knowledgeable in grief. You audit curated "internet resource" documents for the Why Grief Matters CMS. You will be given an existing Sanity document and the content of the resource (usually fetched as markdown). It is your job to review the existing document against the content, and create a JSON patch describing any changes.
   
-You should check every field listed in the schema. Return null for any field that should not change. Return [] for reference fields if the resource genuinely has no matching items.
+You should check every field listed in the schema. For nullable scalar fields, return null when the existing value should not change. For reference fields (which are not nullable), always return the full array of _ids you believe should apply — re-emit the existing refs if they are already correct, modify them if not, and return [] if no refs apply.
 
 The existing Sanity document may contain errors, so use your judgement to remove and change any existing values if you feel that they have been applied incorrectly but only do this when you are reasonably confident.
 
@@ -57,7 +62,7 @@ ${additionalFieldInstructions}
 
 ## Reference Fields
 
-For each reference field, return an array of _id strings drawn from the taxonomies below. Only include a reference if the resource specifically targets that concept — never as a catch-all. Returning [] means "no references apply"
+For each reference field, return an array of _id strings drawn from the taxonomies below. Only include a reference if the resource specifically targets that concept — never as a catch-all. Return [] if no references apply.
 
 ${getRefDocsPrompt(refDocs)}
   `;
@@ -82,13 +87,36 @@ type AiReview = {
   patch: SanityInternetResourcePatch | null;
 };
 
-function toPatch(response: AiReviewResponse): SanityInternetResourcePatch {
-  const patch: SanityInternetResourcePatch = {};
+function toPatch(
+  response: AiReviewResponse,
+  existing: Record<string, unknown>,
+): SanityInternetResourcePatch {
+  const patch: Record<string, unknown> = {};
+
   for (const [key, value] of Object.entries(response)) {
-    if (value !== null) {
-      (patch as Record<string, unknown>)[key] = value;
+    if (value === null) {
+      continue;
     }
+
+    if (isRefField(key) && !refIdsChanged(value as string[], existing[key])) {
+      continue;
+    }
+
+    if (key === "contactMethods") {
+      const normalized = normalizeContactMethods(
+        value as Parameters<typeof normalizeContactMethods>[0],
+      );
+
+      if (normalized !== null) {
+        patch[key] = normalized;
+      }
+
+      continue;
+    }
+
+    patch[key] = value;
   }
+
   return patch;
 }
 
@@ -131,6 +159,6 @@ export async function getAiReview(
 
   return {
     id: doc._id,
-    patch: toPatch(parsed),
+    patch: toPatch(parsed, restDoc),
   };
 }
