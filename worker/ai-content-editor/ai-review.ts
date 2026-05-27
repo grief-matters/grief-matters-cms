@@ -12,6 +12,7 @@ import {
 } from "../utils/sanity";
 import { getClaudeClient } from "../utils/llm-client";
 import type { InternetResourceType } from "../../types";
+import { logMessage } from "../utils/logger";
 
 function getRefDocsPrompt(refDocs: Record<string, RefDoc[]>): string {
   return Object.entries(refDocs)
@@ -22,6 +23,7 @@ function getRefDocsPrompt(refDocs: Record<string, RefDoc[]>): string {
             `- _id: ${doc._id}\n- title: ${doc.title}\n- description: ${doc.description}\n---`,
         )
         .join("\n");
+
       return `### ${type}\n\n${docBlocks}`;
     })
     .join("\n\n");
@@ -88,6 +90,7 @@ type AiReview = {
 };
 
 function toPatch(
+  refDocIds: Record<string, string[]>,
   response: AiReviewResponse,
   existing: Record<string, unknown>,
 ): SanityInternetResourcePatch {
@@ -98,7 +101,21 @@ function toPatch(
       continue;
     }
 
-    if (isRefField(key) && !refIdsChanged(value as string[], existing[key])) {
+    if (isRefField(key) && Array.isArray(value)) {
+      const validIds = new Set(refDocIds[key] ?? []);
+      const filtered = (value as string[]).filter((id) => validIds.has(id));
+
+      if (value.length !== filtered.length) {
+        logMessage(
+          "create_patch",
+          `dropped invalid ref IDs: [${(value as string[]).filter((id) => !validIds.has(id))}]`,
+        );
+      }
+
+      if (refIdsChanged(filtered, existing[key])) {
+        patch[key] = filtered;
+      }
+
       continue;
     }
 
@@ -157,8 +174,16 @@ export async function getAiReview(
     };
   }
 
+  // Get all the valid IDs of our ref docs
+  const refDocIds = Object.fromEntries(
+    Object.entries(refDocs).map(([fieldName, docs]) => [
+      fieldName,
+      docs.map((refDoc) => refDoc._id),
+    ]),
+  );
+
   return {
     id: doc._id,
-    patch: toPatch(parsed, restDoc),
+    patch: toPatch(refDocIds, parsed, restDoc),
   };
 }

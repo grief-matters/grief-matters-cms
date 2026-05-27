@@ -108,26 +108,20 @@ export function normalizeContactMethods(
   });
 }
 
+export type PatchSchemaBase = z.infer<typeof zPatchSchema>;
+export type PatchSchemaWithAudience = z.infer<typeof zPatchWithAudience>;
+export type PatchSchemaWithContact = z.infer<typeof zPatchWithContactMethods>;
+
 export type AiReviewResponse =
-  | z.infer<typeof zPatchSchema>
-  | z.infer<typeof zPatchWithAudience>
-  | z.infer<typeof zPatchWithContactMethods>;
+  | PatchSchemaBase
+  | PatchSchemaWithAudience
+  | PatchSchemaWithContact;
 
 export type SanityInternetResourcePatch = Partial<{
   [K in keyof AiReviewResponse]: NonNullable<AiReviewResponse[K]>;
 }>;
 
-export type TaxonomyDocType =
-  | "lossRelationship"
-  | "causeOfDeath"
-  | "theme"
-  | "demographic"
-  | "griefPhase"
-  | "griefType"
-  | "emotionalState"
-  | "contentFunction";
-
-const refFields = new Set([
+const taxonomyRefFields = [
   "lossRelationships",
   "causesOfDeath",
   "themes",
@@ -136,10 +130,11 @@ const refFields = new Set([
   "griefTypes",
   "contentFunctions",
   "emotionalStates",
-]);
+] as const;
+type TaxonomyRefField = (typeof taxonomyRefFields)[number];
 
-export function isRefField(key: string): boolean {
-  return refFields.has(key);
+export function isRefField(key: unknown): key is TaxonomyRefField {
+  return taxonomyRefFields.includes(key as TaxonomyRefField);
 }
 
 export function refIdsChanged(
@@ -177,18 +172,18 @@ export function getSanityClient(env: Env): SanityClient {
 
 export function getReferenceTaxonomies(
   env: Env,
-): Promise<Record<TaxonomyDocType, RefDoc[]>> {
+): Promise<Record<TaxonomyRefField, RefDoc[]>> {
   const client = getSanityClient(env);
 
   return client.fetch(groq`{
-    "lossRelationship": *[_type == 'lossRelationship']{_id, title, "description": shortDescription},
-    "causeOfDeath": *[_type == 'causeOfDeath']{_id, title, "description": shortDescription},
-    "theme": *[_type == 'theme']{_id, title, "description": shortDescription},
-    "demographic": *[_type == 'demographic']{_id, name, description},
-    "griefPhase": *[_type == 'griefPhase']{_id, title, description},
-    "griefType": *[_type == 'griefType']{_id, title, description},
-    "emotionalState": *[_type == 'emotionalState']{_id, title, description},
-    "contentFunction": *[_type == 'contentFunction']{_id, title, description},
+    "lossRelationships": *[_type == 'lossRelationship']{_id, title, "description": shortDescription},
+    "causesOfDeath": *[_type == 'causeOfDeath']{_id, title, "description": shortDescription},
+    "themes": *[_type == 'theme']{_id, title, "description": shortDescription},
+    "demographics": *[_type == 'demographic']{_id, name, description},
+    "griefPhases": *[_type == 'griefPhase']{_id, title, description},
+    "griefTypes": *[_type == 'griefType']{_id, title, description},
+    "emotionalStates": *[_type == 'emotionalState']{_id, title, description},
+    "contentFunctions": *[_type == 'contentFunction']{_id, title, description},
   }`);
 }
 
@@ -224,8 +219,8 @@ export function getSanityDocFromReviewAction(
   const { _id, _rev, _createdAt, _updatedAt, ...rest } = doc;
   const result: Record<string, unknown> = { ...rest };
   for (const [key, value] of Object.entries(patch)) {
-    if (refFields.has(key) && Array.isArray(value)) {
-      result[key] = toSanityReferences(value as string[]);
+    if (isRefField(key) && Array.isArray(value)) {
+      result[key] = toSanityReferences(value);
     } else {
       result[key] = value;
     }
