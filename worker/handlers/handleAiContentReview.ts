@@ -108,6 +108,10 @@ export async function handleAiContentReview(env: Env, limit: number) {
       continue;
     }
 
+    // Also patch the live doc so _updatedAt advances even if the draft is
+    // later discarded — otherwise the doc returns to the front of the audit
+    // queue and we re-run the same review.
+    docPatches[reviewAction.id] = aiAuditStamp;
     const newDoc = getSanityDocFromReviewAction(doc.doc, reviewAction.patch);
     docCreates.push({ ...newDoc, ...aiAuditStamp });
   }
