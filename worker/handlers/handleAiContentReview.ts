@@ -96,22 +96,29 @@ export async function handleAiContentReview(env: Env, limit: number) {
     }
 
     const reviewAction = result.value;
-    logMessage("ai_content_review_ai_review_outcome", {
-      docId: doc.doc._id,
-      status: "success",
-      detail: reviewAction.patch === null ? "no patch" : "patch provided",
-    });
 
     const aiAuditStamp = { aiAuditStamp: generateKey() };
-    if (reviewAction.patch === null) {
-      docPatches[reviewAction.id] = aiAuditStamp;
+    // Always patch the published doc so to send it to the back of the queue
+    docPatches[reviewAction.id] = aiAuditStamp;
+
+    if (
+      reviewAction.patch === null ||
+      Object.keys(reviewAction.patch).length === 0
+    ) {
+      logMessage("ai_content_review_ai_review_outcome", {
+        docId: doc.doc._id,
+        status: "success",
+        detail: "no changes",
+      });
       continue;
     }
 
-    // Also patch the live doc so _updatedAt advances even if the draft is
-    // later discarded — otherwise the doc returns to the front of the audit
-    // queue and we re-run the same review.
-    docPatches[reviewAction.id] = aiAuditStamp;
+    logMessage("ai_content_review_ai_review_outcome", {
+      docId: doc.doc._id,
+      status: "success",
+      detail: "patch provided",
+    });
+
     const newDoc = getSanityDocFromReviewAction(doc.doc, reviewAction.patch);
     docCreates.push({ ...newDoc, ...aiAuditStamp });
   }
