@@ -77,6 +77,14 @@ export const createBaseInternetResourceSchema = ({
     ],
     fields: [
       defineField({
+        name: "aiAuditStamp",
+        title: "Ai Audit Stamp",
+        description:
+          "Hidden field used to bump `updatedAt` field when touched by AI",
+        type: "string",
+        hidden: true,
+      }),
+      defineField({
         group: "attributes",
         ...titleField,
       }),
