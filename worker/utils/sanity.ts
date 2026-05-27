@@ -198,6 +198,7 @@ export async function getAuditableDocsByTypes(
     groq`
       *[
         _type in $docTypes
+        && defined(resourceUrl)
         && !(_id in path('drafts.**'))
         && !defined(*[_id == "drafts." + ^._id][0])
         && skipLinkCheck != true
