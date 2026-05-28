@@ -30,6 +30,8 @@ type DocAuditAction =
   | DocAuditReviewAction;
 
 const userAgent = "WhyGriefMattersBot/1.0 (+https://whygriefmatters.org)";
+// robots.txt User-agent directives match by token, not full UA string.
+const botToken = "WhyGriefMattersBot";
 const robotsTimeoutMs = 5000;
 const jinaTimeoutMs = 30000;
 
@@ -165,7 +167,7 @@ export async function allowsBots(resourceUrl: string): Promise<boolean> {
   }
 
   const robots = robotsParser(robotsUrl, body);
-  return robots.isAllowed(resourceUrl, userAgent) ?? true;
+  return robots.isAllowed(resourceUrl, botToken) ?? true;
 }
 
 export function generateAuditActionLogMessage(auditAction: DocAuditAction) {
