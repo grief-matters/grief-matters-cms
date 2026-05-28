@@ -42,8 +42,8 @@ export async function getAuditActionForDoc(
   env: Env,
   doc: SanityDocument,
 ): Promise<DocAuditAction> {
-  const url = doc.resourceUrl as string | undefined;
-  if (!url || url?.trim().length === 0) {
+  const url = doc.resourceUrl;
+  if (typeof url !== "string" || url.trim().length === 0) {
     return { id: doc._id, action: "skip", reason: "no_url" };
   }
 
