@@ -206,6 +206,7 @@ export async function getAuditableDocsByTypes(
     `,
     {
       docTypes: types,
+      // GROQ slices are inclusive on both ends: [0..N] returns N+1 items.
       limit: limit - 1,
     },
   );
