@@ -8,7 +8,7 @@ export type FetchResult =
   | { ok: false; reason: "http"; status: number }
   | { ok: false; reason: "network" | "timeout" | "empty" };
 
-type DocAuditSkipActionReason = "no_url" | "fetch_content" | "audit_fail";
+type DocAuditSkipActionReason = "no_url" | "fetch_content";
 type DocAuditDisableActionReason = "robots" | "http_client_error";
 
 type DocAuditSkipAction = {
