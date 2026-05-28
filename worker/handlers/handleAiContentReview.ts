@@ -101,14 +101,12 @@ async function runAiContentReview(env: Env, limit: number) {
       action: auditAction.action,
     });
 
-    const aiAuditStamp = generateKey();
-
     if (auditAction.action === "disable") {
       docActions.push({
         publishedId: doc._id,
         publishedRev: doc._rev,
         patch: {
-          aiAuditStamp,
+          aiAuditStamp: generateKey(),
           skipLinkCheck: true,
           skipLinkCheckReason: formatDisableReason(
             auditAction.reason,
@@ -123,7 +121,7 @@ async function runAiContentReview(env: Env, limit: number) {
       docActions.push({
         publishedId: doc._id,
         publishedRev: doc._rev,
-        patch: { aiAuditStamp },
+        patch: { aiAuditStamp: generateKey() },
       });
       continue;
     }
@@ -147,7 +145,7 @@ async function runAiContentReview(env: Env, limit: number) {
         taxonomyDocs,
       );
 
-      const aiAuditStamp = { aiAuditStamp: generateKey() };
+      const aiAuditStampPatch = { aiAuditStamp: generateKey() };
 
       // We have no update to apply
       if (
@@ -163,7 +161,7 @@ async function runAiContentReview(env: Env, limit: number) {
         docActions.push({
           publishedId: doc.doc._id,
           publishedRev: doc.doc._rev,
-          patch: aiAuditStamp,
+          patch: aiAuditStampPatch,
         });
 
         continue;
@@ -179,8 +177,8 @@ async function runAiContentReview(env: Env, limit: number) {
       docActions.push({
         publishedId: doc.doc._id,
         publishedRev: doc.doc._rev,
-        patch: aiAuditStamp,
-        draft: { ...newDoc, ...aiAuditStamp },
+        patch: aiAuditStampPatch,
+        draft: { ...newDoc, ...aiAuditStampPatch },
       });
     } catch (error) {
       logger.warn("ai_content_review_ai_review_outcome", {
