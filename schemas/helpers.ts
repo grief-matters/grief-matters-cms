@@ -10,6 +10,7 @@ import lossRelationshipsField from "./fields/lossRelationshipsField";
 import paywallField from "./fields/paywallField";
 import searchAliasesField from "./fields/searchAliasesField";
 import skipLinkFetchField from "./fields/skipLinkFetchField";
+import skipLinkCheckReasonField from "./fields/skipLinkCheckReasonField";
 import titleField from "./fields/titleField";
 import emotionalStatesField from "./fields/emotionalStatesField";
 import urlField, { requiredUrlField } from "./fields/urlField";
@@ -105,6 +106,10 @@ export const createBaseInternetResourceSchema = ({
       defineField({
         group: "access",
         ...skipLinkFetchField,
+      }),
+      defineField({
+        group: "access",
+        ...skipLinkCheckReasonField,
       }),
       defineField({
         group: "access",

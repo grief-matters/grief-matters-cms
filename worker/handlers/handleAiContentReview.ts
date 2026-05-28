@@ -15,7 +15,22 @@ import { logMessage } from "../utils/logger";
 type ExtendedPatch = SanityInternetResourcePatch & {
   aiAuditStamp: string;
   skipLinkCheck?: boolean;
+  skipLinkCheckReason?: string;
 };
+
+function formatDisableReason(
+  reason: "robots" | "http_client_error",
+  detail: string | undefined,
+): string {
+  switch (reason) {
+    case "robots":
+      return "Disallowed by robots.txt";
+    case "http_client_error":
+      return detail
+        ? `HTTP ${detail} from source URL`
+        : "HTTP client error from source URL";
+  }
+}
 
 // Each action becomes one per-doc transaction. The published-doc patch is
 // guarded by ifRevisionId so that if the doc was modified between query and
@@ -80,11 +95,20 @@ async function runAiContentReview(env: Env, limit: number) {
       action: auditAction.action,
     });
 
+    const aiAuditStamp = generateKey();
+
     if (auditAction.action === "disable") {
       docActions.push({
         publishedId: doc._id,
         publishedRev: doc._rev,
-        patch: { aiAuditStamp: generateKey(), skipLinkCheck: true },
+        patch: {
+          aiAuditStamp,
+          skipLinkCheck: true,
+          skipLinkCheckReason: formatDisableReason(
+            auditAction.reason,
+            auditAction.detail,
+          ),
+        },
       });
       continue;
     }
@@ -93,7 +117,7 @@ async function runAiContentReview(env: Env, limit: number) {
       docActions.push({
         publishedId: doc._id,
         publishedRev: doc._rev,
-        patch: { aiAuditStamp: generateKey() },
+        patch: { aiAuditStamp },
       });
       continue;
     }
