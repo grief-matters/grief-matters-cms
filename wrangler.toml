@@ -26,10 +26,5 @@ JINA_CONTENT_MAX_CHARS = 50000
 # if observed input_tokens consistently sit well below 15K.
 AI_REVIEW_MIN_GAP_MS = 30000
 
-[[kv_namespaces]]
-binding = "WGM_BROKEN_LINKS"
-id = "c550797730cd46548c029305d481209c"
-preview_id = "a7d4febae7d2471d90754d4b90913ecf"
-
 [triggers]
 crons = ["0 */6 * * *"]
