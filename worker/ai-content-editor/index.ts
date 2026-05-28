@@ -175,7 +175,3 @@ export async function allowsBots(resourceUrl: string): Promise<boolean> {
   const robots = robotsParser(robotsUrl, body);
   return robots.isAllowed(resourceUrl, botToken) ?? true;
 }
-
-export function generateAuditActionLogMessage(auditAction: DocAuditAction) {
-  return JSON.stringify(auditAction);
-}
