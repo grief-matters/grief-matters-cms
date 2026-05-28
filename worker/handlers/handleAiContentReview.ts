@@ -101,59 +101,74 @@ async function runAiContentReview(env: Env, limit: number) {
     docsForAiReview.push({ doc, content: auditAction.content });
   }
 
-  const settledAiReviews = await Promise.allSettled(
-    docsForAiReview.map((doc) =>
-      getAiReview(env, doc.doc, doc.content, taxonomyDocs),
-    ),
-  );
-
-  for (let i = 0; i < settledAiReviews.length; i++) {
-    const result = settledAiReviews[i];
+  // Serialize Anthropic calls to stay under the ITPM limit. Each iteration
+  // enforces a minimum wall-clock gap between request starts; if the request
+  // itself took longer than the gap, we proceed immediately.
+  for (let i = 0; i < docsForAiReview.length; i++) {
     const doc = docsForAiReview[i];
+    const isLast = i === docsForAiReview.length - 1;
+    const startedAt = Date.now();
 
-    if (result.status === "rejected") {
-      logMessage("ai_content_review_ai_review_outcome", {
-        docId: doc.doc._id,
-        status: "fail",
-        reason: result.reason,
-      });
+    try {
+      const reviewAction = await getAiReview(
+        env,
+        doc.doc,
+        doc.content,
+        taxonomyDocs,
+      );
 
-      continue;
-    }
+      const aiAuditStamp = { aiAuditStamp: generateKey() };
 
-    const reviewAction = result.value;
-    const aiAuditStamp = { aiAuditStamp: generateKey() };
+      // We have no update to apply
+      if (
+        reviewAction.patch === null ||
+        Object.keys(reviewAction.patch).length === 0
+      ) {
+        logMessage("ai_content_review_ai_review_outcome", {
+          docId: doc.doc._id,
+          status: "success",
+          detail: "no changes",
+        });
 
-    if (
-      reviewAction.patch === null ||
-      Object.keys(reviewAction.patch).length === 0
-    ) {
+        docActions.push({
+          publishedId: doc.doc._id,
+          publishedRev: doc.doc._rev,
+          patch: aiAuditStamp,
+        });
+
+        continue;
+      }
+
       logMessage("ai_content_review_ai_review_outcome", {
         docId: doc.doc._id,
         status: "success",
-        detail: "no changes",
+        detail: "patch provided",
       });
+
+      const newDoc = getSanityDocFromReviewAction(doc.doc, reviewAction.patch);
       docActions.push({
         publishedId: doc.doc._id,
         publishedRev: doc.doc._rev,
         patch: aiAuditStamp,
+        draft: { ...newDoc, ...aiAuditStamp },
       });
-      continue;
+    } catch (error) {
+      logMessage("ai_content_review_ai_review_outcome", {
+        docId: doc.doc._id,
+        status: "fail",
+        reason: error instanceof Error ? error.message : String(error),
+      });
     }
 
-    logMessage("ai_content_review_ai_review_outcome", {
-      docId: doc.doc._id,
-      status: "success",
-      detail: "patch provided",
-    });
+    // We want to create a delay between requests to avoid Claude API rate limits on Tier 1
+    if (!isLast) {
+      const elapsed = Date.now() - startedAt;
+      const remaining = env.AI_REVIEW_MIN_GAP_MS - elapsed;
 
-    const newDoc = getSanityDocFromReviewAction(doc.doc, reviewAction.patch);
-    docActions.push({
-      publishedId: doc.doc._id,
-      publishedRev: doc.doc._rev,
-      patch: aiAuditStamp,
-      draft: { ...newDoc, ...aiAuditStamp },
-    });
+      if (remaining > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remaining));
+      }
+    }
   }
 
   const sanityClient = getSanityClient(env);

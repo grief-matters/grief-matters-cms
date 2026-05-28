@@ -15,8 +15,8 @@ async function handleScheduled(
   _ctx: ExecutionContext,
 ): Promise<void> {
   switch (event.cron) {
-    case "0 0 * * *":
-      await handleAiContentReview(env, 10);
+    case "0 */6 * * *":
+      await handleAiContentReview(env, env.AI_CONTENT_REVIEW_DOC_LIMIT);
       break;
     default:
       console.warn(`Unhandled cron: ${event.cron}`);

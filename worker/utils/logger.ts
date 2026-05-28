@@ -1,7 +1,7 @@
 export function logMessage(event: string, message: string | unknown) {
   if (typeof message === "string") {
-    console.log(`[${event}]: \n`, message);
+    console.log(`[${event}]:`, message);
     return;
   }
-  console.log(`[${event}]: \n`, JSON.stringify(message));
+  console.log(`[${event}]:`, JSON.stringify(message));
 }

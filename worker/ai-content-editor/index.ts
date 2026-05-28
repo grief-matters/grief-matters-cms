@@ -33,7 +33,7 @@ const userAgent = "WhyGriefMattersBot/1.0 (+https://whygriefmatters.org)";
 const robotsTimeoutMs = 5000;
 const jinaTimeoutMs = 30000;
 
-// Start with an arbitrary number and tune - we're saying mark less than 250 characters is probably not the resource
+// Start with an arbitrary number and tune - we're saying markdown less than 250 characters is probably not the resource
 const minContentLength = 250;
 
 export async function getAuditActionForDoc(
@@ -110,6 +110,11 @@ async function fetchPageContent(
     }
 
     content = await response.text();
+
+    // We need to manage token budget - we've set a sufficiently high number to cover majority of cases
+    if (content.length > env.JINA_CONTENT_MAX_CHARS) {
+      content = content.slice(0, env.JINA_CONTENT_MAX_CHARS);
+    }
   } catch (error) {
     if (
       error instanceof Error &&

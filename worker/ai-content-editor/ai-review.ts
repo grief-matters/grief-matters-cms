@@ -148,7 +148,7 @@ export async function getAiReview(
 
   const response = await client.messages.parse({
     model: "claude-sonnet-4-6",
-    max_tokens: 4000,
+    max_tokens: env.AI_REVIEW_MAX_OUTPUT_TOKENS,
     thinking: { type: "adaptive" },
     output_config: {
       format: zodOutputFormat(
@@ -164,6 +164,15 @@ export async function getAiReview(
       },
     ],
     messages: [{ role: "user", content: getUserMessage(restDoc, content) }],
+  });
+
+  logMessage("ai_content_review_token_usage", {
+    docId: doc._id,
+    inputTokens: response.usage.input_tokens,
+    outputTokens: response.usage.output_tokens,
+    cacheCreationTokens: response.usage.cache_creation_input_tokens,
+    cacheReadTokens: response.usage.cache_read_input_tokens,
+    contentChars: content.length,
   });
 
   const parsed = response.parsed_output;
