@@ -12,7 +12,7 @@ import {
 } from "../utils/sanity";
 import { getClaudeClient } from "../utils/llm-client";
 import type { InternetResourceType } from "../../types";
-import { logMessage } from "../utils/logger";
+import { logger } from "../utils/logger";
 
 function getRefDocsPrompt(refDocs: Record<string, RefDoc[]>): string {
   return Object.entries(refDocs)
@@ -106,7 +106,7 @@ function toPatch(
       const filtered = (value as string[]).filter((id) => validIds.has(id));
 
       if (value.length !== filtered.length) {
-        logMessage(
+        logger.warn(
           "create_patch",
           `dropped invalid ref IDs: [${(value as string[]).filter((id) => !validIds.has(id))}]`,
         );
@@ -166,7 +166,7 @@ export async function getAiReview(
     messages: [{ role: "user", content: getUserMessage(restDoc, content) }],
   });
 
-  logMessage("ai_content_review_token_usage", {
+  logger.info("ai_content_review_token_usage", {
     docId: doc._id,
     inputTokens: response.usage.input_tokens,
     outputTokens: response.usage.output_tokens,
@@ -177,6 +177,10 @@ export async function getAiReview(
 
   const parsed = response.parsed_output;
   if (!parsed) {
+    logger.warn("ai_content_review_parse_failed", {
+      docId: doc._id,
+      stopReason: response.stop_reason,
+    });
     return {
       id: doc._id,
       patch: null,

@@ -2,6 +2,7 @@ import { AutoRouter, type IRequest } from "itty-router";
 
 import { handleAiContentReview } from "./handlers/handleAiContentReview";
 import { handleFallback } from "./handlers/handleFallback";
+import { logger } from "./utils/logger";
 
 export type CFArgs = [Env, ExecutionContext];
 
@@ -19,7 +20,7 @@ async function handleScheduled(
       await handleAiContentReview(env, env.AI_CONTENT_REVIEW_DOC_LIMIT);
       break;
     default:
-      console.warn(`Unhandled cron: ${event.cron}`);
+      logger.warn("unhandled_cron", event.cron);
   }
 }
 

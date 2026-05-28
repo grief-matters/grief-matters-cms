@@ -10,7 +10,7 @@ import {
 } from "../utils/sanity";
 import { getAuditActionForDoc } from "../ai-content-editor";
 import { getAiReview } from "../ai-content-editor/ai-review";
-import { logMessage } from "../utils/logger";
+import { logger } from "../utils/logger";
 
 type ExtendedPatch = SanityInternetResourcePatch & {
   aiAuditStamp: string;
@@ -43,14 +43,14 @@ type DocAction = {
 };
 
 export async function handleAiContentReview(env: Env, limit: number) {
-  logMessage("ai_content_review_start", "starting");
+  logger.info("ai_content_review_start", "starting");
 
   try {
     await runAiContentReview(env, limit);
   } catch (error) {
     // Swallow so Cloudflare doesn't retry the scheduled trigger and re-spend
     // on Jina + Anthropic for the same batch.
-    logMessage(
+    logger.error(
       "ai_content_review_fatal",
       error instanceof Error ? error.message : String(error),
     );
@@ -58,12 +58,18 @@ export async function handleAiContentReview(env: Env, limit: number) {
 }
 
 async function runAiContentReview(env: Env, limit: number) {
-  const taxonomyDocs = await getReferenceTaxonomies(env);
   const resourceDocs = await getAuditableDocsByTypes(
     env,
     [...INTERNET_RESOURCE_TYPES],
     limit,
   );
+
+  if (resourceDocs.length === 0) {
+    logger.info("ai_content_review_empty_batch", "no eligible docs");
+    return;
+  }
+
+  const taxonomyDocs = await getReferenceTaxonomies(env);
 
   // Determine audit actions
   const settledAuditActions = await Promise.allSettled(
@@ -79,7 +85,7 @@ async function runAiContentReview(env: Env, limit: number) {
     const result = settledAuditActions[i];
 
     if (result.status === "rejected") {
-      logMessage("ai_content_review_doc_audit_outcome", {
+      logger.warn("ai_content_review_doc_audit_outcome", {
         docId: doc._id,
         status: "fail",
         reason: result.reason,
@@ -89,7 +95,7 @@ async function runAiContentReview(env: Env, limit: number) {
 
     const auditAction = result.value;
 
-    logMessage("ai_content_review_doc_audit_outcome", {
+    logger.info("ai_content_review_doc_audit_outcome", {
       docId: doc._id,
       status: "success",
       action: auditAction.action,
@@ -148,10 +154,10 @@ async function runAiContentReview(env: Env, limit: number) {
         reviewAction.patch === null ||
         Object.keys(reviewAction.patch).length === 0
       ) {
-        logMessage("ai_content_review_ai_review_outcome", {
+        logger.info("ai_content_review_ai_review_outcome", {
           docId: doc.doc._id,
           status: "success",
-          detail: "no changes",
+          detail: reviewAction.patch === null ? "parse failed" : "no changes",
         });
 
         docActions.push({
@@ -163,7 +169,7 @@ async function runAiContentReview(env: Env, limit: number) {
         continue;
       }
 
-      logMessage("ai_content_review_ai_review_outcome", {
+      logger.info("ai_content_review_ai_review_outcome", {
         docId: doc.doc._id,
         status: "success",
         detail: "patch provided",
@@ -177,7 +183,7 @@ async function runAiContentReview(env: Env, limit: number) {
         draft: { ...newDoc, ...aiAuditStamp },
       });
     } catch (error) {
-      logMessage("ai_content_review_ai_review_outcome", {
+      logger.warn("ai_content_review_ai_review_outcome", {
         docId: doc.doc._id,
         status: "fail",
         reason: error instanceof Error ? error.message : String(error),
@@ -215,7 +221,7 @@ async function runAiContentReview(env: Env, limit: number) {
     const action = docActions[i];
     const result = settledCommits[i];
     if (result.status === "rejected") {
-      logMessage("ai_content_review_sanity_commit_outcome", {
+      logger.warn("ai_content_review_sanity_commit_outcome", {
         docId: action.publishedId,
         status: "fail",
         reason:
@@ -225,7 +231,7 @@ async function runAiContentReview(env: Env, limit: number) {
       });
       continue;
     }
-    logMessage("ai_content_review_sanity_commit_outcome", {
+    logger.info("ai_content_review_sanity_commit_outcome", {
       docId: action.publishedId,
       status: "success",
     });

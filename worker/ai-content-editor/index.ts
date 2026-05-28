@@ -1,6 +1,7 @@
 import robotsParser from "robots-parser";
 
 import type { SanityDocument } from "sanity";
+import { logger } from "../utils/logger";
 
 export type FetchResult =
   | { ok: true; content: string }
@@ -115,6 +116,11 @@ async function fetchPageContent(
 
     // We need to manage token budget - we've set a sufficiently high number to cover majority of cases
     if (content.length > env.JINA_CONTENT_MAX_CHARS) {
+      logger.warn("jina_content_truncated", {
+        url: resourceUrl,
+        originalChars: content.length,
+        truncatedTo: env.JINA_CONTENT_MAX_CHARS,
+      });
       content = content.slice(0, env.JINA_CONTENT_MAX_CHARS);
     }
   } catch (error) {
