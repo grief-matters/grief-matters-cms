@@ -5,7 +5,7 @@ import managementTools from "./management-tools/plugin";
 
 import { structure } from "./structure";
 import {
-  internetResourceDocumentTypes,
+  internetResourceDocumentSchemaTypes,
   schemaTypes,
   singletonDocumentTypes,
 } from "./schemas";
@@ -14,8 +14,8 @@ const singletonTypes: Set<string> = new Set([
   ...singletonDocumentTypes.map((t) => t.name),
 ]);
 
-const internetResourceTypes: Set<string> = new Set([
-  ...internetResourceDocumentTypes.map((t) => t.name),
+const internetResourceSchemaTypes: Set<string> = new Set([
+  ...internetResourceDocumentSchemaTypes.map((t) => t.name),
 ]);
 
 const singletonActions = new Set(["publish", "discardChanges", "restore"]);
@@ -48,7 +48,7 @@ export default defineConfig({
         ? prev.filter(({ action }) => action && singletonActions.has(action))
         : prev;
 
-      return internetResourceTypes.has(context.schemaType)
+      return internetResourceSchemaTypes.has(context.schemaType)
         ? ([...nonSingletonActions] as DocumentActionComponent[])
         : nonSingletonActions;
     },

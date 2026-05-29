@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-import { contactTypes } from "../../constants";
+import { contactTypes } from "../../shared/contact-type";
 
 const contactTypesLabels: Record<(typeof contactTypes)[number], string> = {
   email: "Email",

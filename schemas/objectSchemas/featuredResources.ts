@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { INTERNET_RESOURCE_TYPES } from "../../constants";
 import { featuredResourceLinksPreviewConfig } from "../../configs/featuredResourceLinksPreviewConfig";
+import { internetResourceTypes } from "../../shared/internet-resource";
 
 export default defineType({
   type: "object",
@@ -18,7 +18,7 @@ export default defineType({
       of: [
         defineArrayMember({
           type: "reference",
-          to: [...INTERNET_RESOURCE_TYPES.map((t) => ({ type: t }))],
+          to: [...internetResourceTypes.map((t) => ({ type: t }))],
         }),
       ],
       validation: (Rule) => Rule.min(1),

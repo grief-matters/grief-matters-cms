@@ -1,177 +1,185 @@
-import robotsParser from "robots-parser";
-
-import type { SanityDocument } from "sanity";
+import { internetResourceTypes } from "../../shared/internet-resource";
+import {
+  getOldestPublishedDocsByTypes,
+  getReferenceTaxonomies,
+  getSanityClient,
+} from "../sanity/client";
+import {
+  getBaseMutationDescriptor,
+  getDraftDocumentFromAiReview,
+  draftHasChanges,
+  type SanityMutationDescriptor,
+} from "../sanity/utils";
 import { logger } from "../utils/logger";
+import { type ReviewInput, getAiReview } from "./ai-review";
+import {
+  getDocumentContent,
+  getDocumentActionFromContentResult,
+} from "./content";
 
-export type FetchResult =
-  | { ok: true; content: string }
-  | { ok: false; reason: "http"; status: number }
-  | { ok: false; reason: "network" | "timeout" | "empty" };
+export async function runAiContentReview(env: Env, limit: number) {
+  // Fetch the docs to audit
+  const resourceDocs = await getOldestPublishedDocsByTypes(
+    env,
+    [...internetResourceTypes],
+    limit,
+  );
 
-type DocAuditSkipActionReason = "no_url" | "fetch_content";
-type DocAuditDisableActionReason = "robots" | "http_client_error";
-
-type DocAuditSkipAction = {
-  id: string;
-  action: "skip";
-  reason: DocAuditSkipActionReason;
-  detail?: string;
-};
-type DocAuditDisableAction = {
-  id: string;
-  action: "disable";
-  reason: DocAuditDisableActionReason;
-  detail?: string;
-};
-type DocAuditReviewAction = { id: string; action: "review"; content: string };
-
-type DocAuditAction =
-  | DocAuditSkipAction
-  | DocAuditDisableAction
-  | DocAuditReviewAction;
-
-const userAgent = "WhyGriefMattersBot/1.0 (+https://whygriefmatters.org)";
-// robots.txt User-agent directives match by token, not full UA string.
-const botToken = "WhyGriefMattersBot";
-const robotsTimeoutMs = 5000;
-const jinaTimeoutMs = 30000;
-
-// Start with an arbitrary number and tune - we're saying markdown less than 250 characters is probably not the resource
-const minContentLength = 250;
-
-export async function getAuditActionForDoc(
-  env: Env,
-  doc: SanityDocument,
-): Promise<DocAuditAction> {
-  const url = doc.resourceUrl;
-  if (typeof url !== "string" || url.trim().length === 0) {
-    return { id: doc._id, action: "skip", reason: "no_url" };
+  if (resourceDocs.length === 0) {
+    logger.info("runAiContentReview", "no eligible docs");
+    return;
   }
 
-  const doesAllowBots = await allowsBots(url);
-  if (!doesAllowBots) {
-    return { id: doc._id, action: "disable", reason: "robots" };
-  }
+  // Get page content for documents
+  const settledDocContentResults = await Promise.allSettled(
+    resourceDocs.map((doc) => getDocumentContent(env, doc)),
+  );
 
-  const fetchResult = await fetchPageContent(env, url);
-  if (!fetchResult.ok) {
-    if (
-      fetchResult.reason === "http" &&
-      fetchResult.status >= 400 &&
-      fetchResult.status < 500
-    ) {
-      return {
-        id: doc._id,
-        action: "disable",
-        reason: "http_client_error",
-        detail: `${fetchResult.status}`,
-      };
-    }
+  // Track Sanity mutations
+  const docMutationDescriptors: Array<SanityMutationDescriptor> = [];
+  const docsForAiReview: Array<ReviewInput> = [];
 
-    return {
-      id: doc._id,
-      action: "skip",
-      reason: "fetch_content",
-      detail:
-        fetchResult.reason +
-        (fetchResult.reason === "http" ? `: ${fetchResult.status}` : ""),
-    };
-  }
+  // Process settled Doc Content promises
+  for (let i = 0; i < settledDocContentResults.length; i++) {
+    const doc = resourceDocs[i];
+    const result = settledDocContentResults[i];
 
-  return { id: doc._id, action: "review", content: fetchResult.content };
-}
-
-/**
- * Fetches the content of a URL - currently uses Jina and returns Markdown
- *
- * @param env
- * @param resourceUrl
- * @returns
- */
-async function fetchPageContent(
-  env: Env,
-  resourceUrl: string,
-): Promise<FetchResult> {
-  const jinaUrl = `https://r.jina.ai/${encodeURIComponent(resourceUrl)}`;
-
-  let response: Response;
-
-  let content: string = "";
-
-  try {
-    response = await fetch(jinaUrl, {
-      headers: {
-        Authorization: `Bearer ${env.JINA_API_KEY}`,
-        "User-Agent": userAgent,
-        "X-User-Agent": userAgent,
-      },
-      signal: AbortSignal.timeout(jinaTimeoutMs),
-    });
-
-    if (!response.ok) {
-      return { ok: false, reason: "http", status: response.status };
-    }
-
-    content = await response.text();
-
-    // We need to manage token budget - we've set a sufficiently high number to cover majority of cases
-    if (content.length > env.JINA_CONTENT_MAX_CHARS) {
-      logger.warn("jina_content_truncated", {
-        url: resourceUrl,
-        originalChars: content.length,
-        truncatedTo: env.JINA_CONTENT_MAX_CHARS,
+    // Process rejected promises
+    if (result.status !== "fulfilled") {
+      logger.warn("runAiContentReview", {
+        docId: doc._id,
+        detail: `[getDocumentContent] promise rejected: ${result.reason}`,
       });
-      content = content.slice(0, env.JINA_CONTENT_MAX_CHARS);
-    }
-  } catch (error) {
-    if (
-      error instanceof Error &&
-      (error?.name === "TimeoutError" || error?.name === "AbortError")
-    ) {
-      return { ok: false, reason: "timeout" };
+      continue;
     }
 
-    return { ok: false, reason: "network" };
+    const docAction = getDocumentActionFromContentResult(result.value);
+
+    if (docAction.action !== "review") {
+      const baseMutation = getBaseMutationDescriptor(doc);
+
+      if (docAction.action === "disable") {
+        docMutationDescriptors.push({
+          ...baseMutation,
+          pubPatch: {
+            ...baseMutation.pubPatch,
+            skipLinkCheck: true,
+            skipLinkCheckReason: docAction.detail,
+          },
+        });
+        continue;
+      }
+
+      // When we skip, we only need to bump the audit stamp
+      docMutationDescriptors.push(baseMutation);
+      continue;
+    }
+
+    docsForAiReview.push({ doc, content: docAction.content });
   }
 
-  if (content.trim().length < minContentLength) {
-    return { ok: false, reason: "empty" };
+  // Fetch the taxonomy classification docs the LLM needs in context
+  const taxonomyDocs = await getReferenceTaxonomies(env);
+  // Process the documents we need to pass to the reviewer
+  for (let i = 0; i < docsForAiReview.length; i++) {
+    // Monitor elapsed time to ensure we don't breach Input Tokens p/m limit
+    const startedAt = performance.now();
+
+    const reviewInput = docsForAiReview[i];
+    try {
+      const aiReview = await getAiReview(
+        env,
+        reviewInput.doc,
+        reviewInput.content,
+        taxonomyDocs,
+      );
+
+      if (aiReview === null) {
+        // todo - log ai review failure
+        continue;
+      }
+
+      // create the draft from the AI review
+      const draftDoc = getDraftDocumentFromAiReview(aiReview, reviewInput.doc);
+
+      const baseMutation = getBaseMutationDescriptor(reviewInput.doc);
+
+      if (!draftHasChanges(draftDoc, reviewInput.doc)) {
+        logger.info("ai_content_review_ai_review_outcome", {
+          docId: reviewInput.doc._id,
+          status: "success",
+          detail: "no changes",
+        });
+        docMutationDescriptors.push(baseMutation);
+        continue;
+      }
+
+      logger.info("ai_content_review_ai_review_outcome", {
+        docId: reviewInput.doc._id,
+        status: "success",
+        detail: "draft created",
+      });
+      docMutationDescriptors.push({ ...baseMutation, draft: draftDoc });
+    } catch (error) {
+      logger.error("ai_content_review_ai_review_outcome", {
+        docId: reviewInput.doc._id,
+        status: "fail",
+        reason: error instanceof Error ? error.message : String(error),
+      });
+    }
+
+    // Sleep between iterations if needed
+    if (i < docsForAiReview.length - 1) {
+      const elapsed = performance.now() - startedAt;
+      const remaining = env.AI_REVIEW_MIN_GAP_MS - elapsed;
+
+      if (remaining > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remaining));
+      }
+    }
   }
 
-  return { ok: true, content };
-}
+  const sanityClient = getSanityClient(env);
 
-/**
- * Polite robots.txt check. Returns a promise that resolves to a boolean
- *
- * @param resourceUrl
- * @returns
- */
-export async function allowsBots(resourceUrl: string): Promise<boolean> {
-  let robotsUrl: string;
-  let body: string;
-  try {
-    robotsUrl = new URL("/robots.txt", resourceUrl).toString();
+  const settledCommits = await Promise.allSettled(
+    docMutationDescriptors.map((mDescriptor) => {
+      const tx = sanityClient
+        .transaction()
+        .patch(mDescriptor.pubId, (p) =>
+          p.ifRevisionId(mDescriptor.pubRev).set(mDescriptor.pubPatch),
+        );
 
-    const response = await fetch(robotsUrl, {
-      headers: { "User-Agent": userAgent },
-      signal: AbortSignal.timeout(robotsTimeoutMs),
+      if (mDescriptor.draft) {
+        tx.createIfNotExists(mDescriptor.draft);
+      }
+
+      return tx.commit({ visibility: "async" });
+    }),
+  );
+
+  // Just logging
+  for (let i = 0; i < settledCommits.length; i++) {
+    const action = docMutationDescriptors[i];
+    const result = settledCommits[i];
+    if (result.status === "rejected") {
+      logger.warn("ai_content_review_sanity_commit_outcome", {
+        docId: action.pubId,
+        status: "fail",
+        reason:
+          result.reason instanceof Error
+            ? result.reason.message
+            : String(result.reason),
+      });
+      continue;
+    }
+    logger.info("ai_content_review_sanity_commit_outcome", {
+      docId: action.pubId,
+      status: "success",
     });
-
-    // todo: not completely polite - treating 5xx as ok
-
-    if (response.status === 404) {
-      return true;
-    }
-    if (!response.ok) {
-      return true;
-    }
-
-    body = await response.text();
-  } catch {
-    return true;
   }
-
-  const robots = robotsParser(robotsUrl, body);
-  return robots.isAllowed(resourceUrl, botToken) ?? true;
 }
+
+// export type FetchResult =
+//   | { ok: true; content: string }
+//   | { ok: false; reason: "http"; status: number }
+//   | { ok: false; reason: "network" | "timeout" | "empty" };

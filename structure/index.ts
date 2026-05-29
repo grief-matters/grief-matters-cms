@@ -3,7 +3,7 @@ import type { StructureResolver } from "sanity/structure";
 import {
   classificationDocumentTypes,
   documentTypes,
-  internetResourceDocumentTypes,
+  internetResourceDocumentSchemaTypes,
   singletonDocumentTypes,
 } from "../schemas";
 
@@ -39,7 +39,7 @@ export const structure: StructureResolver = (S) =>
         ),
       ),
       S.divider(),
-      ...internetResourceDocumentTypes.map((t) =>
+      ...internetResourceDocumentSchemaTypes.map((t) =>
         S.documentTypeListItem(t.name).title(
           startCase(pluralize(t.title ?? t.name)),
         ),

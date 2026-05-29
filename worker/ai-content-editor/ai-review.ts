@@ -1,148 +1,148 @@
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import z from "zod";
 import type { SanityDocument } from "sanity";
 
 import {
-  type AiReviewResponse,
-  getOutputSchemaForDocType,
   isRefField,
-  normalizeContactMethods,
-  refIdsChanged,
-  type RefDoc,
-  type SanityInternetResourcePatch,
-} from "../utils/sanity";
-import { getClaudeClient } from "../utils/llm-client";
-import type { InternetResourceType } from "../../types";
+  type InternetResourceType,
+} from "../../shared/internet-resource";
+import { days, timezones } from "../../shared/datetime";
+import { contactTypes } from "../../shared/contact-type";
+
+import { getClaudeClient } from "./llm-client";
+import { type RefDoc } from "../sanity/utils";
 import { logger } from "../utils/logger";
+import { getSystemPrompt, getUserMessage } from "./prompt";
 
-function getRefDocsPrompt(refDocs: Record<string, RefDoc[]>): string {
-  return Object.entries(refDocs)
-    .map(([type, docs]) => {
-      const docBlocks = docs
-        .map(
-          (doc) =>
-            `- _id: ${doc._id}\n- title: ${doc.title}\n- description: ${doc.description}\n---`,
-        )
-        .join("\n");
+export type ReviewInput = { doc: SanityDocument; content: string };
 
-      return `### ${type}\n\n${docBlocks}`;
-    })
-    .join("\n\n");
-}
+export type AiReview =
+  | AiReviewBase
+  | AiReviewWithAudience
+  | AiReviewWithContactMethods;
 
-function getSystemPrompt(
-  docType: InternetResourceType,
+export type AiAvailability = z.infer<typeof zAiAvailability>;
+
+type AiReviewResult = null | AiReview;
+type AiReviewBase = z.infer<typeof zAiReviewBase>;
+type AiReviewWithAudience = z.infer<typeof zAiReviewWithAudience>;
+type AiReviewWithContactMethods = z.infer<typeof zAiReviewWithContactMethods>;
+
+// Reference array fields are intentionally non-nullable: Anthropic structured
+// outputs has a 16-parameter limit on union-typed fields. The AI always emits
+// the desired final ref list (the existing doc is supplied in the user message),
+// so re-emitting the current refs is a no-op write.
+const zAiReviewBase = z.object({
+  title: z.string().nullable(),
+  description: z.string().nullable(),
+  availableLanguages: z.array(z.enum(["english", "spanish"])).nullable(),
+  searchAliases: z.array(z.string()).nullable(),
+  paywalled: z.boolean().nullable(),
+  registrationRequired: z.boolean().nullable(),
+  lossRelationships: z.array(z.string()),
+  causesOfDeath: z.array(z.string()),
+  themes: z.array(z.string()),
+  demographics: z.array(z.string()),
+  griefPhases: z.array(z.string()),
+  griefTypes: z.array(z.string()),
+  contentFunctions: z.array(z.string()),
+  emotionalStates: z.array(z.string()),
+});
+
+const zAiReviewWithAudience = z.object({
+  ...zAiReviewBase.shape,
+  audienceRole: z
+    .array(z.enum(["bereaved", "supporter", "professional"]))
+    .nullable(),
+});
+
+// These schemas are simplified vs the Sanity schemas to avoid 'compiled grammar too large' errors with Claude
+const zAiAvailability = z.object({
+  days: z.array(z.enum(days)),
+  availableFrom: z.string(),
+  availableTo: z.string(),
+  timezone: z.enum(timezones),
+});
+
+const zAiContactMethod = z.object({
+  contactType: z.enum(contactTypes),
+  telephoneNumber: z.string().nullable(),
+  smsBody: z.string().nullable(),
+  email: z.string().nullable(),
+  contactForm: z.string().nullable(),
+  liveChatUrl: z.string().nullable(),
+  availabilities: z.array(zAiAvailability).nullable(),
+});
+export type AiContactMethod = z.infer<typeof zAiContactMethod>;
+
+const zAiReviewWithContactMethods = z.object({
+  ...zAiReviewBase.shape,
+  contactMethods: z.array(zAiContactMethod).nullable(),
+});
+
+/**
+ *
+ * @param aiReview
+ * @param refDocs
+ * @returns
+ */
+function getValidAiReview<T extends AiReview>(
+  aiReview: T,
   refDocs: Record<string, RefDoc[]>,
-): string {
-  let additionalFieldInstructions = "";
+): T {
+  const result: Record<string, unknown> = { ...aiReview };
+
+  for (const [key, value] of Object.entries(aiReview)) {
+    if (!isRefField(key) || !Array.isArray(value)) {
+      continue;
+    }
+
+    const validIds = new Set((refDocs[key] ?? []).map((d) => d._id));
+    const filtered = (value as string[]).filter((id) => validIds.has(id));
+
+    if (filtered.length !== value.length) {
+      logger.warn("getValidAiReview:dropped_refs", {
+        field: key,
+        dropped: (value as string[]).filter((id) => !validIds.has(id)),
+      });
+    }
+
+    result[key] = filtered;
+  }
+
+  return result as T;
+}
+
+/**
+ *
+ * @param docType
+ * @returns
+ */
+function getOutputSchemaForDocType(docType: InternetResourceType) {
   switch (docType) {
-    case "app":
-      additionalFieldInstructions = "";
-      break;
     case "crisisResource":
-      additionalFieldInstructions = `- contactMethods: the available contact methods. Add as many as are applicable. For each method, set contactType and only the value fields relevant to that type (telephoneNumber for tel/tty/sms, smsBody for sms, email for email, contactForm for contactForm, liveChatUrl for liveChat). Leave the other value fields as null. availabilities applies to all types except email and contactForm.\n`;
-      break;
+      return zAiReviewWithContactMethods;
+    case "app":
+      return zAiReviewBase;
     default:
-      additionalFieldInstructions = `- audienceRole: intended audience. Allowed: "bereaved", "supporter", "professional". Usually a single value; multiple only if the resource genuinely speaks to more than one audience.\n`;
+      return zAiReviewWithAudience;
   }
-
-  return `
-You are a content editor knowledgeable in grief. You audit curated "internet resource" documents for the Why Grief Matters CMS. You will be given an existing Sanity document and the content of the resource (usually fetched as markdown). It is your job to review the existing document against the content, and create a JSON patch describing any changes.
-  
-You should check every field listed in the schema. For nullable scalar fields, return null when the existing value should not change. For reference fields (which are not nullable), always return the full array of _ids you believe should apply — re-emit the existing refs if they are already correct, modify them if not, and return [] if no refs apply.
-
-The existing Sanity document may contain errors, so use your judgement to remove and change any existing values if you feel that they have been applied incorrectly but only do this when you are reasonably confident.
-
-## Field Guidelines
-
-- title: this will usually be the actual title of the resource. If the existing title is too vague when viewed out of context (if it were syndicated for example), then try to improve it.
-- description: ~30 words, plain-English web copy. Convey what the resource is about and why a bereaved user, supporter, or professional might find it useful.
-- availableLanguages: languages the resource is actually available in. Allowed: "english", "spanish".
-- searchAliases: Up to 5 focused words or phrases a user might search to find this resource. Only fill this in when you can add genuinely alternative search terms — synonyms, abbreviations, or related concepts that don't already appear in the title, description, or any other field (including reference fields). Leave it empty if you'd only be repeating terms already present elsewhere.
-- paywalled: true if the resource is behind a paywall i.e. requires a paid subscription before being able to view the page.
-- registrationRequired: true if access requires creating a (free) account.
-${additionalFieldInstructions}
-
-## Reference Fields
-
-For each reference field, return an array of _id strings drawn from the taxonomies below. Only include a reference if the resource specifically targets that concept — never as a catch-all. Return [] if no references apply.
-
-${getRefDocsPrompt(refDocs)}
-  `;
 }
 
-function getUserMessage(doc: Record<string, unknown>, content: string): string {
-  return `
-Existing document:
-\`\`\`json
-${JSON.stringify(doc, null, 2)}
-\`\`\`
-
-Resource content (markdown):
-${content}
-
-Review the document against the resource content and return the patch.
-`;
-}
-
-type AiReview = {
-  id: string;
-  patch: SanityInternetResourcePatch | null;
-};
-
-function toPatch(
-  refDocIds: Record<string, string[]>,
-  response: AiReviewResponse,
-  existing: Record<string, unknown>,
-): SanityInternetResourcePatch {
-  const patch: Record<string, unknown> = {};
-
-  for (const [key, value] of Object.entries(response)) {
-    if (value === null) {
-      continue;
-    }
-
-    if (isRefField(key) && Array.isArray(value)) {
-      const validIds = new Set(refDocIds[key] ?? []);
-      const filtered = (value as string[]).filter((id) => validIds.has(id));
-
-      if (value.length !== filtered.length) {
-        logger.warn(
-          "create_patch",
-          `dropped invalid ref IDs: [${(value as string[]).filter((id) => !validIds.has(id))}]`,
-        );
-      }
-
-      if (refIdsChanged(filtered, existing[key])) {
-        patch[key] = filtered;
-      }
-
-      continue;
-    }
-
-    if (key === "contactMethods") {
-      const normalized = normalizeContactMethods(
-        value as Parameters<typeof normalizeContactMethods>[0],
-      );
-
-      if (normalized !== null) {
-        patch[key] = normalized;
-      }
-
-      continue;
-    }
-
-    patch[key] = value;
-  }
-
-  return patch;
-}
-
+/**
+ *
+ * @param env
+ * @param doc
+ * @param content
+ * @param refDocs
+ * @returns
+ */
 export async function getAiReview(
   env: Env,
   doc: SanityDocument,
   content: string,
   refDocs: Record<string, RefDoc[]>,
-): Promise<AiReview> {
+): Promise<AiReviewResult> {
   const client = getClaudeClient(env);
   const { _createdAt, _id, _rev, _updatedAt, ...restDoc } = doc;
 
@@ -166,7 +166,7 @@ export async function getAiReview(
     messages: [{ role: "user", content: getUserMessage(restDoc, content) }],
   });
 
-  logger.info("ai_content_review_token_usage", {
+  logger.info("getAiReview:token_usage", {
     docId: doc._id,
     inputTokens: response.usage.input_tokens,
     outputTokens: response.usage.output_tokens,
@@ -177,26 +177,14 @@ export async function getAiReview(
 
   const parsed = response.parsed_output;
   if (!parsed) {
-    logger.warn("ai_content_review_parse_failed", {
+    logger.warn("getAiReview:fail", {
       docId: doc._id,
       stopReason: response.stop_reason,
     });
-    return {
-      id: doc._id,
-      patch: null,
-    };
+    return null;
   }
 
-  // Get all the valid IDs of our ref docs
-  const refDocIds = Object.fromEntries(
-    Object.entries(refDocs).map(([fieldName, docs]) => [
-      fieldName,
-      docs.map((refDoc) => refDoc._id),
-    ]),
-  );
+  const validParsed = getValidAiReview<AiReview>(parsed, refDocs);
 
-  return {
-    id: doc._id,
-    patch: toPatch(refDocIds, parsed, restDoc),
-  };
+  return validParsed;
 }

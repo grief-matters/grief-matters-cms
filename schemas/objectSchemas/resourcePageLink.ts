@@ -1,6 +1,6 @@
 import { defineField, defineType } from "sanity";
-import { INTERNET_RESOURCE_TYPES } from "../../constants";
 import { startCase } from "lodash";
+import { internetResourceTypes } from "../../shared/internet-resource";
 
 export default defineType({
   name: "resourcePageLink",
@@ -74,7 +74,7 @@ export default defineType({
       of: [{ type: "string" }],
       options: {
         list: [
-          ...INTERNET_RESOURCE_TYPES.map((resourceType) => ({
+          ...internetResourceTypes.map((resourceType) => ({
             value: resourceType,
             title: startCase(resourceType),
           })),

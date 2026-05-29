@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity";
 import { ClockIcon } from "@sanity/icons";
 
 import { AvailabilityPreview, TimeInput } from "../../components";
-import { days, timezones } from "../../constants";
+import { days, timezones } from "../../shared/datetime";
 
 export default defineType({
   type: "object",

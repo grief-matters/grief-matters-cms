@@ -19,7 +19,8 @@ AI_REVIEW_MAX_OUTPUT_TOKENS = 4000
 # under ITPM (30K). Recompute if taxonomies grow significantly or the tier
 # changes. Formula: (ITPM - system - doc - headroom) * 4 chars/token.
 # this equates to around 8,000–12,000 words which should cover most scenarios
-JINA_CONTENT_MAX_CHARS = 50000
+AI_CONTENT_REVIEW_CONTENT_MIN_CHARS = 250
+AI_CONTENT_REVIEW_CONTENT_MAX_CHARS = 50000
 # Minimum spacing between Anthropic requests, to keep cumulative input tokens
 # under ITPM (30K/min). Formula: (per_request_input_tokens / ITPM) * 60_000.
 # At ~15K worst-case input post-cap, 30s is the floor. Raise for safety, lower
