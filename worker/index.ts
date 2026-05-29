@@ -1,7 +1,7 @@
 import { AutoRouter, type IRequest } from "itty-router";
 
 import { logger } from "./utils/logger";
-import { runAiContentReview } from "./ai-content-editor";
+import { runAiContentReview } from "./ai-content-review";
 
 export type CFArgs = [Env, ExecutionContext];
 

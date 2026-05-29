@@ -7,7 +7,7 @@ import type {
   AiAvailability,
   AiContactMethod,
   AiReview,
-} from "../ai-content-editor/ai-review";
+} from "../ai-content-review/ai-review";
 import type { ContactType } from "../../shared/contact-type";
 
 export type RefDoc = {
