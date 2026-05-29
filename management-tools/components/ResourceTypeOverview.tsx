@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { Spinner, Text } from "@sanity/ui";
 import { Feedback, useListeningQuery } from "sanity-plugin-utils";
 
-import { INTERNET_RESOURCE_TYPES } from "../../constants";
 import ToolWrapper from "./ToolWrapper";
+import { internetResourceTypes } from "../../shared/internet-resource";
 
 const StyledTable = styled.table`
   width: 100%;
@@ -45,7 +45,7 @@ export interface ResourceTypeOverviewProps {
 }
 
 const ResourceTypeOverview = ({
-  resourceTypes = [...INTERNET_RESOURCE_TYPES, "website"],
+  resourceTypes = [...internetResourceTypes, "website"],
   title = "Publishing Overview",
 }: ResourceTypeOverviewProps) => {
   const queryStringParts = resourceTypes.map(
@@ -54,7 +54,7 @@ const ResourceTypeOverview = ({
     "total": count(*[_type == "${type}"]),
     "published": count(*[_type == "${type}" && !(_id in path("drafts.**"))]),
     "draft": count(*[_type == "${type}" && (_id in path("drafts.**"))]),
-  }`
+  }`,
   );
 
   const queryString = `[${queryStringParts.join(",")}]`;

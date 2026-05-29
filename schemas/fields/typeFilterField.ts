@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField } from "sanity";
-import { INTERNET_RESOURCE_TYPES } from "../../constants";
+import { internetResourceTypes } from "../../shared/internet-resource";
 
 export default defineField({
   name: "typeFilter",
@@ -13,6 +13,6 @@ export default defineField({
     }),
   ],
   options: {
-    list: [...INTERNET_RESOURCE_TYPES.map((irt) => irt)],
+    list: [...internetResourceTypes.map((irt) => irt)],
   },
 });

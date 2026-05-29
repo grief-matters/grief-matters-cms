@@ -5,6 +5,12 @@
 # Sanity API auth token (secret) — request from maintainers
 SANITY_API_AUTH_TOKEN=""
 
+# Anthropic API key (secret) — used by the AI content editor cron
+ANTHROPIC_API_KEY=""
+
+# Jina Reader API key (secret) — used by the AI content editor cron to fetch+extract page content
+JINA_API_KEY=""
+
 # Cloudflare API (secret) — request from maintainers
 CF_API_TOKEN=""
 CF_ACCOUNT_ID=""

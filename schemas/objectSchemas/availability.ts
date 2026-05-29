@@ -2,18 +2,7 @@ import { defineField, defineType } from "sanity";
 import { ClockIcon } from "@sanity/icons";
 
 import { AvailabilityPreview, TimeInput } from "../../components";
-
-const days = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
-
-const timezones = ["Eastern", "Central", "Mountain", "Pacific"];
+import { days, timezones } from "../../shared/datetime";
 
 export default defineType({
   type: "object",
@@ -37,7 +26,7 @@ export default defineType({
       type: "array",
       of: [{ type: "string" }],
       options: {
-        list: days,
+        list: [...days],
       },
       initialValue: [...days],
     }),
@@ -60,7 +49,7 @@ export default defineType({
       title: "Timezone",
       type: "string",
       options: {
-        list: timezones,
+        list: [...timezones],
       },
     }),
   ],

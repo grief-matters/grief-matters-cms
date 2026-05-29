@@ -36,7 +36,7 @@ const validateNoAncestorDescendantPairs: CustomValidator<
       "parentId": parentTheme._ref,
       "grandparentId": parentTheme->parentTheme._ref
     }`,
-    { ids }
+    { ids },
   );
 
   const labelById = new Map(docs.map((d) => [d._id, d.label]));
@@ -45,13 +45,13 @@ const validateNoAncestorDescendantPairs: CustomValidator<
 
   for (const doc of docs) {
     const ancestors = [doc.parentId, doc.grandparentId].filter(
-      (x): x is string => typeof x === "string"
+      (x): x is string => typeof x === "string",
     );
     for (const ancestorId of ancestors) {
       if (selected.has(ancestorId)) {
         const ancestorLabel = labelById.get(ancestorId) ?? ancestorId;
         conflicts.push(
-          `"${doc.label}" is more specific than "${ancestorLabel}"`
+          `"${doc.label}" is more specific than "${ancestorLabel}"`,
         );
       }
     }
@@ -61,7 +61,7 @@ const validateNoAncestorDescendantPairs: CustomValidator<
     return true;
   }
   return `Cannot tag both a theme and one of its parent themes. Choose only the most specific theme: ${conflicts.join(
-    "; "
+    "; ",
   )}.`;
 };
 

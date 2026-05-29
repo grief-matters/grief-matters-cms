@@ -1,4 +1,4 @@
-import { PreviewConfig } from "sanity";
+import type { PreviewConfig } from "sanity";
 
 export const topicCollectionContentBlockPreviewConfig: PreviewConfig = {
   select: {

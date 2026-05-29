@@ -8,5 +8,5 @@ export default defineType(
     name: "webinar",
     title: "Webinar",
     icon: PresentationIcon,
-  })
+  }),
 );

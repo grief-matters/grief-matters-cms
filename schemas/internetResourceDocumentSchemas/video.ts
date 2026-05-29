@@ -8,5 +8,5 @@ export default defineType(
     name: "video",
     title: "Video",
     icon: DocumentVideoIcon,
-  })
+  }),
 );

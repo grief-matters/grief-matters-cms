@@ -1,6 +1,5 @@
 import { defineArrayMember, defineField } from "sanity";
-
-import { INTERNET_RESOURCE_TYPES } from "../../constants";
+import { internetResourceTypes } from "../../shared/internet-resource";
 
 type Params = {
   tagFieldName: string;
@@ -29,7 +28,7 @@ export const featuredResourcesArrayField = ({ tagFieldName }: Params) =>
     of: [
       defineArrayMember({
         type: "reference",
-        to: INTERNET_RESOURCE_TYPES.map((resourceType) => ({
+        to: internetResourceTypes.map((resourceType) => ({
           type: resourceType,
         })),
         options: {
@@ -51,7 +50,7 @@ export const featuredResourcesArrayField = ({ tagFieldName }: Params) =>
             | undefined) ?? [];
         const secondaryRefs = new Set(secondary.map((r) => r._ref));
         const overlap = (resources as { _ref: string }[]).filter((r) =>
-          secondaryRefs.has(r._ref)
+          secondaryRefs.has(r._ref),
         );
 
         return overlap.length > 0
@@ -81,7 +80,7 @@ export const featuredResourcesArrayField = ({ tagFieldName }: Params) =>
 
             return resourcesWithoutImages.length > 0
               ? `"${resourcesWithoutImages.join(
-                  `", "`
+                  `", "`,
                 )}" do not have Images - fallbacks will be used`
               : true;
           }
@@ -106,7 +105,7 @@ export const secondaryFeaturedResourcesArrayField = ({
     of: [
       defineArrayMember({
         type: "reference",
-        to: INTERNET_RESOURCE_TYPES.map((resourceType) => ({
+        to: internetResourceTypes.map((resourceType) => ({
           type: resourceType,
         })),
         options: {
@@ -128,7 +127,7 @@ export const secondaryFeaturedResourcesArrayField = ({
             | undefined) ?? [];
         const featuredRefs = new Set(featured.map((r) => r._ref));
         const overlap = (resources as { _ref: string }[]).filter((r) =>
-          featuredRefs.has(r._ref)
+          featuredRefs.has(r._ref),
         );
 
         return overlap.length > 0

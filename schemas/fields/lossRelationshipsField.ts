@@ -15,7 +15,7 @@ export default defineField({
   validation: (Rule) => [
     Rule.unique(),
     Rule.max(2).warning(
-      "Most resources relate to a single relationship; consider trimming."
+      "Most resources relate to a single relationship; consider trimming.",
     ),
   ],
 });

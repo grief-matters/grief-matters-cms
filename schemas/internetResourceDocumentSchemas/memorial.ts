@@ -9,5 +9,5 @@ export default defineType(
     title: "Memorial",
     icon: DocumentIcon,
     isUrlRequired: true,
-  })
+  }),
 );

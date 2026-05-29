@@ -14,7 +14,7 @@ export default defineField({
   validation: (Rule) => [
     Rule.unique(),
     Rule.max(5).warning(
-      "Aliases should be focused — more than 5 may dilute relevance."
+      "Aliases should be focused — more than 5 may dilute relevance.",
     ),
     Rule.custom(validateSearchAliases).warning(),
   ],

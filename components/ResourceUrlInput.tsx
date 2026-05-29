@@ -1,4 +1,4 @@
-import { UrlInputProps } from "sanity";
+import type { UrlInputProps } from "sanity";
 import { Flex, Stack, Text } from "@sanity/ui";
 import { ArrowRightIcon } from "@sanity/icons";
 

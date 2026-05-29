@@ -8,5 +8,5 @@ export default defineType(
     name: "community",
     title: "Community",
     icon: UsersIcon,
-  })
+  }),
 );

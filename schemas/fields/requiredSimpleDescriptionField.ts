@@ -11,7 +11,7 @@ export default defineField({
     rule
       .max(200)
       .warning(
-        `This description is a bit long. It might lose impact. You should be aiming for around 30 words.`
+        `This description is a bit long. It might lose impact. You should be aiming for around 30 words.`,
       ),
   ],
 });

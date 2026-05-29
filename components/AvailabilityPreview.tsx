@@ -1,5 +1,6 @@
 import { Stack, Text } from "@sanity/ui";
-import { PreviewProps } from "sanity";
+
+import type { PreviewProps } from "sanity";
 
 type CastPreviewProps = PreviewProps & {
   days?: string[];

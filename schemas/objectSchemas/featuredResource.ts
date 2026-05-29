@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity";
-import { INTERNET_RESOURCE_TYPES } from "../../constants";
+import { internetResourceTypes } from "../../shared/internet-resource";
 
 export default defineType({
   type: "object",
@@ -12,7 +12,7 @@ export default defineType({
       title: "Resource",
       description: "Select an individual internet resource of any type",
       type: "reference",
-      to: [...INTERNET_RESOURCE_TYPES.map((t) => ({ type: t }))],
+      to: [...internetResourceTypes.map((t) => ({ type: t }))],
       validation: (rule) => rule.required(),
     }),
   ],

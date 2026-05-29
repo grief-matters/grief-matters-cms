@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 export default defineType({

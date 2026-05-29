@@ -20,8 +20,12 @@ export default defineType({
       title: "Description",
       name: "description",
       description:
-        "Editor-facing guidance: what is the reader trying to accomplish when this resource serves them well?",
+        "What is the reader trying to accomplish when this resource serves them well?",
       type: "text",
+      validation: (rule) => [
+        rule.required(),
+        rule.max(255).warning("This description is a bit long"),
+      ],
     }),
     tagSearchAliasesField,
   ],

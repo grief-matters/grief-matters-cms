@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { StringInputProps, set, unset } from "sanity";
+import { type StringInputProps, set, unset } from "sanity";
 import "react-time-picker/dist/TimePicker.css";
 
 function TimeInput(props: StringInputProps) {
@@ -8,9 +8,9 @@ function TimeInput(props: StringInputProps) {
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) =>
       onChange(
-        event.currentTarget.value ? set(event.currentTarget.value) : unset()
+        event.currentTarget.value ? set(event.currentTarget.value) : unset(),
       ),
-    [onChange]
+    [onChange],
   );
 
   return (

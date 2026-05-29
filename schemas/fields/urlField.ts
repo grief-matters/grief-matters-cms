@@ -1,10 +1,10 @@
-import { CustomValidator, defineField } from "sanity";
+import { type CustomValidator, defineField } from "sanity";
 import ResourceUrlInput from "../../components/ResourceUrlInput";
-import { INTERNET_RESOURCE_TYPES } from "../../constants";
+import { internetResourceTypes } from "../../shared/internet-resource";
 
 const isUniqueUrl: CustomValidator<string | undefined> = async (
   url,
-  context
+  context,
 ) => {
   if (!url) {
     return true;
@@ -24,7 +24,7 @@ const isUniqueUrl: CustomValidator<string | undefined> = async (
     draft: `drafts.${id}`,
     published: id,
     url,
-    types: [...INTERNET_RESOURCE_TYPES],
+    types: [...internetResourceTypes],
   };
 
   const query = `!defined(*[

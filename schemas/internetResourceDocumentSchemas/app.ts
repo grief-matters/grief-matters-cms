@@ -46,7 +46,7 @@ const appSchema = defineType({
           }
 
           const isValid = value.startsWith(
-            `https://play.google.com/store/apps/`
+            `https://play.google.com/store/apps/`,
           );
           return isValid
             ? true

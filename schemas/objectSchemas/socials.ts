@@ -30,7 +30,7 @@ export default defineType({
       validation: (rule) =>
         rule.regex(
           /^https:\/\/(www\.)?linkedin\.com\/(in\/[a-zA-Z0-9-]+\/?|company\/[a-zA-Z0-9-]+\/?|groups\/[0-9]+\/?|feed\/update\/urn:li:activity:[0-9]+\/?)$/,
-          { name: "Valid LinkedIn" }
+          { name: "Valid LinkedIn" },
         ),
     }),
   ],

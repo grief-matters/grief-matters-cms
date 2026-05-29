@@ -63,6 +63,8 @@ import richTextContentBlock from "./objectSchemas/richTextContentBlock";
 import richTextWithHeading from "./objectSchemas/richTextWithHeading";
 import socials from "./objectSchemas/socials";
 import telephoneNumber from "./objectSchemas/telephoneNumber";
+import type { InternetResourceType } from "../shared/internet-resource";
+import type { SchemaTypeDefinition } from "sanity";
 
 export const objectTypes = [
   availability,
@@ -88,14 +90,17 @@ export const objectTypes = [
   telephoneNumber,
 ];
 
-export const internetResourceDocumentTypes = [
+const typedInternetResourceSchemaRecord: Record<
+  InternetResourceType,
+  SchemaTypeDefinition
+> = {
+  crisisResource,
   app,
   article,
   blog,
   book,
   community,
   course,
-  crisisResource,
   externalOrg,
   forum,
   listicle,
@@ -109,7 +114,11 @@ export const internetResourceDocumentTypes = [
   therapyResource,
   video,
   webinar,
-];
+};
+
+export const internetResourceDocumentSchemaTypes = Object.values(
+  typedInternetResourceSchemaRecord,
+);
 
 export const documentTypes = [
   contentBlock,
@@ -141,7 +150,7 @@ export const singletonDocumentTypes = [organization, searchConfiguration];
 export const schemaTypes = [
   ...singletonDocumentTypes,
   ...objectTypes,
-  ...internetResourceDocumentTypes,
+  ...internetResourceDocumentSchemaTypes,
   ...documentTypes,
   ...classificationDocumentTypes,
 ];

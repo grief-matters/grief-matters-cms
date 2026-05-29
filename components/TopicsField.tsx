@@ -1,5 +1,5 @@
 import { Heading, Stack, Text } from "@sanity/ui";
-import { ArrayFieldProps } from "sanity";
+import type { ArrayFieldProps } from "sanity";
 
 function TopicsField(props: ArrayFieldProps) {
   const { title, ...restProps } = props;

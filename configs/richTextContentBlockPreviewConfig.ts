@@ -1,4 +1,4 @@
-import { PreviewConfig } from "sanity";
+import type { PreviewConfig } from "sanity";
 
 export const richTextContentBlockPreviewConfig: PreviewConfig = {
   select: {
@@ -9,7 +9,7 @@ export const richTextContentBlockPreviewConfig: PreviewConfig = {
       (block: {
         _type: string;
         children?: Array<{ _type: string; text?: string }>;
-      }) => block._type === "block"
+      }) => block._type === "block",
     );
 
     return {

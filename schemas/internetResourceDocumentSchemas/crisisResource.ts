@@ -5,7 +5,6 @@ const base = createBaseInternetResourceSchema({
   name: "crisisResource",
   title: "Crisis Resource",
   includeAudienceRole: false,
-  includeRichTextDescription: true,
   isUrlRequired: false,
 });
 
