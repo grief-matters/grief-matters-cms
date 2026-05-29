@@ -1,3 +1,5 @@
+import type { SanityDocument } from "sanity";
+
 import { internetResourceTypes } from "../../shared/internet-resource";
 import {
   getOldestPublishedDocsByTypes,
@@ -8,17 +10,169 @@ import {
   getBaseMutationDescriptor,
   getDraftDocumentFromAiReview,
   draftHasChanges,
+  type RefDoc,
   type SanityMutationDescriptor,
 } from "../sanity/utils";
 import { logger } from "../utils/logger";
 import { type ReviewInput, getAiReview } from "./ai-review";
 import {
+  type DocumentContentResult,
   getDocumentContent,
   getDocumentActionFromContentResult,
 } from "./content";
 
+type ClassifiedContent = {
+  mutations: SanityMutationDescriptor[];
+  toReview: ReviewInput[];
+};
+
+type ContentItem = { doc: SanityDocument; content: DocumentContentResult };
+
+function classifyContentResults(items: ContentItem[]): ClassifiedContent {
+  const mutations: SanityMutationDescriptor[] = [];
+  const toReview: ReviewInput[] = [];
+
+  for (const { doc, content } of items) {
+    const docAction = getDocumentActionFromContentResult(content);
+
+    if (docAction.action === "review") {
+      toReview.push({ doc, content: docAction.content });
+      continue;
+    }
+
+    const baseMutation = getBaseMutationDescriptor(doc);
+
+    if (docAction.action === "disable") {
+      mutations.push({
+        ...baseMutation,
+        pubPatch: {
+          ...baseMutation.pubPatch,
+          skipLinkCheck: true,
+          skipLinkCheckReason: docAction.detail,
+        },
+      });
+      continue;
+    }
+
+    // Skip: only bump the audit stamp
+    mutations.push(baseMutation);
+  }
+
+  return { mutations, toReview };
+}
+
+/**
+ *
+ * @param env
+ * @param inputs
+ * @param taxonomyDocs
+ * @returns
+ */
+async function runAiReviews(
+  env: Env,
+  inputs: ReviewInput[],
+  taxonomyDocs: Record<string, RefDoc[]>,
+): Promise<SanityMutationDescriptor[]> {
+  const mutations: SanityMutationDescriptor[] = [];
+
+  for (let i = 0; i < inputs.length; i++) {
+    // Monitor elapsed time to ensure we don't breach Input Tokens p/m limit
+    const startedAt = performance.now();
+    const reviewInput = inputs[i];
+
+    try {
+      const aiReview = await getAiReview(
+        env,
+        reviewInput.doc,
+        reviewInput.content,
+        taxonomyDocs,
+      );
+
+      if (aiReview === null) {
+        continue;
+      }
+
+      const draftDoc = getDraftDocumentFromAiReview(aiReview, reviewInput.doc);
+      const baseMutation = getBaseMutationDescriptor(reviewInput.doc);
+
+      if (!draftHasChanges(draftDoc, reviewInput.doc)) {
+        logger.info("runAiReviews", `'${reviewInput.doc._id}' has no changes`);
+        mutations.push(baseMutation);
+        continue;
+      }
+
+      logger.info("runAiReviews", `'${reviewInput.doc._id}' has new draft`);
+      mutations.push({ ...baseMutation, draft: draftDoc });
+    } catch (error) {
+      logger.error(
+        "runAiReviews",
+        `failed review for '${reviewInput.doc._id}': ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
+
+    if (i < inputs.length - 1) {
+      const elapsed = performance.now() - startedAt;
+      const remaining = env.AI_REVIEW_MIN_GAP_MS - elapsed;
+      if (remaining > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remaining));
+      }
+    }
+  }
+
+  return mutations;
+}
+
+/**
+ *
+ * @param env
+ * @param mutations
+ */
+async function commitMutations(
+  env: Env,
+  mutations: SanityMutationDescriptor[],
+): Promise<void> {
+  const sanityClient = getSanityClient(env);
+
+  const settledCommits = await Promise.allSettled(
+    mutations.map((m) => {
+      const tx = sanityClient
+        .transaction()
+        .patch(m.pubId, (p) => p.ifRevisionId(m.pubRev).set(m.pubPatch));
+
+      if (m.draft) {
+        tx.createIfNotExists(m.draft);
+      }
+
+      return tx.commit({ visibility: "async" });
+    }),
+  );
+
+  // This block is just logging
+  for (let i = 0; i < settledCommits.length; i++) {
+    const m = mutations[i];
+    const result = settledCommits[i];
+
+    if (result.status === "rejected") {
+      logger.warn(
+        "commitMutations",
+        `'client.transaction.commit' promise rejected for '${m.pubId}': ${result.reason instanceof Error ? result.reason.message : String(result.reason)}`,
+      );
+      continue;
+    }
+    logger.info(
+      "commitMutations",
+      `successfully committed mutation for '${m.pubId}': ${m.draft ? "draft" : "no changes"}`,
+    );
+  }
+}
+
+/**
+ *
+ * @param env
+ * @param limit
+ * @returns
+ */
 export async function runAiContentReview(env: Env, limit: number) {
-  // Fetch the docs to audit
   const resourceDocs = await getOldestPublishedDocsByTypes(
     env,
     [...internetResourceTypes],
@@ -33,156 +187,30 @@ export async function runAiContentReview(env: Env, limit: number) {
     return;
   }
 
-  // Get page content for documents
-  const settledDocContentResults = await Promise.allSettled(
+  const contentResults = await Promise.allSettled(
     resourceDocs.map((doc) => getDocumentContent(env, doc)),
   );
 
-  // Track Sanity mutations
-  const docMutationDescriptors: Array<SanityMutationDescriptor> = [];
-  const docsForAiReview: Array<ReviewInput> = [];
-
-  // Process settled Doc Content promises
-  for (let i = 0; i < settledDocContentResults.length; i++) {
+  const fulfilledContent: ContentItem[] = [];
+  for (let i = 0; i < contentResults.length; i++) {
+    const result = contentResults[i];
     const doc = resourceDocs[i];
-    const result = settledDocContentResults[i];
 
-    // Process rejected promises
     if (result.status !== "fulfilled") {
-      logger.warn("runAiContentReview", {
-        docId: doc._id,
-        detail: `[getDocumentContent] promise rejected: ${result.reason}`,
-      });
-      continue;
-    }
-
-    const docAction = getDocumentActionFromContentResult(result.value);
-
-    if (docAction.action !== "review") {
-      const baseMutation = getBaseMutationDescriptor(doc);
-
-      if (docAction.action === "disable") {
-        docMutationDescriptors.push({
-          ...baseMutation,
-          pubPatch: {
-            ...baseMutation.pubPatch,
-            skipLinkCheck: true,
-            skipLinkCheckReason: docAction.detail,
-          },
-        });
-        continue;
-      }
-
-      // When we skip, we only need to bump the audit stamp
-      docMutationDescriptors.push(baseMutation);
-      continue;
-    }
-
-    docsForAiReview.push({ doc, content: docAction.content });
-  }
-
-  // Fetch the taxonomy classification docs the LLM needs in context
-  const taxonomyDocs = await getReferenceTaxonomies(env);
-  // Process the documents we need to pass to the reviewer
-  for (let i = 0; i < docsForAiReview.length; i++) {
-    // Monitor elapsed time to ensure we don't breach Input Tokens p/m limit
-    const startedAt = performance.now();
-
-    const reviewInput = docsForAiReview[i];
-    try {
-      const aiReview = await getAiReview(
-        env,
-        reviewInput.doc,
-        reviewInput.content,
-        taxonomyDocs,
+      logger.warn(
+        "runAiContentReview",
+        `'getDocumentContent' promise rejected for '${doc._id}': ${result.reason}`,
       );
 
-      if (aiReview === null) {
-        // todo - log ai review failure
-        continue;
-      }
-
-      // create the draft from the AI review
-      const draftDoc = getDraftDocumentFromAiReview(aiReview, reviewInput.doc);
-
-      const baseMutation = getBaseMutationDescriptor(reviewInput.doc);
-
-      if (!draftHasChanges(draftDoc, reviewInput.doc)) {
-        logger.info("ai_content_review_ai_review_outcome", {
-          docId: reviewInput.doc._id,
-          status: "success",
-          detail: "no changes",
-        });
-        docMutationDescriptors.push(baseMutation);
-        continue;
-      }
-
-      logger.info("ai_content_review_ai_review_outcome", {
-        docId: reviewInput.doc._id,
-        status: "success",
-        detail: "draft created",
-      });
-      docMutationDescriptors.push({ ...baseMutation, draft: draftDoc });
-    } catch (error) {
-      logger.error("ai_content_review_ai_review_outcome", {
-        docId: reviewInput.doc._id,
-        status: "fail",
-        reason: error instanceof Error ? error.message : String(error),
-      });
-    }
-
-    // Sleep between iterations if needed
-    if (i < docsForAiReview.length - 1) {
-      const elapsed = performance.now() - startedAt;
-      const remaining = env.AI_REVIEW_MIN_GAP_MS - elapsed;
-
-      if (remaining > 0) {
-        await new Promise((resolve) => setTimeout(resolve, remaining));
-      }
-    }
-  }
-
-  const sanityClient = getSanityClient(env);
-
-  const settledCommits = await Promise.allSettled(
-    docMutationDescriptors.map((mDescriptor) => {
-      const tx = sanityClient
-        .transaction()
-        .patch(mDescriptor.pubId, (p) =>
-          p.ifRevisionId(mDescriptor.pubRev).set(mDescriptor.pubPatch),
-        );
-
-      if (mDescriptor.draft) {
-        tx.createIfNotExists(mDescriptor.draft);
-      }
-
-      return tx.commit({ visibility: "async" });
-    }),
-  );
-
-  // Just logging
-  for (let i = 0; i < settledCommits.length; i++) {
-    const action = docMutationDescriptors[i];
-    const result = settledCommits[i];
-    if (result.status === "rejected") {
-      logger.warn("ai_content_review_sanity_commit_outcome", {
-        docId: action.pubId,
-        status: "fail",
-        reason:
-          result.reason instanceof Error
-            ? result.reason.message
-            : String(result.reason),
-      });
       continue;
     }
-    logger.info("ai_content_review_sanity_commit_outcome", {
-      docId: action.pubId,
-      status: "success",
-    });
+    fulfilledContent.push({ doc, content: result.value });
   }
-}
 
-// export type FetchResult =
-//   | { ok: true; content: string }
-//   | { ok: false; reason: "http"; status: number }
-//   | { ok: false; reason: "network" | "timeout" | "empty" };
+  const { mutations, toReview } = classifyContentResults(fulfilledContent);
+
+  const taxonomyDocs = await getReferenceTaxonomies(env);
+  const reviewMutations = await runAiReviews(env, toReview, taxonomyDocs);
+
+  await commitMutations(env, [...mutations, ...reviewMutations]);
+}
