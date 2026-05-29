@@ -62,6 +62,10 @@ function classifyContentResults(items: ContentItem[]): ClassifiedContent {
 }
 
 /**
+ * Runs each AI review sequentially and builds a mutation per input (with a
+ * draft when the AI's output differs from the existing doc, base-only when it
+ * doesn't). Sleeps between calls to keep us under the Anthropic input-tokens
+ * per minute rate limit. Failures on individual docs are logged and skipped.
  *
  * @param env
  * @param inputs
@@ -76,7 +80,6 @@ async function runAiReviews(
   const mutations: SanityMutationDescriptor[] = [];
 
   for (let i = 0; i < inputs.length; i++) {
-    // Monitor elapsed time to ensure we don't breach Input Tokens p/m limit
     const startedAt = performance.now();
     const reviewInput = inputs[i];
 
@@ -123,6 +126,10 @@ async function runAiReviews(
 }
 
 /**
+ * Commits all mutations to Sanity in parallel as independent transactions. Each
+ * transaction patches the published doc (guarded by `ifRevisionId` to detect
+ * concurrent edits) and creates the draft if one was produced. Uses async
+ * visibility — we don't wait for the change to appear in queries.
  *
  * @param env
  * @param mutations
@@ -167,6 +174,11 @@ async function commitMutations(
 }
 
 /**
+ * Entry point for a review pass: fetches the oldest-audited resource docs (up
+ * to `limit`), pulls their content, classifies each as skip/disable/review,
+ * runs AI reviews on the eligible ones, and commits all resulting mutations in
+ * one batch. Every doc selected gets at least an audit-stamp bump so it rotates
+ * to the back of the queue regardless of outcome.
  *
  * @param env
  * @param limit

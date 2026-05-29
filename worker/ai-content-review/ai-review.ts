@@ -81,6 +81,8 @@ const zAiReviewWithContactMethods = z.object({
 });
 
 /**
+ * Filters reference _ids returned by the AI against the known taxonomies,
+ * dropping any hallucinated ids. Logs whatever it drops so we can spot patterns.
  *
  * @param aiReview
  * @param refDocs
@@ -114,6 +116,9 @@ function getValidAiReview<T extends AiReview>(
 }
 
 /**
+ * Picks the Zod schema describing the AI's structured output for a given
+ * resource type: crisis resources get contact methods, apps get the base
+ * schema, everything else gets the audience-role variant.
  *
  * @param docType
  * @returns
@@ -130,6 +135,10 @@ function getOutputSchemaForDocType(docType: InternetResourceType) {
 }
 
 /**
+ * Sends the existing doc and fetched content to Claude and returns the parsed
+ * structured-output review, or null if the model failed to produce a valid
+ * response. The system prompt is marked for ephemeral caching since it's large
+ * and identical across docs of the same type within a run.
  *
  * @param env
  * @param doc

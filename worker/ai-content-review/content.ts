@@ -69,6 +69,8 @@ export async function allowsBots(resourceUrl: string): Promise<boolean> {
 }
 
 /**
+ * Calls Jina's reader API to extract a URL's content as markdown. Distinguishes
+ * timeout, network, and HTTP failures so the caller can decide retry strategy.
  *
  * @param env
  * @param resourceUrl
@@ -115,6 +117,8 @@ async function fetchJinaMarkdown(
 }
 
 /**
+ * Trims fetched content and enforces character bounds. Rejects content shorter
+ * than `minChar`; truncates (and flags) content longer than `maxChar`.
  *
  * @param content
  * @param minChar
@@ -180,6 +184,9 @@ async function fetchContentForUrl(
 }
 
 /**
+ * Top-level content fetch for a Sanity doc: validates the URL, respects
+ * robots.txt, then fetches and normalizes the page content. Returns a tagged
+ * result so the caller can map outcomes to follow-up actions.
  *
  * @param env
  * @param doc
@@ -209,6 +216,9 @@ export async function getDocumentContent(
 }
 
 /**
+ * Maps a content fetch outcome to a document action: `disable` for permanent
+ * problems (missing URL, robots block), `skip` for transient ones (HTTP/network
+ * errors), and `review` when content was fetched successfully.
  *
  * @param contentResult
  * @returns

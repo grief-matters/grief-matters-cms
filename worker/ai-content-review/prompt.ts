@@ -2,6 +2,8 @@ import type { InternetResourceType } from "../../shared/internet-resource";
 import type { RefDoc } from "../sanity/utils";
 
 /**
+ * Renders the reference taxonomies (id/title/description) as a markdown block
+ * for embedding in the system prompt so the AI can pick valid reference _ids.
  *
  * @param refDocs
  * @returns
@@ -22,6 +24,10 @@ function getRefDocsPrompt(refDocs: Record<string, RefDoc[]>): string {
 }
 
 /**
+ * Builds the reviewer system prompt, swapping in doc-type-specific field
+ * instructions (audience role for most resources, contact methods for crisis
+ * resources, none for apps). The output is large and stable across a run, so
+ * the caller should mark it for prompt caching.
  *
  * @param docType
  * @param refDocs
@@ -69,6 +75,9 @@ ${getRefDocsPrompt(refDocs)}
 }
 
 /**
+ * Builds the per-document user message containing the existing doc as JSON and
+ * the fetched resource content as markdown. This is the only part of the
+ * Anthropic request that varies per resource.
  *
  * @param doc
  * @param content

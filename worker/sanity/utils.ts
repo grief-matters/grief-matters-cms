@@ -36,6 +36,8 @@ const contactMethodFieldsByType: Record<
 };
 
 /**
+ * Wraps a flat list of document _ids into Sanity reference objects, each with
+ * a fresh `_key` so they're valid as array items.
  *
  * @param ids
  * @returns
@@ -49,6 +51,8 @@ function toSanityReferences(ids: string[]) {
 }
 
 /**
+ * Wraps an AI-emitted availability window as a Sanity `availability` object
+ * with the required `_type` and `_key`.
  *
  * @param availability
  * @returns
@@ -62,6 +66,10 @@ function toSanityAvailability(availability: AiAvailability) {
 }
 
 /**
+ * Wraps an AI-emitted contact method as a Sanity `contactMethod`, copying only
+ * the value fields applicable to its `contactType` (per
+ * `contactMethodFieldsByType`) and converting nested availabilities. The AI
+ * schema is flat with everything nullable; this is where we discard the noise.
  *
  * @param method
  * @returns
@@ -93,6 +101,11 @@ function toSanityContactMethod(
 }
 
 /**
+ * Merges an AI review onto the existing published doc to produce a draft
+ * document. Null scalar fields in the review are treated as "no change" (kept
+ * from the existing doc); reference arrays and contactMethods are converted
+ * into their Sanity shapes. The result's `_id` is prefixed with `drafts.` so
+ * Sanity treats it as a draft of the existing doc.
  *
  * @param review
  * @param existingDoc
