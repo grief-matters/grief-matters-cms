@@ -53,7 +53,7 @@ async function handleScheduled(
 ): Promise<void> {
   switch (event.cron) {
     case "0 */6 * * *":
-      await handleAiContentReview(env, 2);
+      await handleAiContentReview(env, env.AI_CONTENT_REVIEW_DOC_LIMIT);
       break;
     default:
       logger.warn("unhandled_cron", event.cron);
