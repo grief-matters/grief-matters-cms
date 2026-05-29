@@ -1,9 +1,14 @@
-import type { SanityDocument } from "sanity";
 import { isEqualWith } from "lodash";
-import { isRefField } from "../../shared/internet-resource";
-import type { AiContactMethod, AiReview } from "../ai-content-editor/ai-review";
-import type { ContactType } from "../../shared/contact-type";
+import type { SanityDocument } from "sanity";
 import type { Any, AttributeSet } from "@sanity/client";
+
+import { isRefField } from "../../shared/internet-resource";
+import type {
+  AiAvailability,
+  AiContactMethod,
+  AiReview,
+} from "../ai-content-editor/ai-review";
+import type { ContactType } from "../../shared/contact-type";
 
 export type RefDoc = {
   _id: string;
@@ -45,40 +50,46 @@ function toSanityReferences(ids: string[]) {
 
 /**
  *
- * @param contactMethods
+ * @param availability
  * @returns
  */
-function toSanityContactMethods(
-  contactMethods: AiContactMethod[],
-): Array<Record<string, unknown>> {
-  return contactMethods.map((method) => {
-    const allowedFields = new Set<string>([
-      "contactType",
-      ...contactMethodFieldsByType[method.contactType],
-    ]);
+function toSanityAvailability(availability: AiAvailability) {
+  return {
+    _type: "availability",
+    _key: generateSanityDocKey(),
+    ...availability,
+  };
+}
 
-    const result: Record<string, unknown> = {
-      _type: "contactMethod",
-      _key: generateSanityDocKey(),
-    };
+/**
+ *
+ * @param method
+ * @returns
+ */
+function toSanityContactMethod(
+  method: AiContactMethod,
+): Record<string, unknown> {
+  const result: Record<string, unknown> = {
+    _type: "contactMethod",
+    _key: generateSanityDocKey(),
+    contactType: method.contactType,
+  };
 
-    for (const [key, value] of Object.entries(method)) {
-      if (!allowedFields.has(key) || value === null) {
-        continue;
-      }
-
-      if (key === "availabilities" && Array.isArray(value)) {
-        result[key] = value.map((a) => ({
-          _type: "availability",
-          _key: generateSanityDocKey(),
-          ...a,
-        }));
-        continue;
-      }
-      result[key] = value;
+  for (const field of contactMethodFieldsByType[method.contactType]) {
+    const value = method[field];
+    if (value === null) {
+      continue;
     }
-    return result;
-  });
+
+    if (field === "availabilities" && Array.isArray(value)) {
+      result[field] = value.map(toSanityAvailability);
+      continue;
+    }
+
+    result[field] = value;
+  }
+
+  return result;
 }
 
 /**
@@ -105,11 +116,8 @@ export function getDraftDocumentFromAiReview(
       continue;
     }
 
-    if (key === "contactMethods") {
-      const normalizedContactMethods = toSanityContactMethods(
-        value as AiContactMethod[],
-      );
-      result[key] = normalizedContactMethods;
+    if (key === "contactMethods" && Array.isArray(value)) {
+      result[key] = (value as AiContactMethod[]).map(toSanityContactMethod);
       continue;
     }
 
