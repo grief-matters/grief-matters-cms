@@ -12,10 +12,7 @@ function getRefDocsPrompt(refDocs: Record<string, RefDoc[]>): string {
   return Object.entries(refDocs)
     .map(([type, docs]) => {
       const docBlocks = docs
-        .map(
-          (doc) =>
-            `- _id: ${doc._id}\n- title: ${doc.title}\n- description: ${doc.description}\n---`,
-        )
+        .map((doc) => `- _id: ${doc._id}\n- title: ${doc.title}\n---`)
         .join("\n");
 
       return `### ${type}\n\n${docBlocks}`;
@@ -46,15 +43,19 @@ export function getSystemPrompt(
       additionalFieldInstructions = `- contactMethods: the available contact methods. Add as many as are applicable. For each method, set contactType and only the value fields relevant to that type (telephoneNumber for tel/tty/sms, smsBody for sms, email for email, contactForm for contactForm, liveChatUrl for liveChat). Leave the other value fields as null. availabilities applies to all types except email and contactForm.\n`;
       break;
     default:
-      additionalFieldInstructions = `- audienceRole: intended audience. Allowed: "bereaved", "supporter", "professional". Usually a single value; multiple only if the resource genuinely speaks to more than one audience.\n`;
+      additionalFieldInstructions = `- audienceRole: who the content is WRITTEN FOR — not who might happen to find it useful. Allowed: "bereaved", "supporter", "professional". Concrete markers:
+  - bereaved: addresses the reader as someone experiencing loss ("If you are grieving...", plain compassionate language, focus on the reader's own feelings/experience)
+  - supporter: addresses someone helping a bereaved person ("If someone you love is grieving...", focus on what to say/do for another person)
+  - professional: addresses clinicians, counselors, chaplains, or researchers (clinical terminology, assumes professional training, discusses client/patient work, cites research, offers CE credits, etc.)
+Default to a single value — the audience the content is most clearly addressed to. Only assign multiple values when the resource has distinct sections written for different audiences (e.g. a guide with a "for the bereaved" section and a "for those supporting them" section). The fact that a resource "could be useful" to another audience does NOT justify adding them.\n`;
   }
 
   return `
-You are a content editor knowledgeable in grief. You audit curated "internet resource" documents for the Why Grief Matters CMS. You will be given an existing Sanity document and the content of the resource (usually fetched as markdown). It is your job to review the existing document against the content, and create a JSON patch describing any changes.
-  
-You should check every field listed in the schema. For nullable scalar fields, return null when the existing value should not change. For reference fields (which are not nullable), always return the full array of _ids you believe should apply — re-emit the existing refs if they are already correct, modify them if not, and return [] if no refs apply.
+You are a content editor knowledgeable in grief. You audit curated "internet resource" documents for the Why Grief Matters CMS. You will be given an existing Sanity document and the content of the resource (usually fetched as markdown). Your job is to audit the existing document against the content and return a JSON patch. If the existing document is already accurate, the patch may contain no changes — that is a valid and common outcome.
 
-The existing Sanity document may contain errors, so use your judgement to remove and change any existing values if you feel that they have been applied incorrectly but only do this when you are reasonably confident.
+You should check every field listed in the schema. For nullable scalar fields, return null when the existing value should not change. For reference fields (which are not nullable), always emit the full array — re-emit the existing refs unchanged unless you are confident a change improves accuracy, and return [] when no refs genuinely apply.
+
+The existing Sanity document may contain errors. Apply the same confidence bar to adding, removing, and changing values: only make a change — including adding a new reference — when you are reasonably confident it is an improvement.
 
 ## Field Guidelines
 
@@ -68,7 +69,17 @@ ${additionalFieldInstructions}
 
 ## Reference Fields
 
-For each reference field, return an array of _id strings drawn from the taxonomies below. Only include a reference if the resource specifically targets that concept — never as a catch-all. Return [] if no references apply.
+For each reference field, return an array of _id strings drawn from the taxonomies below. Default to fewer references rather than more — a missed reference is much less harmful than an incorrect one. When uncertain, omit. Returning [] is the expected outcome for many resources.
+
+A reference applies only if the resource is **primarily about**, or has a **substantial dedicated focus on**, that concept. The following do NOT qualify:
+- Tangential mentions or passing references
+- Thematic adjacency (e.g. content about grief in general does not target every grief sub-topic)
+- Related concepts the resource could plausibly be filed under
+- Background context used to set up another topic
+
+For example: a comprehensive guide to coping with bereavement that mentions, in one paragraph, that children may also be affected should not receive a reference for child-focused grief — children are not what the resource is about, even though they are mentioned.
+
+Concrete test: if you cannot point to a specific section of the content that justifies a reference, leave it out. Apply this same bar to refs that already exist on the document — if the existing content does not justify the existing ref, remove it.
 
 ${getRefDocsPrompt(refDocs)}
   `;
