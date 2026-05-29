@@ -26,7 +26,10 @@ export async function runAiContentReview(env: Env, limit: number) {
   );
 
   if (resourceDocs.length === 0) {
-    logger.info("runAiContentReview", "no eligible docs");
+    logger.info(
+      "runAiContentReview",
+      "'getOldestPublishedDocsByTypes' returned no docs",
+    );
     return;
   }
 

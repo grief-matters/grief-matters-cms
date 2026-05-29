@@ -6,18 +6,19 @@ import { runAiContentReview } from "./ai-content-review";
 export type CFArgs = [Env, ExecutionContext];
 
 async function handleAiContentReview(env: Env, limit: number) {
-  logger.info("handleAiContentReview", "starting");
+  logger.info("handleAiContentReview", "started");
 
   try {
     await runAiContentReview(env, limit);
   } catch (error) {
-    // Swallow so Cloudflare doesn't retry the scheduled trigger and re-spend
-    // on Jina + Anthropic for the same batch.
+    // Swallow so Cloudflare doesn't retry the scheduled trigger
     logger.error(
-      "ai_content_review_fatal",
+      "handleAiContentReview",
       error instanceof Error ? error.message : String(error),
     );
   }
+
+  logger.info("handleAiContentReview", "ended");
 }
 
 async function handleFallback(req: IRequest, env: Env) {
