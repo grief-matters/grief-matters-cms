@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { BulbOutlineIcon } from "@sanity/icons";
+
 import slugField from "../fields/slugField";
 import tagSearchAliasesField from "../fields/tagSearchAliasesField";
 
@@ -8,6 +9,15 @@ export default defineType({
   title: "Content Function",
   icon: BulbOutlineIcon,
   type: "document",
+  preview: {
+    select: {
+      title: "title",
+    },
+    prepare: ({ title }) => ({
+      title: title,
+      subtitle: `Content Function`,
+    }),
+  },
   fields: [
     defineField({
       title: "Title",
@@ -29,7 +39,4 @@ export default defineType({
     }),
     tagSearchAliasesField,
   ],
-  preview: {
-    select: { title: "title", subtitle: "description" },
-  },
 });
