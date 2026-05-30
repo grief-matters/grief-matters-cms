@@ -13,6 +13,7 @@ import imageAsset from "./documentSchemas/imageAsset";
 import imageCollection from "./documentSchemas/imageCollection";
 import imageSource from "./documentSchemas/imageSource";
 import lossRelationship from "./documentSchemas/lossRelationship";
+import navigationTree from "./documentSchemas/navigationTree";
 import organization from "./documentSchemas/organization";
 import person from "./documentSchemas/person";
 import personGroup from "./documentSchemas/personGroup";
@@ -54,6 +55,8 @@ import headingText from "./objectSchemas/headingText";
 import imageRow from "./objectSchemas/imageRow";
 import link from "./objectSchemas/link";
 import logo from "./objectSchemas/logo";
+import navItem from "./objectSchemas/navItem";
+import navItemGroup from "./objectSchemas/navItemGroup";
 import pageLinks from "./objectSchemas/pageLinks";
 import personGroupBlock from "./objectSchemas/personGroupBlock";
 import relativeLink from "./objectSchemas/relativeLink";
@@ -63,8 +66,9 @@ import richTextContentBlock from "./objectSchemas/richTextContentBlock";
 import richTextWithHeading from "./objectSchemas/richTextWithHeading";
 import socials from "./objectSchemas/socials";
 import telephoneNumber from "./objectSchemas/telephoneNumber";
-import type { InternetResourceType } from "../shared/internet-resource";
+
 import type { SchemaTypeDefinition } from "sanity";
+import type { InternetResourceType } from "../shared/internet-resource";
 
 export const objectTypes = [
   availability,
@@ -79,6 +83,8 @@ export const objectTypes = [
   imageRow,
   link,
   logo,
+  navItem,
+  navItemGroup,
   pageLinks,
   personGroupBlock,
   relativeLink,
@@ -128,6 +134,7 @@ export const documentTypes = [
   imageAsset,
   imageCollection,
   imageSource,
+  navigationTree,
   person,
   personGroup,
   resourceEvaluation,
