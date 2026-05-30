@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { TagsIcon } from "@sanity/icons";
+
 import imageAssetField from "../fields/imageAssetField";
 import slugField from "../fields/slugField";
 import tagSearchAliasesField from "../fields/tagSearchAliasesField";
@@ -12,6 +13,15 @@ export default defineType({
     "A demographic describes a specific identity or community of people",
   icon: TagsIcon,
   type: "document",
+  preview: {
+    select: {
+      title: "name",
+    },
+    prepare: ({ title }) => ({
+      title,
+      subtitle: `Demographic`,
+    }),
+  },
   fields: [
     defineField({
       title: "Demographic Name",

@@ -21,11 +21,10 @@ export default defineType({
     select: {
       displayTitle: "displayTitle",
       title: "title",
-      slug: "slug.current",
     },
-    prepare: ({ displayTitle, title, slug }) => ({
+    prepare: ({ displayTitle, title }) => ({
       title: displayTitle ?? title,
-      subtitle: slug,
+      subtitle: `Cause of Death`,
     }),
   },
   fields: [

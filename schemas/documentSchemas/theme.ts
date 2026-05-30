@@ -19,13 +19,11 @@ export default defineType({
   type: "document",
   preview: {
     select: {
-      displayTitle: "displayTitle",
       title: "title",
-      slug: "slug.current",
     },
-    prepare: ({ displayTitle, title, slug }) => ({
-      title: displayTitle ?? title,
-      subtitle: slug,
+    prepare: ({ title }) => ({
+      title: title,
+      subtitle: `Theme`,
     }),
   },
   fields: [

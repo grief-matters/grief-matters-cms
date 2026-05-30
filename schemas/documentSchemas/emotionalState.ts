@@ -8,6 +8,15 @@ export default defineType({
   title: "Emotional State",
   icon: SparkleIcon,
   type: "document",
+  preview: {
+    select: {
+      title: "title",
+    },
+    prepare: ({ title }) => ({
+      title: title,
+      subtitle: `Emotion`,
+    }),
+  },
   fields: [
     defineField({
       title: "Title",
@@ -27,7 +36,4 @@ export default defineType({
     }),
     tagSearchAliasesField,
   ],
-  preview: {
-    select: { title: "title", subtitle: "description" },
-  },
 });
