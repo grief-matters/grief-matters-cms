@@ -1,5 +1,5 @@
 import { BottleIcon } from "@sanity/icons";
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 import demographicsField from "../fields/demographicsField";
 import freeRegistrationField from "../fields/freeRegistrationField";
 import imageAssetField from "../fields/imageAssetField";
@@ -61,6 +61,17 @@ export default defineType({
     defineField({
       group: "attributes",
       ...sourceOrgField,
+    }),
+    defineField({
+      group: "attributes",
+      type: "array",
+      name: "contactMethods",
+      title: "Contact Methods",
+      of: [
+        defineArrayMember({
+          type: "contactMethod",
+        }),
+      ],
     }),
     defineField({
       group: "attributes",
