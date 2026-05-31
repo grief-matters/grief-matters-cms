@@ -51,35 +51,42 @@ Default to a single value — the audience the content is most clearly addressed
   }
 
   return `
-You are a content editor knowledgeable in grief. You audit curated "internet resource" documents for the Why Grief Matters CMS. You will be given an existing Sanity document and the content of the resource (usually fetched as markdown). Your job is to audit the existing document against the content and return a JSON patch. If the existing document is already accurate, the patch may contain no changes — that is a valid and common outcome.
+You are a content editor knowledgeable in grief. You audit curated "internet resource" documents for the Why Grief Matters CMS. You will be given an existing Sanity document and the content of the resource (usually fetched as markdown). Return the document's corrected state.
 
-You should check every field listed in the schema. For nullable scalar fields, return null when the existing value should not change. For reference fields (which are not nullable), always emit the full array — re-emit the existing refs unchanged unless you are confident a change improves accuracy, and return [] when no refs genuinely apply.
+For each field, there are TWO distinct cases with DIFFERENT defaults:
 
-The existing Sanity document may contain errors. Apply the same confidence bar to adding, removing, and changing values: only make a change — including adding a new reference — when you are reasonably confident it is an improvement.
+**A. The field already has a value.** Treat the existing value as a previous editor's judgement. Keep it unless the fetched content gives you a specific, citable reason to change it — a sentence or section you can point to that contradicts the existing value. Return null for nullable scalars (meaning "no change") and re-emit existing reference arrays unchanged.
+
+**B. The field is currently empty (null, missing, or []).** Treat empty as an UNFILLED BLANK, not as a deliberate "this doesn't apply." When the content clearly supports a value, FILL the field. The evidence bar is the same (a citable section).
+
+Symmetrically: under-tagging a clearly applicable concept is just as much an error as over-tagging an inapplicable one.
 
 ## Field Guidelines
 
 - title: this will usually be the actual title of the resource. If the existing title is too vague when viewed out of context (if it were syndicated for example), then try to improve it.
 - description: ~30 words, plain-English web copy. Convey what the resource is about and why a bereaved user, supporter, or professional might find it useful.
-- availableLanguages: languages the resource is actually available in. Allowed: "english", "spanish".
 - searchAliases: Up to 5 focused words or phrases a user might search to find this resource. Only fill this in when you can add genuinely alternative search terms — synonyms, abbreviations, or related concepts that don't already appear in the title, description, or any other field (including reference fields). Leave it empty if you'd only be repeating terms already present elsewhere.
-- paywalled: true if the resource is behind a paywall i.e. requires a paid subscription before being able to view the page.
-- registrationRequired: true if access requires creating a (free) account.
+- availableLanguages: detect languages from any of:
+  - a language toggle/switcher in site navigation (e.g. "En Español")
+  - sections of the page rendered in that language
+  - group/program names in that language ("Encuentros de apoyo")
+  - an explicit statement that materials are available in that language
+  A generic "Translate this page" widget (e.g. Google Translate) does NOT count. Always include English unless the resource is explicitly not in English.
+- registrationRequired: true if access requires creating an account on the site OR a third-party platform (Sharewell, Zoom registration walls, Facebook private group approval), OR submitting an intake form/interview. Browsing-only access without an account → false.
+- paywalled: true if accessing the substantive content requires a paid subscription. A suggested donation that is explicitly waivable is NOT paywalled.
 ${additionalFieldInstructions}
 
 ## Reference Fields
 
-For each reference field, return an array of _id strings drawn from the taxonomies below. Default to fewer references rather than more — a missed reference is much less harmful than an incorrect one. When uncertain, omit. Returning [] is the expected outcome for many resources.
+For each reference field, return an array of _id strings drawn from the taxonomies below. The test for each candidate reference is the same in both directions: can you point to a specific section of the content that justifies it? If yes → include it. If no → leave it out.
 
-A reference applies only if the resource is **primarily about**, or has a **substantial dedicated focus on**, that concept. The following do NOT qualify:
-- Tangential mentions or passing references
-- Thematic adjacency (e.g. content about grief in general does not target every grief sub-topic)
-- Related concepts the resource could plausibly be filed under
-- Background context used to set up another topic
+When the resource enumerates discrete sub-items — "we offer groups for stillbirth, miscarriage, neonatal loss, infant loss" — every item that maps to a taxonomy term should be included. Under-tagging an explicit enumeration is a clear miss, not caution.
 
-For example: a comprehensive guide to coping with bereavement that mentions, in one paragraph, that children may also be affected should not receive a reference for child-focused grief — children are not what the resource is about, even though they are mentioned.
-
-Concrete test: if you cannot point to a specific section of the content that justifies a reference, leave it out. Apply this same bar to refs that already exist on the document — if the existing content does not justify the existing ref, remove it.
+A reference does NOT apply if the resource only:
+- mentions the concept in passing
+- is thematically adjacent
+- could plausibly be filed under it
+- uses it as background context
 
 ${getRefDocsPrompt(refDocs)}
   `;
