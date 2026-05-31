@@ -29,6 +29,7 @@ import blog from "./internetResourceDocumentSchemas/blog";
 import book from "./internetResourceDocumentSchemas/book";
 import community from "./internetResourceDocumentSchemas/community";
 import course from "./internetResourceDocumentSchemas/course";
+import essentialService from "./internetResourceDocumentSchemas/essentialService";
 import externalOrg from "./internetResourceDocumentSchemas/externalOrg";
 import forum from "./internetResourceDocumentSchemas/forum";
 import listicle from "./internetResourceDocumentSchemas/listicle";
@@ -107,6 +108,7 @@ const typedInternetResourceSchemaRecord: Record<
   book,
   community,
   course,
+  essentialService,
   externalOrg,
   forum,
   listicle,

@@ -5,6 +5,7 @@ export const internetResourceTypes = [
   "book",
   "community",
   "course",
+  "essentialService",
   "externalOrg",
   "crisisResource",
   "forum",
