@@ -2,6 +2,7 @@ import { defineField, defineType } from "sanity";
 import { SparkleIcon } from "@sanity/icons";
 import slugField from "../fields/slugField";
 import tagSearchAliasesField from "../fields/tagSearchAliasesField";
+import aiPromptHintField from "../fields/aiPromptHintField";
 
 export default defineType({
   name: "emotionalState",
@@ -25,6 +26,7 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     slugField,
+    aiPromptHintField,
     defineField({
       title: "Description",
       name: "description",

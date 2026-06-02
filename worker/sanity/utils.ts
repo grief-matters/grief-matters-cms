@@ -3,17 +3,17 @@ import type { SanityDocument } from "sanity";
 import type { Any, AttributeSet } from "@sanity/client";
 
 import { isRefField } from "../../shared/internet-resource";
-import type {
-  AiAvailability,
-  AiContactMethod,
-  AiReview,
-} from "../ai-content-review/ai-review";
 import type { ContactType } from "../../shared/contact-type";
+import type {
+  AiContactMethod,
+  AiAvailability,
+  AiReview,
+} from "../ai-content-review/schema";
 
 export type RefDoc = {
   _id: string;
   title: string;
-  description: string;
+  aiPromptHint: string;
 };
 
 export type SanityMutationDescriptor = {

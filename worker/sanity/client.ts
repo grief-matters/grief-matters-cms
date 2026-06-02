@@ -27,14 +27,14 @@ export function getReferenceTaxonomies(
   const client = getSanityClient(env);
 
   return client.fetch(groq`{
-    "lossRelationships": *[_type == 'lossRelationship']{_id, title, "description": shortDescription},
-    "causesOfDeath": *[_type == 'causeOfDeath']{_id, title, "description": shortDescription},
-    "themes": *[_type == 'theme']{_id, title, "description": shortDescription},
-    "demographics": *[_type == 'demographic']{_id, name, description},
-    "griefPhases": *[_type == 'griefPhase']{_id, title, description},
-    "griefTypes": *[_type == 'griefType']{_id, title, description},
-    "emotionalStates": *[_type == 'emotionalState']{_id, title, description},
-    "contentFunctions": *[_type == 'contentFunction']{_id, title, description},
+    "lossRelationships": *[_type == 'lossRelationship']{_id, aiPromptHint, title, "description": shortDescription},
+    "causesOfDeath": *[_type == 'causeOfDeath']{_id, aiPromptHint, title, "description": shortDescription},
+    "themes": *[_type == 'theme']{_id, aiPromptHint, title, "description": shortDescription},
+    "demographics": *[_type == 'demographic']{_id, aiPromptHint, "title": name, description},
+    "griefPhases": *[_type == 'griefPhase']{_id, aiPromptHint, title, description},
+    "griefTypes": *[_type == 'griefType']{_id, aiPromptHint, title, description},
+    "emotionalStates": *[_type == 'emotionalState']{_id, aiPromptHint, title, description},
+    "contentFunctions": *[_type == 'contentFunction']{_id, aiPromptHint, title, description},
   }`);
 }
 

@@ -5,6 +5,7 @@ import imageAssetField from "../fields/imageAssetField";
 import slugField from "../fields/slugField";
 import tagSearchAliasesField from "../fields/tagSearchAliasesField";
 import requiredSimpleDescriptionField from "../fields/requiredSimpleDescriptionField";
+import aiPromptHintField from "../fields/aiPromptHintField";
 
 export default defineType({
   name: "demographic",
@@ -35,6 +36,7 @@ export default defineType({
         source: "name",
       },
     },
+    aiPromptHintField,
     requiredSimpleDescriptionField,
     tagSearchAliasesField,
     defineField({

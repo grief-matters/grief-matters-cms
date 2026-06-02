@@ -1,84 +1,29 @@
-import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import z from "zod";
+import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import type { SanityDocument } from "sanity";
 
 import {
   isRefField,
   type InternetResourceType,
+  type TaxonomyRefField,
 } from "../../shared/internet-resource";
-import { days, timezones } from "../../shared/datetime";
-import { contactTypes } from "../../shared/contact-type";
 
 import { getClaudeClient } from "./llm-client";
 import { type RefDoc } from "../sanity/utils";
 import { logger } from "../utils/logger";
 import { getSystemPrompt, getUserMessage } from "./prompt";
+import type {
+  Model,
+  OutputConfig,
+  ThinkingConfigParam,
+} from "@anthropic-ai/sdk/resources";
+import {
+  getOutputSchemaForDocType,
+  zDefaultReview,
+  type AiReview,
+} from "./schema";
 
 export type ReviewInput = { doc: SanityDocument; content: string };
-
-export type AiReview =
-  | AiReviewBase
-  | AiReviewWithAudience
-  | AiReviewWithContactMethods;
-
-export type AiAvailability = z.infer<typeof zAiAvailability>;
-
-type AiReviewResult = null | AiReview;
-type AiReviewBase = z.infer<typeof zAiReviewBase>;
-type AiReviewWithAudience = z.infer<typeof zAiReviewWithAudience>;
-type AiReviewWithContactMethods = z.infer<typeof zAiReviewWithContactMethods>;
-
-// Reference array fields are intentionally non-nullable: Anthropic structured
-// outputs has a 16-parameter limit on union-typed fields. The AI always emits
-// the desired final ref list (the existing doc is supplied in the user message),
-// so re-emitting the current refs is a no-op write.
-const zAiReviewBase = z.object({
-  title: z.string().nullable(),
-  description: z.string().nullable(),
-  availableLanguages: z.array(z.enum(["english", "spanish"])).nullable(),
-  searchAliases: z.array(z.string()).nullable(),
-  paywalled: z.boolean().nullable(),
-  registrationRequired: z.boolean().nullable(),
-  lossRelationships: z.array(z.string()),
-  causesOfDeath: z.array(z.string()),
-  themes: z.array(z.string()),
-  demographics: z.array(z.string()),
-  griefPhases: z.array(z.string()),
-  griefTypes: z.array(z.string()),
-  contentFunctions: z.array(z.string()),
-  emotionalStates: z.array(z.string()),
-});
-
-const zAiReviewWithAudience = z.object({
-  ...zAiReviewBase.shape,
-  audienceRole: z
-    .array(z.enum(["bereaved", "supporter", "professional"]))
-    .nullable(),
-});
-
-// These schemas are simplified vs the Sanity schemas to avoid 'compiled grammar too large' errors with Claude
-const zAiAvailability = z.object({
-  days: z.array(z.enum(days)),
-  availableFrom: z.string(),
-  availableTo: z.string(),
-  timezone: z.enum(timezones),
-});
-
-const zAiContactMethod = z.object({
-  contactType: z.enum(contactTypes),
-  telephoneNumber: z.string().nullable(),
-  smsBody: z.string().nullable(),
-  email: z.string().nullable(),
-  contactForm: z.string().nullable(),
-  liveChatUrl: z.string().nullable(),
-  availabilities: z.array(zAiAvailability).nullable(),
-});
-export type AiContactMethod = z.infer<typeof zAiContactMethod>;
-
-const zAiReviewWithContactMethods = z.object({
-  ...zAiReviewBase.shape,
-  contactMethods: z.array(zAiContactMethod).nullable(),
-});
 
 /**
  * Filters reference _ids returned by the AI against the known taxonomies,
@@ -90,7 +35,7 @@ const zAiReviewWithContactMethods = z.object({
  */
 function getValidAiReview<T extends AiReview>(
   aiReview: T,
-  refDocs: Record<string, RefDoc[]>,
+  refDocs: Record<TaxonomyRefField, RefDoc[]>,
 ): T {
   const result: Record<string, unknown> = { ...aiReview };
 
@@ -115,22 +60,62 @@ function getValidAiReview<T extends AiReview>(
   return result as T;
 }
 
-/**
- * Picks the Zod schema describing the AI's structured output for a given
- * resource type: crisis resources get contact methods, apps get the base
- * schema, everything else gets the audience-role variant.
- *
- * @param docType
- * @returns
- */
-function getOutputSchemaForDocType(docType: InternetResourceType) {
+type MessageConfig = {
+  model: Model;
+  maxTokens: number;
+  thinking: ThinkingConfigParam;
+  outputSchema: z.ZodObject;
+  effort: OutputConfig["effort"];
+};
+
+const messageConfigDefaults: MessageConfig = {
+  thinking: { type: "adaptive" },
+  model: "claude-sonnet-4-6",
+  maxTokens: 4000,
+  outputSchema: zDefaultReview,
+  effort: "medium",
+};
+
+function getMessageConfig(docType: InternetResourceType): MessageConfig {
+  const configDefaults = messageConfigDefaults;
+
   switch (docType) {
-    case "crisisResource":
-      return zAiReviewWithContactMethods;
     case "app":
-      return zAiReviewBase;
-    default:
-      return zAiReviewWithAudience;
+      return {
+        ...configDefaults,
+        outputSchema: getOutputSchemaForDocType(docType),
+      };
+    case "crisisResource":
+      return {
+        ...configDefaults,
+        model: "claude-opus-4-7",
+        outputSchema: getOutputSchemaForDocType(docType),
+      };
+    case "essentialService":
+      return {
+        ...configDefaults,
+        model: "claude-opus-4-7",
+        outputSchema: getOutputSchemaForDocType(docType),
+      };
+    case "article":
+    case "blog":
+    case "book":
+    case "community":
+    case "course":
+    case "externalOrg":
+    case "forum":
+    case "listicle":
+    case "memorial":
+    case "peerSupport":
+    case "podcast":
+    case "podcastEpisode":
+    case "printedMaterial":
+    case "story":
+    case "supportGroup":
+    case "therapyResource":
+    case "video":
+    case "webinar":
+      return configDefaults;
   }
 }
 
@@ -150,25 +135,29 @@ export async function getAiReview(
   env: Env,
   doc: SanityDocument,
   content: string,
-  refDocs: Record<string, RefDoc[]>,
-): Promise<AiReviewResult> {
+  refDocs: Record<TaxonomyRefField, RefDoc[]>,
+): Promise<AiReview | null> {
   const client = getClaudeClient(env);
   const { _createdAt, _id, _rev, _updatedAt, ...restDoc } = doc;
 
+  const messageConfig = getMessageConfig(doc._type as InternetResourceType);
+  const systemPrompt = getSystemPrompt(
+    doc._type as InternetResourceType,
+    refDocs,
+  );
+
   const response = await client.messages.parse({
-    model: "claude-sonnet-4-6",
-    max_tokens: env.AI_REVIEW_MAX_OUTPUT_TOKENS,
-    thinking: { type: "adaptive" },
+    model: messageConfig.model,
+    max_tokens: messageConfig.maxTokens,
+    thinking: messageConfig.thinking,
     output_config: {
-      format: zodOutputFormat(
-        getOutputSchemaForDocType(doc._type as InternetResourceType),
-      ),
-      effort: "medium",
+      format: zodOutputFormat(messageConfig.outputSchema),
+      effort: messageConfig.effort,
     },
     system: [
       {
         type: "text",
-        text: getSystemPrompt(doc._type as InternetResourceType, refDocs),
+        text: systemPrompt,
         cache_control: { type: "ephemeral" },
       },
     ],
@@ -193,7 +182,7 @@ export async function getAiReview(
     return null;
   }
 
-  const validParsed = getValidAiReview<AiReview>(parsed, refDocs);
+  const validParsed = getValidAiReview<AiReview>(parsed as AiReview, refDocs);
 
   return validParsed;
 }

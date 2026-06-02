@@ -9,6 +9,7 @@ import portableTextDescriptionField from "../fields/portableTextDescriptionField
 import slugField from "../fields/slugField";
 import tagSearchAliasesField from "../fields/tagSearchAliasesField";
 import titleField from "../fields/titleField";
+import aiPromptHintField from "../fields/aiPromptHintField";
 
 export default defineType({
   name: "theme",
@@ -28,6 +29,7 @@ export default defineType({
   },
   fields: [
     slugField,
+    aiPromptHintField,
     defineField({
       ...titleField,
       description:
