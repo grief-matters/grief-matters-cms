@@ -145,26 +145,40 @@ export function getDraftDocumentFromAiReview(
 
 const metaKeys = new Set(["_id", "_rev", "_createdAt", "_updatedAt", "_key"]);
 
-export function draftHasChanges(
+export function countChangedFields(
   draft: SanityDocument,
   original: SanityDocument,
-): boolean {
-  return !isEqualWith(draft, original, (_a, _b, key) => {
-    if (typeof key === "string" && metaKeys.has(key)) {
-      return true;
+): number {
+  const a = draft as Record<string, unknown>;
+  const b = original as Record<string, unknown>;
+  const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+  let count = 0;
+  for (const key of keys) {
+    if (metaKeys.has(key)) {
+      continue;
     }
-    return undefined;
-  });
+    const eq = isEqualWith(a[key], b[key], (_x, _y, k) => {
+      if (typeof k === "string" && metaKeys.has(k)) {
+        return true;
+      }
+      return undefined;
+    });
+    if (!eq) {
+      count++;
+    }
+  }
+  return count;
 }
 
 export function getBaseMutationDescriptor(
   doc: SanityDocument,
+  aiAuditStamp: string,
 ): SanityMutationDescriptor {
   return {
     pubId: doc._id,
     pubRev: doc._rev,
     pubPatch: {
-      aiAuditStamp: generateSanityDocKey(),
+      aiAuditStamp,
     },
   };
 }

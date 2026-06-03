@@ -7,19 +7,25 @@ import {
   getSanityClient,
 } from "../sanity/client";
 import {
+  countChangedFields,
+  generateSanityDocKey,
   getBaseMutationDescriptor,
   getDraftDocumentFromAiReview,
-  draftHasChanges,
   type RefDoc,
   type SanityMutationDescriptor,
 } from "../sanity/utils";
 import { logger } from "../utils/logger";
-import { type ReviewInput, getAiReview } from "./ai-review";
+import {
+  type AiReviewResult,
+  type ReviewInput,
+  getAiReview,
+} from "./ai-review";
 import {
   type DocumentContentResult,
   getDocumentContent,
   getDocumentActionFromContentResult,
 } from "./content";
+import { ReviewReportSink } from "./report-sink";
 
 type ClassifiedContent = {
   mutations: SanityMutationDescriptor[];
@@ -28,11 +34,16 @@ type ClassifiedContent = {
 
 type ContentItem = { doc: SanityDocument; content: DocumentContentResult };
 
-function classifyContentResults(items: ContentItem[]): ClassifiedContent {
+function classifyContentResults(
+  items: ContentItem[],
+  stamps: Map<string, string>,
+  sink: ReviewReportSink,
+): ClassifiedContent {
   const mutations: SanityMutationDescriptor[] = [];
   const toReview: ReviewInput[] = [];
 
   for (const { doc, content } of items) {
+    const stamp = stamps.get(doc._id)!;
     const docAction = getDocumentActionFromContentResult(content);
 
     if (docAction.action === "review") {
@@ -40,9 +51,18 @@ function classifyContentResults(items: ContentItem[]): ClassifiedContent {
       continue;
     }
 
-    const baseMutation = getBaseMutationDescriptor(doc);
+    const baseMutation = getBaseMutationDescriptor(doc, stamp);
 
     if (docAction.action === "disable") {
+      sink.record({
+        aiAuditStamp: stamp,
+        _id: doc._id,
+        docType: doc._type,
+        outcome: "disabled",
+        success: false,
+        fieldCount: null,
+        failureReason: docAction.detail,
+      });
       mutations.push({
         ...baseMutation,
         pubPatch: {
@@ -55,6 +75,14 @@ function classifyContentResults(items: ContentItem[]): ClassifiedContent {
     }
 
     // Skip: only bump the audit stamp
+    sink.record({
+      aiAuditStamp: stamp,
+      _id: doc._id,
+      docType: doc._type,
+      outcome: "skipped",
+      success: false,
+      fieldCount: null,
+    });
     mutations.push(baseMutation);
   }
 
@@ -62,64 +90,136 @@ function classifyContentResults(items: ContentItem[]): ClassifiedContent {
 }
 
 /**
- * Runs each AI review sequentially and builds a mutation per input (with a
- * draft when the AI's output differs from the existing doc, base-only when it
- * doesn't). Sleeps between calls to keep us under the Anthropic input-tokens
- * per minute rate limit. Failures on individual docs are logged and skipped.
- *
- * @param env
- * @param inputs
- * @param taxonomyDocs
- * @returns
+ * Calls `getAiReview` and folds thrown errors into the same `AiReviewResult`
+ * shape as parse failures, so the caller doesn't have to branch on try/catch.
+ */
+async function safeGetAiReview(
+  env: Env,
+  reviewInput: ReviewInput,
+  taxonomyDocs: Record<string, RefDoc[]>,
+): Promise<AiReviewResult> {
+  try {
+    return await getAiReview(
+      env,
+      reviewInput.doc,
+      reviewInput.content,
+      taxonomyDocs,
+    );
+  } catch (error) {
+    const failureReason =
+      error instanceof Error ? error.message : String(error);
+    logger.error(
+      "runAiReviews",
+      `failed review for '${reviewInput.doc._id}': ${failureReason}`,
+    );
+    return { review: null, usage: undefined, failureReason };
+  }
+}
+
+/**
+ * Reviews a single doc end-to-end: invokes the AI, records a report line, and
+ * returns the mutation to commit (or null if the review failed). Happy path is
+ * top-level — failure short-circuits with an early return.
+ */
+async function reviewDoc(
+  env: Env,
+  reviewInput: ReviewInput,
+  stamp: string,
+  taxonomyDocs: Record<string, RefDoc[]>,
+  sink: ReviewReportSink,
+): Promise<SanityMutationDescriptor | null> {
+  const doc = reviewInput.doc;
+  const startedAt = performance.now();
+  const result = await safeGetAiReview(env, reviewInput, taxonomyDocs);
+  const lineBase = {
+    aiAuditStamp: stamp,
+    _id: doc._id,
+    docType: doc._type,
+    latencyMs: Math.round(performance.now() - startedAt),
+    tokens: result.usage,
+  };
+
+  if (result.review === null) {
+    sink.record({
+      ...lineBase,
+      outcome: "ai_failed",
+      success: false,
+      fieldCount: null,
+      failureReason: result.failureReason,
+    });
+    return null;
+  }
+
+  const draftDoc = getDraftDocumentFromAiReview(result.review, doc);
+  const baseMutation = getBaseMutationDescriptor(doc, stamp);
+  const fieldCount = countChangedFields(draftDoc, doc);
+
+  sink.record({
+    ...lineBase,
+    outcome: "ai_success",
+    success: true,
+    fieldCount,
+  });
+
+  const hasChanges = fieldCount > 0;
+  logger.info(
+    "runAiReviews",
+    `'${doc._id}' ${hasChanges ? "has new draft" : "has no changes"}`,
+  );
+  return hasChanges ? { ...baseMutation, draft: draftDoc } : baseMutation;
+}
+
+/**
+ * Waits long enough that the next AI call starts at least `gapMs` after the
+ * current one. No-op on the last iteration.
+ */
+async function throttleBetweenReviews(
+  index: number,
+  total: number,
+  startedAt: number,
+  gapMs: number,
+): Promise<void> {
+  if (index >= total - 1) {
+    return;
+  }
+  const remaining = gapMs - (performance.now() - startedAt);
+  if (remaining > 0) {
+    await new Promise((resolve) => setTimeout(resolve, remaining));
+  }
+}
+
+/**
+ * Runs each AI review sequentially, queuing one mutation per successful
+ * review (a draft when the AI's output differs from the existing doc, base-only
+ * when it doesn't). Sleeps between calls to keep us under the Anthropic
+ * input-tokens per minute rate limit. Failures are recorded to the sink and
+ * skipped — no mutation queued.
  */
 async function runAiReviews(
   env: Env,
   inputs: ReviewInput[],
   taxonomyDocs: Record<string, RefDoc[]>,
+  stamps: Map<string, string>,
+  sink: ReviewReportSink,
 ): Promise<SanityMutationDescriptor[]> {
   const mutations: SanityMutationDescriptor[] = [];
 
   for (let i = 0; i < inputs.length; i++) {
     const startedAt = performance.now();
-    const reviewInput = inputs[i];
+    const input = inputs[i];
+    const stamp = stamps.get(input.doc._id)!;
 
-    try {
-      const aiReview = await getAiReview(
-        env,
-        reviewInput.doc,
-        reviewInput.content,
-        taxonomyDocs,
-      );
-
-      if (aiReview === null) {
-        continue;
-      }
-
-      const draftDoc = getDraftDocumentFromAiReview(aiReview, reviewInput.doc);
-      const baseMutation = getBaseMutationDescriptor(reviewInput.doc);
-
-      if (!draftHasChanges(draftDoc, reviewInput.doc)) {
-        logger.info("runAiReviews", `'${reviewInput.doc._id}' has no changes`);
-        mutations.push(baseMutation);
-        continue;
-      }
-
-      logger.info("runAiReviews", `'${reviewInput.doc._id}' has new draft`);
-      mutations.push({ ...baseMutation, draft: draftDoc });
-    } catch (error) {
-      logger.error(
-        "runAiReviews",
-        `failed review for '${reviewInput.doc._id}': ${error instanceof Error ? error.message : String(error)}`,
-      );
+    const mutation = await reviewDoc(env, input, stamp, taxonomyDocs, sink);
+    if (mutation) {
+      mutations.push(mutation);
     }
 
-    if (i < inputs.length - 1) {
-      const elapsed = performance.now() - startedAt;
-      const remaining = env.AI_REVIEW_MIN_GAP_MS - elapsed;
-      if (remaining > 0) {
-        await new Promise((resolve) => setTimeout(resolve, remaining));
-      }
-    }
+    await throttleBetweenReviews(
+      i,
+      inputs.length,
+      startedAt,
+      env.AI_REVIEW_MIN_GAP_MS,
+    );
   }
 
   return mutations;
@@ -178,7 +278,8 @@ async function commitMutations(
  * to `limit`), pulls their content, classifies each as skip/disable/review,
  * runs AI reviews on the eligible ones, and commits all resulting mutations in
  * one batch. Every doc selected gets at least an audit-stamp bump so it rotates
- * to the back of the queue regardless of outcome.
+ * to the back of the queue regardless of outcome. Writes a per-cycle report to
+ * the `AI_REVIEW_REPORTS` KV namespace at the end.
  *
  * @param env
  * @param limit
@@ -199,6 +300,11 @@ export async function runAiContentReview(env: Env, limit: number) {
     return;
   }
 
+  const sink = new ReviewReportSink();
+  const stamps = new Map<string, string>(
+    resourceDocs.map((doc) => [doc._id, generateSanityDocKey()]),
+  );
+
   const contentResults = await Promise.allSettled(
     resourceDocs.map((doc) => getDocumentContent(env, doc)),
   );
@@ -213,16 +319,38 @@ export async function runAiContentReview(env: Env, limit: number) {
         "runAiContentReview",
         `'getDocumentContent' promise rejected for '${doc._id}': ${result.reason}`,
       );
-
+      sink.record({
+        aiAuditStamp: stamps.get(doc._id)!,
+        _id: doc._id,
+        docType: doc._type,
+        outcome: "content_fetch_failed",
+        success: false,
+        fieldCount: null,
+        failureReason:
+          result.reason instanceof Error
+            ? result.reason.message
+            : String(result.reason),
+      });
       continue;
     }
     fulfilledContent.push({ doc, content: result.value });
   }
 
-  const { mutations, toReview } = classifyContentResults(fulfilledContent);
+  const { mutations, toReview } = classifyContentResults(
+    fulfilledContent,
+    stamps,
+    sink,
+  );
 
   const taxonomyDocs = await getReferenceTaxonomies(env);
-  const reviewMutations = await runAiReviews(env, toReview, taxonomyDocs);
+  const reviewMutations = await runAiReviews(
+    env,
+    toReview,
+    taxonomyDocs,
+    stamps,
+    sink,
+  );
 
   await commitMutations(env, [...mutations, ...reviewMutations]);
+  await sink.flush(env.AI_REVIEW_REPORTS);
 }
