@@ -45,13 +45,9 @@ export default defineType({
         defineArrayMember({ type: "imageRow" }),
         defineArrayMember({ type: "featuredResource" }),
         defineArrayMember({ type: "featuredResources" }),
-        // TODO - this will become service provider or something
-        defineArrayMember({ type: "featuredCrisisResource" }),
-        defineArrayMember({ type: "relativeLink" }),
-        defineArrayMember({ type: "resourcePageLink" }),
-        defineArrayMember({ type: "pageLinks" }),
-        defineArrayMember({ type: "featuredWebsite" }),
-        defineArrayMember({ type: "featuredWebsites" }),
+        defineArrayMember({ type: "staticNavItem" }),
+        defineArrayMember({ type: "navItem" }),
+        defineArrayMember({ type: "navItems" }),
         defineArrayMember({ type: "resourceLinks" }),
         defineArrayMember({
           type: "reference",

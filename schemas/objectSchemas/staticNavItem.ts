@@ -2,7 +2,7 @@ import { defineField, defineType } from "sanity";
 
 export default defineType({
   type: "object",
-  name: "relativeLink",
+  name: "staticNavItem",
   title: "Internal Page Link",
   description: `A relative link is a URL within our website e.g. '/crisis-resources'`,
   preview: {

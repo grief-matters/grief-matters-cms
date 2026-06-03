@@ -58,11 +58,10 @@ import link from "./objectSchemas/link";
 import logo from "./objectSchemas/logo";
 import navItem from "./objectSchemas/navItem";
 import navItemGroup from "./objectSchemas/navItemGroup";
-import pageLinks from "./objectSchemas/pageLinks";
+import navItems from "./objectSchemas/navItems";
 import personGroupBlock from "./objectSchemas/personGroupBlock";
-import relativeLink from "./objectSchemas/relativeLink";
+import staticNavItem from "./objectSchemas/staticNavItem";
 import resourceLinks from "./objectSchemas/resourceLinks";
-import resourcePageLink from "./objectSchemas/resourcePageLink";
 import richTextContentBlock from "./objectSchemas/richTextContentBlock";
 import richTextWithHeading from "./objectSchemas/richTextWithHeading";
 import socials from "./objectSchemas/socials";
@@ -86,11 +85,10 @@ export const objectTypes = [
   logo,
   navItem,
   navItemGroup,
-  pageLinks,
+  navItems,
   personGroupBlock,
-  relativeLink,
+  staticNavItem,
   resourceLinks,
-  resourcePageLink,
   richTextContentBlock,
   richTextWithHeading,
   socials,
