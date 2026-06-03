@@ -53,7 +53,7 @@ function classifyContentResults(
 
     if (docAction.action === "disable") {
       sink.record({
-        aiAuditStamp: stamp,
+        auditEventId: stamp,
         _id: doc._id,
         docType: doc._type,
         outcome: "disabled",
@@ -74,7 +74,7 @@ function classifyContentResults(
 
     // Skip: only bump the audit stamp
     sink.record({
-      aiAuditStamp: stamp,
+      auditEventId: stamp,
       _id: doc._id,
       docType: doc._type,
       outcome: "skipped",
@@ -130,7 +130,7 @@ async function reviewDoc(
   const startedAt = performance.now();
   const result = await safeGetAiReview(env, reviewInput, taxonomyDocs);
   const lineBase = {
-    aiAuditStamp: stamp,
+    auditEventId: stamp,
     _id: doc._id,
     docType: doc._type,
     latencyMs: Math.round(performance.now() - startedAt),
@@ -273,9 +273,14 @@ async function commitMutations(
  * Entry point for a review pass: fetches the oldest-audited resource docs (up
  * to `limit`), pulls their content, classifies each as skip/disable/review,
  * runs AI reviews on the eligible ones, and commits all resulting mutations in
- * one batch. Every doc selected gets at least an audit-stamp bump so it rotates
- * to the back of the queue regardless of outcome. Writes a per-cycle report to
- * the `AI_REVIEW_REPORTS` KV namespace at the end.
+ * one batch. Docs reached by skip/disable/review-success paths get a mutation
+ * (at minimum a stamp-only patch), which bumps `_updatedAt` and rotates them
+ * to the back of the oldest-first queue. Failure paths (content-fetch and
+ * AI-review) deliberately produce no mutation, so those docs stay near the
+ * head and get retried next cycle — transient failures self-heal, persistent
+ * ones surface as recurring entries in the per-cycle report written to the
+ * `AI_REVIEW_REPORTS` KV namespace, prompting a human to set `skipLinkCheck`
+ * or fix the doc.
  *
  * @param env
  * @param limit
@@ -313,7 +318,7 @@ export async function runAiContentReview(env: Env, limit: number) {
         `'getDocumentContent' promise rejected for '${doc._id}': ${result.reason}`,
       );
       sink.record({
-        aiAuditStamp: sink.stampFor(doc._id),
+        auditEventId: sink.stampFor(doc._id),
         _id: doc._id,
         docType: doc._type,
         outcome: "content_fetch_failed",

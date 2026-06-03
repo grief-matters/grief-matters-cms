@@ -10,7 +10,7 @@ export type ReviewOutcome =
   | "content_fetch_failed";
 
 export type ReportLine = {
-  aiAuditStamp: string;
+  auditEventId: string;
   _id: string;
   docType: string;
   outcome: ReviewOutcome;
@@ -31,8 +31,9 @@ export class ReviewReportSink {
 
   /**
    * Returns this cycle's audit stamp for `docId`, minting one on first request.
-   * Same id always maps to the same stamp, so the Sanity mutation and the
-   * report line stay joinable after the fact.
+   * Same id always maps to the same stamp. When a mutation is produced for this doc,
+   * it will carry this ID, so successful events in the report can be joined back to the Sanity record.
+   * Failure events live only in the report.
    */
   stampFor(docId: string): string {
     let stamp = this.stamps.get(docId);
