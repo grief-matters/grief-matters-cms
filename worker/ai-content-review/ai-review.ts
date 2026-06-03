@@ -119,11 +119,25 @@ function getMessageConfig(docType: InternetResourceType): MessageConfig {
   }
 }
 
+export type AiReviewUsage = {
+  input: number;
+  output: number;
+  cacheCreation: number;
+  cacheRead: number;
+};
+
+export type AiReviewResult = {
+  review: AiReview | null;
+  usage: AiReviewUsage | undefined;
+  failureReason?: string;
+};
+
 /**
  * Sends the existing doc and fetched content to Claude and returns the parsed
- * structured-output review, or null if the model failed to produce a valid
- * response. The system prompt is marked for ephemeral caching since it's large
- * and identical across docs of the same type within a run.
+ * structured-output review along with token usage, or `review: null` plus a
+ * `failureReason` if the model failed to produce a valid response. The system
+ * prompt is marked for ephemeral caching since it's large and identical across
+ * docs of the same type within a run.
  *
  * @param env
  * @param doc
@@ -136,7 +150,7 @@ export async function getAiReview(
   doc: SanityDocument,
   content: string,
   refDocs: Record<TaxonomyRefField, RefDoc[]>,
-): Promise<AiReview | null> {
+): Promise<AiReviewResult> {
   const client = getClaudeClient(env);
   const { _createdAt, _id, _rev, _updatedAt, ...restDoc } = doc;
 
@@ -164,12 +178,19 @@ export async function getAiReview(
     messages: [{ role: "user", content: getUserMessage(restDoc, content) }],
   });
 
+  const usage: AiReviewUsage = {
+    input: response.usage.input_tokens,
+    output: response.usage.output_tokens,
+    cacheCreation: response.usage.cache_creation_input_tokens ?? 0,
+    cacheRead: response.usage.cache_read_input_tokens ?? 0,
+  };
+
   logger.info("getAiReview:token_usage", {
     docId: doc._id,
-    inputTokens: response.usage.input_tokens,
-    outputTokens: response.usage.output_tokens,
-    cacheCreationTokens: response.usage.cache_creation_input_tokens,
-    cacheReadTokens: response.usage.cache_read_input_tokens,
+    inputTokens: usage.input,
+    outputTokens: usage.output,
+    cacheCreationTokens: usage.cacheCreation,
+    cacheReadTokens: usage.cacheRead,
     contentChars: content.length,
   });
 
@@ -179,10 +200,15 @@ export async function getAiReview(
       docId: doc._id,
       stopReason: response.stop_reason,
     });
-    return null;
+
+    return {
+      review: null,
+      usage,
+      failureReason: `parse_failed: ${response.stop_reason}`,
+    };
   }
 
   const validParsed = getValidAiReview<AiReview>(parsed as AiReview, refDocs);
 
-  return validParsed;
+  return { review: validParsed, usage };
 }

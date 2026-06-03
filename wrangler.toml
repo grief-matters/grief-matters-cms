@@ -3,6 +3,8 @@ main = "./worker/index.ts"
 compatibility_flags = [ "nodejs_compat" ]
 compatibility_date = "2026-05-21"
 preview_urls = false
+workers_dev = false
+account_id = "bdd1337bc388d7f0a67c3f87cb4c5690"
 
 [assets]
 directory = "./dist/"
@@ -25,6 +27,11 @@ AI_CONTENT_REVIEW_CONTENT_MAX_CHARS = 50000
 # At ~15K worst-case input post-cap, 30s is the floor. Raise for safety, lower
 # if observed input_tokens consistently sit well below 15K.
 AI_REVIEW_MIN_GAP_MS = 30000
+
+[[kv_namespaces]]
+binding = "AI_REVIEW_REPORTS"
+id = "499ee3b1890b4da5964c9f69fe0c677d"
+preview_id = "d0d84aaa578941fdb955bd0c4b59b4f1"
 
 [triggers]
 crons = ["0 */6 * * *"]
