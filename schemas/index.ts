@@ -54,7 +54,6 @@ import featuredWebsites from "./objectSchemas/featuredWebsites";
 import formField from "./objectSchemas/formField";
 import headingText from "./objectSchemas/headingText";
 import imageRow from "./objectSchemas/imageRow";
-import link from "./objectSchemas/link";
 import logo from "./objectSchemas/logo";
 import navItem from "./objectSchemas/navItem";
 import navItemGroup from "./objectSchemas/navItemGroup";
@@ -81,7 +80,6 @@ export const objectTypes = [
   formField,
   headingText,
   imageRow,
-  link,
   logo,
   navItem,
   navItemGroup,
