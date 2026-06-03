@@ -337,6 +337,10 @@ export async function runAiContentReview(env: Env, limit: number) {
   const taxonomyDocs = await getReferenceTaxonomies(env);
   const reviewMutations = await runAiReviews(env, toReview, taxonomyDocs, sink);
 
-  await commitMutations(env, [...mutations, ...reviewMutations]);
-  await sink.flush(env.AI_REVIEW_REPORTS);
+  // Make sure sink.flush always runs
+  try {
+    await commitMutations(env, [...mutations, ...reviewMutations]);
+  } finally {
+    await sink.flush(env.AI_REVIEW_REPORTS);
+  }
 }
