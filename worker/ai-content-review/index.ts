@@ -8,7 +8,6 @@ import {
 } from "../sanity/client";
 import {
   countChangedFields,
-  generateSanityDocKey,
   getBaseMutationDescriptor,
   getDraftDocumentFromAiReview,
   type RefDoc,
@@ -36,14 +35,13 @@ type ContentItem = { doc: SanityDocument; content: DocumentContentResult };
 
 function classifyContentResults(
   items: ContentItem[],
-  stamps: Map<string, string>,
   sink: ReviewReportSink,
 ): ClassifiedContent {
   const mutations: SanityMutationDescriptor[] = [];
   const toReview: ReviewInput[] = [];
 
   for (const { doc, content } of items) {
-    const stamp = stamps.get(doc._id)!;
+    const stamp = sink.stampFor(doc._id);
     const docAction = getDocumentActionFromContentResult(content);
 
     if (docAction.action === "review") {
@@ -124,11 +122,11 @@ async function safeGetAiReview(
 async function reviewDoc(
   env: Env,
   reviewInput: ReviewInput,
-  stamp: string,
   taxonomyDocs: Record<string, RefDoc[]>,
   sink: ReviewReportSink,
 ): Promise<SanityMutationDescriptor | null> {
   const doc = reviewInput.doc;
+  const stamp = sink.stampFor(doc._id);
   const startedAt = performance.now();
   const result = await safeGetAiReview(env, reviewInput, taxonomyDocs);
   const lineBase = {
@@ -199,7 +197,6 @@ async function runAiReviews(
   env: Env,
   inputs: ReviewInput[],
   taxonomyDocs: Record<string, RefDoc[]>,
-  stamps: Map<string, string>,
   sink: ReviewReportSink,
 ): Promise<SanityMutationDescriptor[]> {
   const mutations: SanityMutationDescriptor[] = [];
@@ -207,9 +204,8 @@ async function runAiReviews(
   for (let i = 0; i < inputs.length; i++) {
     const startedAt = performance.now();
     const input = inputs[i];
-    const stamp = stamps.get(input.doc._id)!;
 
-    const mutation = await reviewDoc(env, input, stamp, taxonomyDocs, sink);
+    const mutation = await reviewDoc(env, input, taxonomyDocs, sink);
     if (mutation) {
       mutations.push(mutation);
     }
@@ -301,9 +297,6 @@ export async function runAiContentReview(env: Env, limit: number) {
   }
 
   const sink = new ReviewReportSink();
-  const stamps = new Map<string, string>(
-    resourceDocs.map((doc) => [doc._id, generateSanityDocKey()]),
-  );
 
   const contentResults = await Promise.allSettled(
     resourceDocs.map((doc) => getDocumentContent(env, doc)),
@@ -320,7 +313,7 @@ export async function runAiContentReview(env: Env, limit: number) {
         `'getDocumentContent' promise rejected for '${doc._id}': ${result.reason}`,
       );
       sink.record({
-        aiAuditStamp: stamps.get(doc._id)!,
+        aiAuditStamp: sink.stampFor(doc._id),
         _id: doc._id,
         docType: doc._type,
         outcome: "content_fetch_failed",
@@ -338,18 +331,11 @@ export async function runAiContentReview(env: Env, limit: number) {
 
   const { mutations, toReview } = classifyContentResults(
     fulfilledContent,
-    stamps,
     sink,
   );
 
   const taxonomyDocs = await getReferenceTaxonomies(env);
-  const reviewMutations = await runAiReviews(
-    env,
-    toReview,
-    taxonomyDocs,
-    stamps,
-    sink,
-  );
+  const reviewMutations = await runAiReviews(env, toReview, taxonomyDocs, sink);
 
   await commitMutations(env, [...mutations, ...reviewMutations]);
   await sink.flush(env.AI_REVIEW_REPORTS);
