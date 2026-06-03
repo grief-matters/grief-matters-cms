@@ -107,7 +107,7 @@ async function safeGetAiReview(
     const failureReason =
       error instanceof Error ? error.message : String(error);
     logger.error(
-      "runAiReviews",
+      "safeGetAiReview",
       `failed review for '${reviewInput.doc._id}': ${failureReason}`,
     );
     return { review: null, usage: undefined, failureReason };
@@ -161,7 +161,7 @@ async function reviewDoc(
 
   const hasChanges = fieldCount > 0;
   logger.info(
-    "runAiReviews",
+    "reviewDoc",
     `'${doc._id}' ${hasChanges ? "has new draft" : "has no changes"}`,
   );
   return hasChanges ? { ...baseMutation, draft: draftDoc } : baseMutation;
@@ -195,24 +195,24 @@ async function throttleBetweenReviews(
  */
 async function runAiReviews(
   env: Env,
-  inputs: ReviewInput[],
+  reviewInputs: ReviewInput[],
   taxonomyDocs: Record<string, RefDoc[]>,
   sink: ReviewReportSink,
 ): Promise<SanityMutationDescriptor[]> {
   const mutations: SanityMutationDescriptor[] = [];
 
-  for (let i = 0; i < inputs.length; i++) {
+  for (let i = 0; i < reviewInputs.length; i++) {
     const startedAt = performance.now();
-    const input = inputs[i];
+    const reviewInput = reviewInputs[i];
 
-    const mutation = await reviewDoc(env, input, taxonomyDocs, sink);
+    const mutation = await reviewDoc(env, reviewInput, taxonomyDocs, sink);
     if (mutation) {
       mutations.push(mutation);
     }
 
     await throttleBetweenReviews(
       i,
-      inputs.length,
+      reviewInputs.length,
       startedAt,
       env.AI_REVIEW_MIN_GAP_MS,
     );
