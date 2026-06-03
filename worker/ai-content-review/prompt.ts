@@ -30,16 +30,16 @@ const fieldGuidelines: Record<AiReviewFieldKey, string> = {
   - professional: addresses clinicians, counselors, chaplains, or researchers (clinical terminology, assumes professional training, discusses client/patient work, cites research, offers CE credits, etc.)
 Default to a single value — the audience the content is most clearly addressed to. Only assign multiple values when the resource has distinct sections written for different audiences (e.g. a guide with a "for the bereaved" section and a "for those supporting them" section). The fact that a resource "could be useful" to another audience does NOT justify adding them`,
   lossRelationships:
-    "the relationship to the person, being, or aspect of self that has been lost (e.g. parent, spouse, pet).",
+    "The relationship to the person, being, or aspect of self that has been lost (e.g. parent, spouse, pet). Apply a tag only when the content specifically addresses that relationship; do not apply when it is only mentioned in passing or used as one example among many.",
   causesOfDeath:
-    "The cause of a death that has been experienced (e.g. suicide, cancer, sudden / traumatic).",
+    "The cause of a death that has been experienced (e.g. suicide, cancer, sudden / traumatic). Apply a tag only when the content specifically addresses bereavement shaped by that cause; do not apply to passing mentions or to deaths where a more specific cause fits.",
   themes:
-    "A subject matter or theme covered by a resource (e.g. anger, self-care, funerals & memorials).",
+    "A subject matter or theme covered by a resource (e.g. anger, self-care, funerals & memorials). Apply a tag only when the content meaningfully addresses that theme; do not apply when it appears only as background or example.",
   griefPhases: `the stages that individuals often experience after a significant loss based on contemporary grief research. This is a custom list, not just the common "5 stages of grief" found in the Kübler-Ross model. A resource can be tagged with the phase it most addresses.`,
   griefTypes:
     "Some of these overlap with phase and cause; that's fine. They describe a type of experience rather than a moment in time or a cause.",
   contentFunctions:
-    "Captures the job the resource is doing. What is the reader trying to accomplish when this resource serves them well?",
+    "Captures the primary job the resource is doing — what the reader is trying to accomplish when this resource serves them well. A resource can have multiple functions, but each must be a primary job, not a side benefit.",
   emotionalStates:
     "A resource can address multiple states. Optional on most resources; populate ONLY when the content genuinely focuses on a state.",
   demographics:
