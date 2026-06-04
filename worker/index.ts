@@ -1,7 +1,12 @@
 import { AutoRouter, type IRequest } from "itty-router";
 
-import { logger } from "./utils/logger";
+import { internetResourceTypes } from "../shared/internet-resource";
 import { runAiContentReview } from "./ai-content-review";
+import {
+  getOldestFlaggedPublishedDocsByTypes,
+  getOldestPublishedDocsByTypes,
+} from "./sanity/client";
+import { logger } from "./utils/logger";
 
 export type CFArgs = [Env, ExecutionContext];
 
@@ -9,7 +14,12 @@ async function handleAiContentReview(env: Env, limit: number) {
   logger.info("handleAiContentReview", "started");
 
   try {
-    await runAiContentReview(env, limit);
+    const docs = await getOldestPublishedDocsByTypes(
+      env,
+      [...internetResourceTypes],
+      limit,
+    );
+    await runAiContentReview(env, docs);
   } catch (error) {
     // Swallow so Cloudflare doesn't retry the scheduled trigger
     logger.error(
@@ -19,6 +29,27 @@ async function handleAiContentReview(env: Env, limit: number) {
   }
 
   logger.info("handleAiContentReview", "ended");
+}
+
+async function handleFlaggedAiContentReview(env: Env, limit: number) {
+  logger.info("handleFlaggedAiContentReview", "started");
+
+  try {
+    const docs = await getOldestFlaggedPublishedDocsByTypes(
+      env,
+      [...internetResourceTypes],
+      limit,
+    );
+    await runAiContentReview(env, docs);
+  } catch (error) {
+    // Swallow so Cloudflare doesn't retry the scheduled trigger
+    logger.error(
+      "handleFlaggedAiContentReview",
+      error instanceof Error ? error.message : String(error),
+    );
+  }
+
+  logger.info("handleFlaggedAiContentReview", "ended");
 }
 
 async function handleFallback(req: IRequest, env: Env) {
@@ -54,6 +85,9 @@ async function handleScheduled(
   switch (event.cron) {
     case "0 */6 * * *":
       await handleAiContentReview(env, env.AI_CONTENT_REVIEW_DOC_LIMIT);
+      break;
+    case "0 1-5,7-11,13-17,19-23 * * *":
+      await handleFlaggedAiContentReview(env, env.AI_FLAGGED_REVIEW_DOC_LIMIT);
       break;
     default:
       logger.warn("unhandled_cron", event.cron);

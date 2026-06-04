@@ -179,6 +179,7 @@ export function getBaseMutationDescriptor(
     pubRev: doc._rev,
     pubPatch: {
       aiAuditStamp,
+      flaggedForAiReview: false,
     },
   };
 }

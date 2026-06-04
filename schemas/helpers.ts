@@ -13,6 +13,7 @@ import skipLinkFetchField from "./fields/skipLinkFetchField";
 import skipLinkCheckReasonField from "./fields/skipLinkCheckReasonField";
 import titleField from "./fields/titleField";
 import emotionalStatesField from "./fields/emotionalStatesField";
+import flaggedForAiReviewField from "./fields/flaggedForAiReviewField";
 import urlField, { requiredUrlField } from "./fields/urlField";
 import requiredSimpleDescriptionField from "./fields/requiredSimpleDescriptionField";
 import themesField from "./fields/themesField";
@@ -75,9 +76,14 @@ export const createBaseInternetResourceSchema = ({
         name: "access",
         title: "Access Restrictions",
       },
+      {
+        name: "ai",
+        title: "AI",
+      },
     ],
     fields: [
       defineField({
+        group: "ai",
         name: "aiAuditStamp",
         title: "Ai Audit Stamp",
         description:
@@ -104,12 +110,16 @@ export const createBaseInternetResourceSchema = ({
       }),
       languagesField,
       defineField({
-        group: "access",
+        group: "ai",
         ...skipLinkFetchField,
       }),
       defineField({
-        group: "access",
+        group: "ai",
         ...skipLinkCheckReasonField,
+      }),
+      defineField({
+        group: "ai",
+        ...flaggedForAiReviewField,
       }),
       defineField({
         group: "access",

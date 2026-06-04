@@ -16,6 +16,7 @@ SANITY_STUDIO_PROJECT_ID = "vg3sb730"
 SANITY_STUDIO_DATASET = "production"
 SANITY_STUDIO_API_VERSION = '2023-07-16'
 AI_CONTENT_REVIEW_DOC_LIMIT = 5
+AI_FLAGGED_REVIEW_DOC_LIMIT = 5
 # Sized so worst-case content + system (~10K tok) + doc JSON (~3K tok) stays
 # under ITPM (30K). Recompute if taxonomies grow significantly or the tier
 # changes. Formula: (ITPM - system - doc - headroom) * 4 chars/token.
@@ -34,4 +35,4 @@ id = "499ee3b1890b4da5964c9f69fe0c677d"
 preview_id = "d0d84aaa578941fdb955bd0c4b59b4f1"
 
 [triggers]
-crons = ["0 */6 * * *"]
+crons = ["0 */6 * * *", "0 1-5,7-11,13-17,19-23 * * *"]

@@ -1,11 +1,6 @@
 import type { SanityDocument } from "sanity";
 
-import { internetResourceTypes } from "../../shared/internet-resource";
-import {
-  getOldestPublishedDocsByTypes,
-  getReferenceTaxonomies,
-  getSanityClient,
-} from "../sanity/client";
+import { getReferenceTaxonomies, getSanityClient } from "../sanity/client";
 import {
   countChangedFields,
   getBaseMutationDescriptor,
@@ -270,34 +265,28 @@ async function commitMutations(
 }
 
 /**
- * Entry point for a review pass: fetches the oldest-audited resource docs (up
- * to `limit`), pulls their content, classifies each as skip/disable/review,
- * runs AI reviews on the eligible ones, and commits all resulting mutations in
- * one batch. Docs reached by skip/disable/review-success paths get a mutation
- * (at minimum a stamp-only patch), which bumps `_updatedAt` and rotates them
- * to the back of the oldest-first queue. Failure paths (content-fetch and
- * AI-review) deliberately produce no mutation, so those docs stay near the
- * head and get retried next cycle — transient failures self-heal, persistent
- * ones surface as recurring entries in the per-cycle report written to the
- * `AI_REVIEW_REPORTS` KV namespace, prompting a human to set `skipLinkCheck`
- * or fix the doc.
+ * Entry point for a review pass: takes a pre-fetched batch of resource docs,
+ * pulls their content, classifies each as skip/disable/review, runs AI reviews
+ * on the eligible ones, and commits all resulting mutations in one batch. Docs
+ * reached by skip/disable/review-success paths get a mutation (at minimum a
+ * stamp-only patch that also clears `flaggedForAiReview`), which bumps
+ * `_updatedAt` and rotates them to the back of the oldest-first queue. Failure
+ * paths (content-fetch and AI-review) deliberately produce no mutation, so
+ * those docs stay near the head and get retried next cycle — transient
+ * failures self-heal, persistent ones surface as recurring entries in the
+ * per-cycle report written to the `AI_REVIEW_REPORTS` KV namespace, prompting
+ * a human to set `skipLinkCheck` or fix the doc.
  *
  * @param env
- * @param limit
+ * @param resourceDocs
  * @returns
  */
-export async function runAiContentReview(env: Env, limit: number) {
-  const resourceDocs = await getOldestPublishedDocsByTypes(
-    env,
-    [...internetResourceTypes],
-    limit,
-  );
-
+export async function runAiContentReview(
+  env: Env,
+  resourceDocs: SanityDocument[],
+) {
   if (resourceDocs.length === 0) {
-    logger.info(
-      "runAiContentReview",
-      "'getOldestPublishedDocsByTypes' returned no docs",
-    );
+    logger.info("runAiContentReview", "no docs to review");
     return;
   }
 

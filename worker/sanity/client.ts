@@ -64,3 +64,30 @@ export async function getOldestPublishedDocsByTypes(
 
   return docs;
 }
+
+export async function getOldestFlaggedPublishedDocsByTypes(
+  env: Env,
+  types: Array<string>,
+  limit: number = 10,
+): Promise<SanityDocument[]> {
+  const client = getSanityClient(env);
+
+  const docs = await client.fetch<SanityDocument[]>(
+    groq`
+      *[
+        _type in $docTypes
+        && defined(resourceUrl)
+        && !(_id in path('drafts.**'))
+        && !defined(*[_id == "drafts." + ^._id][0])
+        && skipLinkCheck != true
+        && flaggedForAiReview == true
+      ] | order(_updatedAt asc)[0..$limit]
+    `,
+    {
+      docTypes: types,
+      limit: limit - 1,
+    },
+  );
+
+  return docs;
+}
