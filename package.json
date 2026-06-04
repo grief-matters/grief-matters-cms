@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "wrangler types && sanity dev",
     "worker-dev": "npm run build && npx wrangler dev",
+    "worker-dev-cron": "npm run build && npx wrangler dev --test-scheduled",
     "start": "wrangler types && sanity start",
     "build": "wrangler types && sanity build",
     "lint": "eslint .",
