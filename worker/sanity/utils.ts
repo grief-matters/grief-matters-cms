@@ -117,7 +117,10 @@ export function getDraftDocumentFromAiReview(
 ): SanityDocument {
   const { _id, _rev, _createdAt, _updatedAt, ...rest } = existingDoc;
 
-  const result: Record<string, unknown> = { ...rest };
+  const result: Record<string, unknown> = {
+    ...rest,
+    flaggedForAiReview: false,
+  };
 
   for (const [key, value] of Object.entries(review)) {
     if (value === null) {
