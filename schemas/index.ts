@@ -46,11 +46,9 @@ import webinar from "./internetResourceDocumentSchemas/webinar";
 
 import availability from "./objectSchemas/availability";
 import contactMethod from "./objectSchemas/contactMethod";
-import featuredCrisisResource from "./objectSchemas/featuredCrisisResource";
+import featuredNavItems from "./objectSchemas/featuredNavItems";
 import featuredResource from "./objectSchemas/featuredResource";
 import featuredResources from "./objectSchemas/featuredResources";
-import featuredWebsite from "./objectSchemas/featuredWebsite";
-import featuredWebsites from "./objectSchemas/featuredWebsites";
 import formField from "./objectSchemas/formField";
 import headingText from "./objectSchemas/headingText";
 import imageRow from "./objectSchemas/imageRow";
@@ -72,11 +70,9 @@ import type { InternetResourceType } from "../shared/internet-resource";
 export const objectTypes = [
   availability,
   contactMethod,
-  featuredCrisisResource,
+  featuredNavItems,
   featuredResource,
   featuredResources,
-  featuredWebsite,
-  featuredWebsites,
   formField,
   headingText,
   imageRow,

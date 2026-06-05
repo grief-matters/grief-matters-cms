@@ -64,6 +64,9 @@ export default defineType({
           type: "navItem",
         }),
         defineArrayMember({
+          type: "staticNavItem",
+        }),
+        defineArrayMember({
           type: "navItemGroup",
         }),
       ],

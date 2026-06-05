@@ -19,6 +19,7 @@ export default defineType({
           to: [...internetResourceTypes.map((t) => ({ type: t }))],
         }),
       ],
+      validation: (Rule) => Rule.min(1),
     }),
   ],
 });

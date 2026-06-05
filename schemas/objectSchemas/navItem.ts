@@ -23,6 +23,8 @@ export default defineType({
       name: "label",
       title: "Label",
       type: "string",
+      description:
+        "The text that a user will see. If you omit the label, the title of the entry point will be used instead",
     }),
     defineField({
       name: "entryPoint",

@@ -3,16 +3,16 @@ import { defineField, defineType } from "sanity";
 export default defineType({
   type: "object",
   name: "staticNavItem",
-  title: "Internal Page Link",
-  description: `A relative link is a URL within our website e.g. '/crisis-resources'`,
+  title: "Static Nav Item",
+  description: `A static nav item can be used to navigate to a specific page on the website e.g '/my/custom-page'. You should be certain that the page you are routing to exists. For pages of resources, use Nav Item instead`,
   preview: {
     select: {
-      title: "label",
-      subtitle: "url",
+      label: "label",
+      url: "url",
     },
-    prepare: ({ title, subtitle }) => ({
-      title: `Page Link: ${title}`,
-      subtitle: `to: ${subtitle}`,
+    prepare: ({ label, url }) => ({
+      title: label,
+      subtitle: `Goes to: ${url}`,
     }),
   },
   fields: [

@@ -48,6 +48,7 @@ export default defineType({
         defineArrayMember({ type: "staticNavItem" }),
         defineArrayMember({ type: "navItem" }),
         defineArrayMember({ type: "navItems" }),
+        defineArrayMember({ type: "featuredNavItems" }),
         defineArrayMember({ type: "resourceLinks" }),
         defineArrayMember({
           type: "reference",
