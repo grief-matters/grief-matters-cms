@@ -70,7 +70,7 @@ type MessageConfig = {
 
 const messageConfigDefaults: MessageConfig = {
   thinking: { type: "adaptive" },
-  model: "claude-sonnet-4-6",
+  model: "claude-opus-4-7",
   maxTokens: 4000,
   outputSchema: zDefaultReview,
   effort: "medium",
