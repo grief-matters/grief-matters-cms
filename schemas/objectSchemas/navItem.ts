@@ -1,11 +1,31 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { internetResourceTypes } from "../../shared/internet-resource";
 import startCase from "lodash/startCase";
+import audienceRoleField from "../fields/audienceRoleField";
 
 export default defineType({
   name: "navItem",
   type: "object",
   title: "Navigation Item",
+  validation: (rule) =>
+    rule.custom((value: Record<string, unknown> | undefined) => {
+      if (!value) {
+        return "At least one field must be completed";
+      }
+      const hasValue = Object.entries(value).some(([key, val]) => {
+        if (key.startsWith("_")) {
+          return false;
+        }
+        if (val === undefined || val === null || val === "") {
+          return false;
+        }
+        if (Array.isArray(val) && val.length === 0) {
+          return false;
+        }
+        return true;
+      });
+      return hasValue || "At least one field must be completed";
+    }),
   preview: {
     select: {
       label: "label",
@@ -25,12 +45,22 @@ export default defineType({
       type: "string",
       description:
         "The text that a user will see. If you omit the label, the title of the entry point will be used instead",
+      validation: (rule) =>
+        rule.custom((label, context) => {
+          const parent = context.parent as
+            | { entryPoint?: { _ref?: string } }
+            | undefined;
+          if (!parent?.entryPoint?._ref && !label) {
+            return "A label is required when no entry point is selected";
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "entryPoint",
       title: "Entry Point",
       description:
-        "Each navigation item must target a core taxonomy reference as its entry point",
+        "A core taxonomy for the navigation target i.e. the focus of the page",
       type: "reference",
       to: [
         { type: "lossRelationship" },
@@ -42,7 +72,6 @@ export default defineType({
         { type: "emotionalState" },
         { type: "contentFunction" },
       ],
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "filters",
@@ -131,6 +160,12 @@ export default defineType({
           })),
         ],
       },
+    }),
+    defineField({
+      ...audienceRoleField,
+      description:
+        "Filter resources by specific audience target: a bereaved person seeking help for themselves, a supporter helping someone else who is grieving, or a professional working with bereaved clients. Leave unchecked to show all resources",
+      group: undefined,
     }),
   ],
 });
