@@ -21,6 +21,7 @@ import sourceOrgField from "./fields/sourceOrgField";
 import languagesField from "./fields/languagesField";
 import demographicsField from "./fields/demographicsField";
 import audienceRoleFieldDef from "./fields/audienceRoleField";
+import supportedGrieverFieldDef from "./fields/supportedGrieverField";
 import griefTypesField from "./fields/griefTypesField";
 
 export type CreateBaseInternetResourceParams = {
@@ -51,6 +52,13 @@ export const createBaseInternetResourceSchema = ({
     ? defineField({
         group: "classification",
         ...audienceRoleFieldDef,
+      })
+    : null;
+
+  const supportedGrieverField = includeAudienceRole
+    ? defineField({
+        group: "classification",
+        ...supportedGrieverFieldDef,
       })
     : null;
 
@@ -143,6 +151,7 @@ export const createBaseInternetResourceSchema = ({
       }),
       demographicsField,
       audienceRoleField,
+      supportedGrieverField,
       defineField({
         group: "classification",
         ...griefPhasesField,

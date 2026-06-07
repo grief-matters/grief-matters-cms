@@ -80,6 +80,7 @@ const zAudienceField = z.object({
   audienceRole: z
     .array(z.enum(["bereaved", "supporter", "professional"]))
     .nullable(),
+  supportedGriever: z.array(z.enum(["child", "teen"])).nullable(),
 });
 
 // Final schemas used for review output validation

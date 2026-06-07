@@ -2,6 +2,7 @@ import { defineArrayMember, defineField, defineType } from "sanity";
 import { internetResourceTypes } from "../../shared/internet-resource";
 import startCase from "lodash/startCase";
 import audienceRoleField from "../fields/audienceRoleField";
+import supportedGrieverField from "../fields/supportedGrieverField";
 
 export default defineType({
   name: "navItem",
@@ -165,6 +166,10 @@ export default defineType({
       ...audienceRoleField,
       description:
         "Filter resources by specific audience target: a bereaved person seeking help for themselves, a supporter helping someone else who is grieving, or a professional working with bereaved clients. Leave unchecked to show all resources",
+      group: undefined,
+    }),
+    defineField({
+      ...supportedGrieverField,
       group: undefined,
     }),
   ],
