@@ -167,6 +167,25 @@ export default defineType({
       description:
         "Filter resources by specific audience target: a bereaved person seeking help for themselves, a supporter helping someone else who is grieving, or a professional working with bereaved clients. Leave unchecked to show all resources",
       group: undefined,
+      validation: (rule) =>
+        rule
+          .required()
+          .min(1)
+          .custom((roles?: string[]) => {
+            if (!roles?.length) {
+              return true;
+            }
+
+            const hasBereaved = roles.includes("bereaved");
+            const hasOther =
+              roles.includes("supporter") || roles.includes("professional");
+
+            if (hasBereaved && hasOther) {
+              return "'Bereaved' cannot be combined with 'Supporter' or 'Professional'";
+            }
+
+            return true;
+          }),
     }),
     defineField({
       ...supportedGrieverField,
