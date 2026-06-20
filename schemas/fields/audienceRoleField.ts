@@ -8,6 +8,7 @@ export default defineField({
   description:
     "Whose lens the resource is produced for: a bereaved person seeking help for themselves, a supporter helping someone else who is grieving, or a professional working with bereaved clients. Typically a single value.",
   of: [{ type: "string" }],
+  validation: (Rule) => Rule.required().min(1),
   options: {
     list: [
       { title: "Bereaved", value: "bereaved" },
