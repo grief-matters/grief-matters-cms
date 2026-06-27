@@ -35,16 +35,16 @@ Default to a single value — the audience the content is most clearly addressed
   causesOfDeath:
     "The cause of a death that has been experienced (e.g. suicide, cancer, sudden / traumatic). Apply a tag only when the content specifically addresses bereavement shaped by that cause; do not apply to passing mentions or to deaths where a more specific cause fits.",
   themes:
-    "A subject matter or theme covered by a resource (e.g. anger, self-care, funerals & memorials). Apply a tag only when the content meaningfully addresses that theme; do not apply when it appears only as background or example.",
-  griefPhases: `the stages that individuals often experience after a significant loss based on contemporary grief research. This is a custom list, not just the common "5 stages of grief" found in the Kübler-Ross model. A resource can be tagged with the phase it most addresses.`,
+    "A subject matter or theme covered by a resource (e.g. anger, self-care, funerals & memorials). Most resources warrant 0–2 themes. Apply only when the theme is the subject of a dedicated section — a paragraph or more discussing it in its own right — not introduced as example, modifier, or one item among many.",
+  griefPhases: `The stages individuals often experience after a significant loss, based on contemporary grief research — a custom list, not the Kübler-Ross 5 stages. Most resources warrant 0–1 phases. Apply only when a phase is the resource's organizing frame across multiple sections; a passing reference to growing, searching, or integrating does not qualify.`,
   griefTypes:
-    "Some of these overlap with phase and cause; that's fine. They describe a type of experience rather than a moment in time or a cause.",
+    "Type of grief experience (e.g. disenfranchised, anticipatory, complicated). Some overlap with phase and cause is fine — types describe a kind of experience rather than a moment in time or a cause. Apply a tag only when the resource explicitly names the type or substantively addresses it across the content.",
   contentFunctions:
-    "Captures the primary job the resource is doing — what the reader is trying to accomplish when this resource serves them well. A resource can have multiple functions, but each must be a primary job, not a side benefit.",
+    "The primary job(s) the resource does — what the reader is trying to accomplish when this resource serves them well. Validation and Psychoeducation are NOT additive by default. Pick the one that names the primary job (Psychoeducation when the resource explains; Validation when it normalizes), and add the second only when the resource has substantive passages devoted to each.",
   emotionalStates:
-    "A resource can address multiple states. Optional on most resources; populate ONLY when the content genuinely focuses on a state.",
+    "Most resources warrant 0 emotional states. Apply only when the resource is structured around the state — a section devoted to it, repeated discussion, or the state named in headings. A passing mention of guilt, anger, etc. as one feeling among others does not qualify.",
   demographics:
-    "A demographic describes a specific identity or community of people. Only add when a resource is targeted specifically at a demographic.",
+    "A demographic describes a specific identity or community of people. Most resources warrant 0 demographics. Apply only when a resource is explicitly targeted at a demographic (named in title/positioning, dedicated programming, or framing throughout), not merely when members of that demographic might find it useful.",
 } as const;
 
 /**
@@ -70,17 +70,22 @@ export function getSystemPrompt(
   return `
 You are a content editor knowledgeable in grief. You audit curated "internet resource" documents for the Why Grief Matters CMS. You will be given an existing Sanity document and the content of the resource (usually fetched as markdown). Return the document's corrected state.
 
-For each field, there are TWO distinct cases with DIFFERENT defaults:
+## Existing values vs empty fields
 
-**A. The field already has a value.** Treat the existing value as a previous editor's judgement. Keep it unless the fetched content gives you a specific, citable reason to change it — a sentence or section you can point to that contradicts the existing value. Return null for nullable scalars (meaning "no change") and re-emit existing reference arrays unchanged.
+**Existing values.** Treat the existing value as a previous editor's judgement. Keep it unless the fetched content gives you a specific, citable reason to change it — a sentence or section you can point to that contradicts the existing value. Return null for nullable scalars (meaning "no change") and re-emit existing reference arrays unchanged.
 
-**B. The field is currently empty (null, missing, or []).** Treat empty as an UNFILLED BLANK, not as a deliberate "this doesn't apply." When the content clearly supports a value, FILL the field. The evidence bar is the same (a citable section).
+**Empty reference fields.** Empty is NOT a default-to-fill signal. Each field has its own base rate, given in the field guidelines below — for most optional taxonomies, empty is the most common correct state. Add a tag only when it passes the inclusion test below.
 
-Symmetrically: under-tagging a clearly applicable concept is just as much an error as over-tagging an inapplicable one.
+Over-tagging optional taxonomies (themes, emotionalStates, demographics, supportedGriever, contentFunctions, griefPhases) is a worse failure mode than under-tagging — false positives surface in search and faceted browse and erode user trust.
 
-## Reference Fields
+## Reference Fields — inclusion test
 
-For each reference field, return an array of _id strings drawn from the taxonomies below. The test for each candidate reference is the same in both directions: can you point to a specific section of the content that justifies it? If yes → include it. If no → leave it out.
+For each reference field, return an array of _id strings drawn from the taxonomies below. For each candidate tag, both gates must pass:
+
+1. **Quote gate.** Identify the single strongest continuous passage in the content where the candidate concept appears.
+2. **Primary-subject gate.** In that passage, is the concept the *subject* of at least one sentence — the thing being discussed in its own right, not the example, modifier, or one item in a list? If you deleted every sentence containing the concept, would the resource's purpose change?
+
+Both yes → include. Either no → leave it out.
 
 When the resource enumerates discrete sub-items — "we offer groups for stillbirth, miscarriage, neonatal loss, infant loss" — every item that maps to a taxonomy term should be included. Under-tagging an explicit enumeration is a clear miss, not caution.
 
@@ -89,10 +94,18 @@ A reference does NOT apply if the resource only:
 - is thematically adjacent
 - could plausibly be filed under it
 - uses it as background context
+- uses it as one example illustrating a different point
 
 ## Field Guidelines
 
 ${allFieldKeys.map((fKey) => `${fKey}: ${fieldGuidelines[fKey as AiReviewFieldKey]}`).join(`\n`)}\n
+
+## Common over-tagging mistakes
+
+- A resource that mentions anniversary reactions on birthdays and holidays once, as an example of a broader point (e.g. how absences feel sharper at life milestones), does NOT earn \`theme:Holidays and Significant Dates\`. The theme requires holidays/dates to be the subject of a dedicated section.
+- A resource that notes loss can "trigger guilt over unresolved issues" in a single sentence does NOT earn \`emotionalState:Guilt and Regret\`. Emotional state tags require the state to be the organizing focus of a section.
+- A resource that says "grow through rather than get over" once does NOT earn \`griefPhase:Integrating\` unless integration is the resource's frame across multiple sections.
+- A psychoeducational resource that includes a few "this is natural" or "you're not alone" beats does NOT additionally earn \`contentFunction:Validation\`. Validation requires substantive passages devoted to normalizing the reader's experience.
 
 ## Reference Field Documents by Field
 
