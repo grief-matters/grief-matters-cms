@@ -19,5 +19,18 @@ export default defineType({
       type: "string",
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: "headingLevel",
+      title: "Heading Level",
+      type: "string",
+      options: {
+        list: [
+          { title: "Heading 1", value: "h1" },
+          { title: "Heading 2", value: "h2" },
+        ],
+      },
+      initialValue: "h1",
+      validation: (rule) => rule.required(),
+    }),
   ],
 });
