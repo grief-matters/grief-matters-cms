@@ -23,8 +23,8 @@ export default defineType({
       displayTitle: "displayTitle",
       title: "title",
     },
-    prepare: ({ displayTitle, title }) => ({
-      title: displayTitle ?? title,
+    prepare: ({ title }) => ({
+      title: title,
       subtitle: `Cause of Death`,
     }),
   },

@@ -26,6 +26,13 @@ export default defineType({
       type: "string",
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      title: "Display Title",
+      name: "displayTitle",
+      type: "string",
+      description:
+        "A preferred display title. Used when displayed outside of lists (e.g. as a page heading).",
+    }),
     slugField,
     aiPromptHintField,
     defineField({
