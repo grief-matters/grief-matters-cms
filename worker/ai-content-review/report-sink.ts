@@ -9,6 +9,19 @@ export type ReviewOutcome =
   | "disabled"
   | "content_fetch_failed";
 
+/**
+ * Outcome of the quality-scoring branch that runs inside a successful review of
+ * a scorable, not-yet-scored doc. `not_scorable`/`already_scored` mean the
+ * branch never fired; `scored`/`score_na` are AI outcomes; `score_failed` is a
+ * soft failure (the review draft still commits without a score).
+ */
+export type ScoreOutcome =
+  | "scored"
+  | "score_na"
+  | "score_failed"
+  | "already_scored"
+  | "not_scorable";
+
 export type ReportLine = {
   auditEventId: string;
   _id: string;
@@ -19,6 +32,9 @@ export type ReportLine = {
   latencyMs?: number;
   tokens?: AiReviewUsage;
   failureReason?: string;
+  scoreOutcome?: ScoreOutcome;
+  qualityScore?: number;
+  scoreTokens?: AiReviewUsage;
 };
 
 const TTL_SECONDS = 90 * 24 * 60 * 60;

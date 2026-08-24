@@ -1,5 +1,11 @@
 import type { SanityDocument } from "sanity";
 
+import { isScorableResourceType } from "../../shared/internet-resource";
+import {
+  getQualityScore,
+  type QualityRatingResult,
+} from "../ai-content-rating/rating";
+import { QUALITY_SCORE_NA } from "../ai-content-rating/schema";
 import { getReferenceTaxonomies, getSanityClient } from "../sanity/client";
 import {
   countChangedFields,
@@ -19,7 +25,7 @@ import {
   getDocumentContent,
   getDocumentActionFromContentResult,
 } from "./content";
-import { ReviewReportSink } from "./report-sink";
+import { ReviewReportSink, type ScoreOutcome } from "./report-sink";
 
 type ClassifiedContent = {
   mutations: SanityMutationDescriptor[];
@@ -110,6 +116,84 @@ async function safeGetAiReview(
 }
 
 /**
+ * Calls `getQualityScore` and folds thrown errors into the same
+ * `QualityRatingResult` shape as parse failures, so the caller doesn't have to
+ * branch on try/catch.
+ */
+async function safeGetQualityScore(
+  env: Env,
+  doc: SanityDocument,
+  content: string,
+): Promise<QualityRatingResult> {
+  try {
+    return await getQualityScore(env, doc, content);
+  } catch (error) {
+    const failureReason =
+      error instanceof Error ? error.message : String(error);
+    logger.error(
+      "safeGetQualityScore",
+      `failed rating for '${doc._id}': ${failureReason}`,
+    );
+    return { rating: null, usage: undefined, failureReason };
+  }
+}
+
+type ScoreBranchResult = {
+  scoreOutcome: ScoreOutcome;
+  qualityScore?: number;
+  scoreTokens?: QualityRatingResult["usage"];
+};
+
+/**
+ * The quality-scoring "branch" of a review. Fires only for scorable resource
+ * types that don't yet have a `qualityScore` (score-once). On success it injects
+ * the score and rationale into `draftDoc` (mutated in place, before the change
+ * count is taken, so a score-only draft still registers as a change). Scoring
+ * failure is soft: the draft is left scoreless and the review still commits — a
+ * human backfills the score when they approve the draft.
+ *
+ * @param env
+ * @param doc
+ * @param content
+ * @param draftDoc
+ * @returns
+ */
+async function scoreIfNeeded(
+  env: Env,
+  doc: SanityDocument,
+  content: string,
+  draftDoc: SanityDocument,
+): Promise<ScoreBranchResult> {
+  if (!isScorableResourceType(doc._type)) {
+    return { scoreOutcome: "not_scorable" };
+  }
+  // Any existing value (including -1 / N/A) counts as scored — never re-score.
+  if (doc.qualityScore != null) {
+    return { scoreOutcome: "already_scored" };
+  }
+
+  const result = await safeGetQualityScore(env, doc, content);
+  if (result.rating === null) {
+    logger.warn(
+      "reviewDoc",
+      `scoring failed for '${doc._id}', committing draft without a score: ${result.failureReason}`,
+    );
+    return { scoreOutcome: "score_failed", scoreTokens: result.usage };
+  }
+
+  const { qualityScore, rationale } = result.rating;
+  const draft = draftDoc as Record<string, unknown>;
+  draft.qualityScore = qualityScore;
+  draft.qualityScoreNotes = rationale;
+
+  return {
+    scoreOutcome: qualityScore === QUALITY_SCORE_NA ? "score_na" : "scored",
+    qualityScore,
+    scoreTokens: result.usage,
+  };
+}
+
+/**
  * Reviews a single doc end-to-end: invokes the AI, records a report line, and
  * returns the mutation to commit (or null if the review failed). Happy path is
  * top-level — failure short-circuits with an early return.
@@ -128,7 +212,6 @@ async function reviewDoc(
     auditEventId: stamp,
     _id: doc._id,
     docType: doc._type,
-    latencyMs: Math.round(performance.now() - startedAt),
     tokens: result.usage,
   };
 
@@ -138,12 +221,21 @@ async function reviewDoc(
       outcome: "ai_failed",
       success: false,
       fieldCount: null,
+      latencyMs: Math.round(performance.now() - startedAt),
       failureReason: result.failureReason,
     });
     return null;
   }
 
   const draftDoc = getDraftDocumentFromAiReview(result.review, doc);
+  // Branch off to scoring (may add a second AI call) before counting changes,
+  // so an injected score registers as a change and produces a score-only draft.
+  const scoreBranch = await scoreIfNeeded(
+    env,
+    doc,
+    reviewInput.content,
+    draftDoc,
+  );
   const baseMutation = getBaseMutationDescriptor(doc, stamp);
   const fieldCount = countChangedFields(draftDoc, doc);
 
@@ -152,6 +244,10 @@ async function reviewDoc(
     outcome: "ai_success",
     success: true,
     fieldCount,
+    latencyMs: Math.round(performance.now() - startedAt),
+    scoreOutcome: scoreBranch.scoreOutcome,
+    qualityScore: scoreBranch.qualityScore,
+    scoreTokens: scoreBranch.scoreTokens,
   });
 
   const hasChanges = fieldCount > 0;

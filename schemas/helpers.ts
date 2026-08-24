@@ -24,6 +24,7 @@ import audienceRoleFieldDef from "./fields/audienceRoleField";
 import supportedGrieverFieldDef from "./fields/supportedGrieverField";
 import griefTypesField from "./fields/griefTypesField";
 import resourceQualityScoreField from "./fields/resourceQualityScoreField";
+import resourceQualityScoreNotesField from "./fields/resourceQualityScoreNotesField";
 
 export type CreateBaseInternetResourceParams = {
   name: string;
@@ -69,6 +70,13 @@ export const createBaseInternetResourceSchema = ({
     ? defineField({
         group: "classification",
         ...resourceQualityScoreField,
+      })
+    : null;
+
+  const qualityScoreNotesField = includeQualityScore
+    ? defineField({
+        group: "classification",
+        ...resourceQualityScoreNotesField,
       })
     : null;
 
@@ -148,6 +156,7 @@ export const createBaseInternetResourceSchema = ({
         ...freeRegistrationField,
       }),
       qualityScoreField,
+      qualityScoreNotesField,
       defineField({
         group: "classification",
         ...lossRelationshipsField,
