@@ -8,5 +8,6 @@ export default defineType(
     name: "blog",
     title: "Blog",
     icon: DocumentsIcon,
+    includeQualityScore: true,
   }),
 );

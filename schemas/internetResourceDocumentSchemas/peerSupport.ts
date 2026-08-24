@@ -8,6 +8,7 @@ const base = createBaseInternetResourceSchema({
   name: "peerSupport",
   title: "Peer Support",
   icon: UserIcon,
+  includeQualityScore: true,
 });
 
 const peerSupportSchema = defineType({

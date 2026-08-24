@@ -8,5 +8,6 @@ export default defineType(
     name: "article",
     title: "Article",
     icon: DocumentIcon,
+    includeQualityScore: true,
   }),
 );

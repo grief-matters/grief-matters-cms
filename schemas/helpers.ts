@@ -31,6 +31,7 @@ export type CreateBaseInternetResourceParams = {
   isUrlRequired?: boolean;
   includeSource?: boolean;
   includeAudienceRole?: boolean;
+  includeQualityScore?: boolean;
   icon?: ComponentType | ReactNode;
 };
 
@@ -38,6 +39,7 @@ export const createBaseInternetResourceSchema = ({
   isUrlRequired = true,
   includeSource = true,
   includeAudienceRole = true,
+  includeQualityScore = false,
   ...params
 }: CreateBaseInternetResourceParams) => {
   const urlF = isUrlRequired ? requiredUrlField : urlField;
@@ -60,6 +62,13 @@ export const createBaseInternetResourceSchema = ({
     ? defineField({
         group: "classification",
         ...supportedGrieverFieldDef,
+      })
+    : null;
+
+  const qualityScoreField = includeQualityScore
+    ? defineField({
+        group: "classification",
+        ...resourceQualityScoreField,
       })
     : null;
 
@@ -138,10 +147,7 @@ export const createBaseInternetResourceSchema = ({
         group: "access",
         ...freeRegistrationField,
       }),
-      defineField({
-        group: "classification",
-        ...resourceQualityScoreField,
-      }),
+      qualityScoreField,
       defineField({
         group: "classification",
         ...lossRelationshipsField,
