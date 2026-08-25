@@ -25,10 +25,10 @@ export type QualityRatingResult = {
   failureReason?: string;
 };
 
-const model: Model = "claude-opus-4-7";
+const model: Model = "claude-sonnet-5";
 const maxTokens = 3000;
 const thinking: ThinkingConfigParam = { type: "adaptive" };
-const effort: OutputConfig["effort"] = "medium";
+const effort: OutputConfig["effort"] = "high";
 
 /**
  * Sends the existing doc and fetched content to Claude and returns the parsed

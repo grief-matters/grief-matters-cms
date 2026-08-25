@@ -70,10 +70,10 @@ type MessageConfig = {
 
 const messageConfigDefaults: MessageConfig = {
   thinking: { type: "adaptive" },
-  model: "claude-opus-4-7",
+  model: "claude-sonnet-5",
   maxTokens: 4000,
   outputSchema: zDefaultReview,
-  effort: "medium",
+  effort: "high",
 };
 
 function getMessageConfig(docType: InternetResourceType): MessageConfig {
