@@ -18,11 +18,11 @@ export const structure: StructureResolver = (S) =>
     .title("Content")
     .items([
       S.listItem()
-        .title("Documentation")
+        .title("Content Editor Guides")
         .icon(BookIcon)
         .child(
           S.list()
-            .title("Documentation")
+            .title("Content Editor Guides")
             .items(
               docs.map((doc) =>
                 S.listItem()
@@ -36,7 +36,7 @@ export const structure: StructureResolver = (S) =>
               ),
             ),
         ),
-      S.divider(),
+      S.divider().title("Settings"),
       ...singletonDocumentTypes.map((t) =>
         S.listItem()
           .title(startCase(t.title ?? t.name))
@@ -46,20 +46,20 @@ export const structure: StructureResolver = (S) =>
             S.document().schemaType(t.name).documentId(`${t.name}-singleton`),
           ),
       ),
-      S.divider(),
-      ...documentTypes.map((t) =>
+      S.divider().title("Internet Resources"),
+      ...internetResourceDocumentSchemaTypes.map((t) =>
         S.documentTypeListItem(t.name).title(
           startCase(pluralize(t.title ?? t.name)),
         ),
       ),
-      S.divider(),
+      S.divider().title("Resource Classification"),
       ...classificationDocumentTypes.map((t) =>
         S.documentTypeListItem(t.name).title(
           startCase(pluralize(t.title ?? t.name)),
         ),
       ),
-      S.divider(),
-      ...internetResourceDocumentSchemaTypes.map((t) =>
+      S.divider().title("Page-building Documents"),
+      ...documentTypes.map((t) =>
         S.documentTypeListItem(t.name).title(
           startCase(pluralize(t.title ?? t.name)),
         ),
