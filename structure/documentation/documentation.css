@@ -94,3 +94,7 @@
 .documentation strong {
   font-weight: 600;
 }
+
+.documentation img {
+  max-width: 100%;
+}

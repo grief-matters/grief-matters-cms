@@ -17,6 +17,26 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title("Content")
     .items([
+      S.listItem()
+        .title("Documentation")
+        .icon(BookIcon)
+        .child(
+          S.list()
+            .title("Documentation")
+            .items(
+              docs.map((doc) =>
+                S.listItem()
+                  .title(doc.title)
+                  .icon(BookIcon)
+                  .child(
+                    S.component(DocumentationPane)
+                      .title(doc.title)
+                      .options({ documentId: doc.id }),
+                  ),
+              ),
+            ),
+        ),
+      S.divider(),
       ...singletonDocumentTypes.map((t) =>
         S.listItem()
           .title(startCase(t.title ?? t.name))
@@ -44,24 +64,4 @@ export const structure: StructureResolver = (S) =>
           startCase(pluralize(t.title ?? t.name)),
         ),
       ),
-      S.divider(),
-      S.listItem()
-        .title("Documentation")
-        .icon(BookIcon)
-        .child(
-          S.list()
-            .title("Documentation")
-            .items(
-              docs.map((doc) =>
-                S.listItem()
-                  .title(doc.title)
-                  .icon(BookIcon)
-                  .child(
-                    S.component(DocumentationPane)
-                      .title(doc.title)
-                      .options({ documentId: doc.id }),
-                  ),
-              ),
-            ),
-        ),
     ]);

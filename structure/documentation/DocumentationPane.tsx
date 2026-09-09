@@ -1,7 +1,7 @@
 import { Box, Card, Text } from "@sanity/ui";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { getDocById } from "./docs";
+import { getDocById, resolveDocImage } from "./docs";
 import "./documentation.css";
 
 interface DocumentationPaneProps {
@@ -23,7 +23,16 @@ export function DocumentationPane({ options }: DocumentationPaneProps) {
 
   return (
     <Box padding={4} className="documentation">
-      <Markdown remarkPlugins={[remarkGfm]}>{doc.content}</Markdown>
+      <Markdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          img: ({ node: _node, src, ...props }) => (
+            <img src={resolveDocImage(doc.id, src)} {...props} />
+          ),
+        }}
+      >
+        {doc.content}
+      </Markdown>
     </Box>
   );
 }
