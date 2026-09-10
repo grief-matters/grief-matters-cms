@@ -8,6 +8,8 @@
   margin-block-start: 0;
   margin-inline-start: 0;
   padding-inline-start: 1rem;
+  padding-block: 0.2rem;
+  background-color: var(--card-muted-bg-color);
 }
 
 .documentation img {
@@ -41,3 +43,11 @@
   border: 1px solid var(--card-muted-fg-color, #666);
   padding: 0.2rem 0.6rem;
 }
+/* 
+.documentation blockquote > p:first-child:has(> strong:first-child) {
+  margin-block-end: 0;
+}
+
+.documentation blockquote > p:first-child:has(> strong:first-child) + p {
+  margin-block-start: 0;
+} */

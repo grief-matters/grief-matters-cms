@@ -3,14 +3,9 @@ title: Images & Accessibility
 order: 9
 ---
 
-> TODO: Needs review
-
 # Images & Accessibility
 
-Images on the site are managed as reusable **Image Asset** documents rather than
-uploaded straight onto each resource. This page covers how they work, and the two
-responsibilities that come with every image: **accessibility** (alt text) and
-**licensing** (image source).
+Images on the site are managed as reusable **Image Asset** documents rather than uploaded straight onto each resource. This page covers how they work, and the two responsibilities that come with every image: **accessibility** (alt text) and **licensing** (image source).
 
 ## Image Assets are reusable
 
@@ -20,12 +15,9 @@ An **Image Asset** is its own document, with three parts:
 - **Alternative text** — a text description, for accessibility (see below).
 - **Image Source** — a reference to where the image came from, for licensing.
 
-Because it's a document, one Image Asset can be referenced by many resources and
-pages. When you add an image to a resource, you're pointing at an Image Asset — so
-check whether the right one already exists before uploading a duplicate.
+Because it's a document, one Image Asset can be referenced by many resources and pages. When you add an image to a resource, you're pointing at an Image Asset — so check whether the right one already exists before uploading a duplicate.
 
-On a resource, the image is usually only shown when the resource is **featured**, so
-not every resource needs one.
+On a resource, the image is usually only shown when the resource is **featured**, so not every resource needs one.
 
 ## Alt text is not optional
 
