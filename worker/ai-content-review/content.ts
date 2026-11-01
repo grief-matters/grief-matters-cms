@@ -9,8 +9,10 @@ export type DocumentContentResult =
   | { ok: false; kind: "content_error"; detail: string }
   | { ok: true; content: string };
 
+type ContentFailure = Extract<DocumentContentResult, { ok: false }>;
+
 type FetchContentResult =
-  | { ok: false }
+  | { ok: false; failure: ContentFailure }
   | { ok: true; content: string; truncated: boolean };
 
 type ContentFetcherProviderResult =
@@ -24,7 +26,7 @@ type ContentValidationResult =
   | { ok: true; content: string; truncated: boolean };
 
 export type DocumentAction =
-  | { action: "skip" | "disable"; detail: string }
+  | { action: "skip" | "disable" | "retry"; detail: string }
   | { action: "review"; content: string };
 
 const userAgent = "WhyGriefMattersBot/1.0 (+https://whygriefmatters.org)";
@@ -32,6 +34,10 @@ const userAgent = "WhyGriefMattersBot/1.0 (+https://whygriefmatters.org)";
 const botToken = "WhyGriefMattersBot";
 const robotsTimeoutMs = 5000;
 const jinaTimeoutMs = 30000;
+// Jina statuses that describe our account or Jina itself (auth, credit, rate
+// limit) rather than the target page. These fail every doc in the cycle, so
+// they must not be recorded against individual docs. 5xx is treated the same.
+const jinaProviderFailureStatuses = new Set([401, 402, 429]);
 
 /**
  * Polite robots.txt check. Returns a promise that resolves to a boolean
@@ -151,6 +157,42 @@ function normalizeFetchedContent(
 }
 
 /**
+ * Maps a Jina failure onto a content result. Provider-level failures (see
+ * `jinaProviderFailureStatuses`, 5xx, network errors) become `temporary_failure`
+ * so the doc is retried; anything else is attributed to the target page.
+ *
+ * @param result
+ * @returns
+ */
+function getFailureFromProviderResult(
+  result: Extract<ContentFetcherProviderResult, { ok: false }>,
+): ContentFailure {
+  switch (result.kind) {
+    case "network":
+      return { ok: false, kind: "temporary_failure", detail: "jina_network" };
+    case "timeout":
+      // Usually a slow target page rather than Jina itself
+      return { ok: false, kind: "content_error", detail: "jina_timeout" };
+    case "http":
+      if (
+        jinaProviderFailureStatuses.has(result.httpCode) ||
+        result.httpCode >= 500
+      ) {
+        return {
+          ok: false,
+          kind: "temporary_failure",
+          detail: `jina_http:${result.httpCode}`,
+        };
+      }
+      return {
+        ok: false,
+        kind: "http_client_error",
+        httpCode: result.httpCode,
+      };
+  }
+}
+
+/**
  * Fetches the content of a URL - currently uses Jina and returns Markdown
  *
  * @param env
@@ -163,7 +205,10 @@ async function fetchContentForUrl(
 ): Promise<FetchContentResult> {
   const contentFetcherResult = await fetchJinaMarkdown(env, resourceUrl);
   if (!contentFetcherResult.ok) {
-    return { ok: false };
+    return {
+      ok: false,
+      failure: getFailureFromProviderResult(contentFetcherResult),
+    };
   }
 
   const normalizedContent = normalizeFetchedContent(
@@ -173,7 +218,14 @@ async function fetchContentForUrl(
   );
 
   if (!normalizedContent.ok) {
-    return { ok: false };
+    return {
+      ok: false,
+      failure: {
+        ok: false,
+        kind: "content_error",
+        detail: normalizedContent.reason,
+      },
+    };
   }
 
   return {
@@ -209,7 +261,7 @@ export async function getDocumentContent(
 
   const fetchResult = await fetchContentForUrl(env, url);
   if (!fetchResult.ok) {
-    return { ok: false, kind: "content_error", detail: "" };
+    return fetchResult.failure;
   }
 
   return { ok: true, content: fetchResult.content };
@@ -217,8 +269,10 @@ export async function getDocumentContent(
 
 /**
  * Maps a content fetch outcome to a document action: `disable` for permanent
- * problems (missing URL, robots block), `skip` for transient ones (HTTP/network
- * errors), and `review` when content was fetched successfully.
+ * problems (missing URL, robots block), `retry` for provider-level failures
+ * (the content fetcher itself is down, rate-limited or out of credit), `skip`
+ * for problems with the target page (HTTP errors, timeouts, too little
+ * content), and `review` when content was fetched successfully.
  *
  * @param contentResult
  * @returns
@@ -236,12 +290,16 @@ export function getDocumentActionFromContentResult(
           action: "skip",
           detail: `${contentResult.kind}:${contentResult.httpCode}`,
         };
-      case "content_error":
       case "temporary_failure":
+        return {
+          action: "retry",
+          detail: `${contentResult.kind}:${contentResult.detail}`,
+        };
+      case "content_error":
       default:
         return {
           action: "skip",
-          detail: contentResult.kind,
+          detail: `${contentResult.kind}:${contentResult.detail}`,
         };
     }
   }

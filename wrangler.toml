@@ -25,8 +25,13 @@ AI_CONTENT_REVIEW_CONTENT_MIN_CHARS = 250
 AI_CONTENT_REVIEW_CONTENT_MAX_CHARS = 50000
 # Minimum spacing between Anthropic requests, to keep cumulative input tokens
 # under ITPM (30K/min). Formula: (per_request_input_tokens / ITPM) * 60_000.
-# At ~15K worst-case input post-cap, 30s is the floor. Raise for safety, lower
-# if observed input_tokens consistently sit well below 15K.
+# Applied per call, not per doc: scorable docs make two calls (review + score),
+# each carrying the same uncached content. Cached system-prompt reads don't
+# count toward ITPM, so uncached content (~12.5K tok at the cap) plus doc JSON
+# dominates. At ~15K worst-case input post-cap, 30s is the floor. Raise for
+# safety, lower if observed input_tokens consistently sit well below 15K. Keep
+# DOC_LIMIT * 2 * gap comfortably inside the 10-minute review deadline in
+# worker/ai-content-review/index.ts, or reviews get deferred each cycle.
 AI_REVIEW_MIN_GAP_MS = 30000
 
 [[kv_namespaces]]

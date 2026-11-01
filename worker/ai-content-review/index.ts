@@ -27,6 +27,11 @@ import {
 } from "./content";
 import { ReviewReportSink, type ScoreOutcome } from "./report-sink";
 
+// Cron invocations are killed at 15 min wall time. Stop starting reviews well
+// before that: a scorable doc is two paced calls with high-effort thinking, and
+// commit + flush must still run.
+const reviewDeadlineMs = 10 * 60_000;
+
 type ClassifiedContent = {
   mutations: SanityMutationDescriptor[];
   toReview: ReviewInput[];
@@ -47,6 +52,21 @@ function classifyContentResults(
 
     if (docAction.action === "review") {
       toReview.push({ doc, content: docAction.content });
+      continue;
+    }
+
+    // Retry: the content fetcher itself failed, so leave the doc untouched to
+    // keep it near the head of the queue
+    if (docAction.action === "retry") {
+      sink.record({
+        auditEventId: stamp,
+        _id: doc._id,
+        docType: doc._type,
+        outcome: "content_fetch_failed",
+        success: false,
+        fieldCount: null,
+        failureReason: docAction.detail,
+      });
       continue;
     }
 
@@ -81,6 +101,7 @@ function classifyContentResults(
       outcome: "skipped",
       success: false,
       fieldCount: null,
+      failureReason: docAction.detail,
     });
     mutations.push(baseMutation);
   }
@@ -142,20 +163,22 @@ type ScoreBranchResult = {
   scoreOutcome: ScoreOutcome;
   qualityScore?: number;
   scoreTokens?: QualityRatingResult["usage"];
+  failureReason?: string;
 };
 
 /**
  * The quality-scoring "branch" of a review. Fires only for scorable resource
  * types that don't yet have a `qualityScore` (score-once). On success it injects
  * the score and rationale into `draftDoc` (mutated in place, before the change
- * count is taken, so a score-only draft still registers as a change). Scoring
- * failure is soft: the draft is left scoreless and the review still commits — a
- * human backfills the score when they approve the draft.
+ * count is taken, so a score-only draft still registers as a change). On
+ * failure the caller drops the whole review, so the doc stays in the queue and
+ * is scored on a later cycle rather than committed as a scoreless draft.
  *
  * @param env
  * @param doc
  * @param content
  * @param draftDoc
+ * @param pacer
  * @returns
  */
 async function scoreIfNeeded(
@@ -163,6 +186,7 @@ async function scoreIfNeeded(
   doc: SanityDocument,
   content: string,
   draftDoc: SanityDocument,
+  pacer: CallPacer,
 ): Promise<ScoreBranchResult> {
   if (!isScorableResourceType(doc._type)) {
     return { scoreOutcome: "not_scorable" };
@@ -172,13 +196,18 @@ async function scoreIfNeeded(
     return { scoreOutcome: "already_scored" };
   }
 
+  await pacer.wait();
   const result = await safeGetQualityScore(env, doc, content);
   if (result.rating === null) {
     logger.warn(
       "reviewDoc",
-      `scoring failed for '${doc._id}', committing draft without a score: ${result.failureReason}`,
+      `scoring failed for '${doc._id}', dropping review so it retries: ${result.failureReason}`,
     );
-    return { scoreOutcome: "score_failed", scoreTokens: result.usage };
+    return {
+      scoreOutcome: "score_failed",
+      scoreTokens: result.usage,
+      failureReason: result.failureReason,
+    };
   }
 
   const { qualityScore, rationale } = result.rating;
@@ -195,17 +224,19 @@ async function scoreIfNeeded(
 
 /**
  * Reviews a single doc end-to-end: invokes the AI, records a report line, and
- * returns the mutation to commit (or null if the review failed). Happy path is
- * top-level — failure short-circuits with an early return.
+ * returns the mutation to commit (or null if the review or scoring failed).
+ * Happy path is top-level — failure short-circuits with an early return.
  */
 async function reviewDoc(
   env: Env,
   reviewInput: ReviewInput,
   taxonomyDocs: Record<string, RefDoc[]>,
   sink: ReviewReportSink,
+  pacer: CallPacer,
 ): Promise<SanityMutationDescriptor | null> {
   const doc = reviewInput.doc;
   const stamp = sink.stampFor(doc._id);
+  await pacer.wait();
   const startedAt = performance.now();
   const result = await safeGetAiReview(env, reviewInput, taxonomyDocs);
   const lineBase = {
@@ -235,7 +266,25 @@ async function reviewDoc(
     doc,
     reviewInput.content,
     draftDoc,
+    pacer,
   );
+
+  if (scoreBranch.scoreOutcome === "score_failed") {
+    // The review itself succeeded, but committing it would stamp (or draft)
+    // the doc and take it out of the queue without a score
+    sink.record({
+      ...lineBase,
+      outcome: "ai_success",
+      success: false,
+      fieldCount: null,
+      latencyMs: Math.round(performance.now() - startedAt),
+      failureReason: scoreBranch.failureReason,
+      scoreOutcome: scoreBranch.scoreOutcome,
+      scoreTokens: scoreBranch.scoreTokens,
+    });
+    return null;
+  }
+
   const baseMutation = getBaseMutationDescriptor(doc, stamp);
   const fieldCount = countChangedFields(draftDoc, doc);
 
@@ -258,55 +307,69 @@ async function reviewDoc(
   return hasChanges ? { ...baseMutation, draft: draftDoc } : baseMutation;
 }
 
+type CallPacer = { wait: () => Promise<void> };
+
 /**
- * Waits long enough that the next AI call starts at least `gapMs` after the
- * current one. No-op on the last iteration.
+ * Spaces Anthropic calls so each starts at least `gapMs` after the previous
+ * one, keeping us under the input-tokens per minute rate limit. Applies to
+ * every call (review and scoring), not per doc. The first call never waits.
+ *
+ * @param gapMs
+ * @returns
  */
-async function throttleBetweenReviews(
-  index: number,
-  total: number,
-  startedAt: number,
-  gapMs: number,
-): Promise<void> {
-  if (index >= total - 1) {
-    return;
-  }
-  const remaining = gapMs - (performance.now() - startedAt);
-  if (remaining > 0) {
-    await new Promise((resolve) => setTimeout(resolve, remaining));
-  }
+function createCallPacer(gapMs: number): CallPacer {
+  let lastCallStartedAt: number | null = null;
+
+  return {
+    async wait() {
+      if (lastCallStartedAt !== null) {
+        const remaining = gapMs - (performance.now() - lastCallStartedAt);
+        if (remaining > 0) {
+          await new Promise((resolve) => setTimeout(resolve, remaining));
+        }
+      }
+      lastCallStartedAt = performance.now();
+    },
+  };
 }
 
 /**
  * Runs each AI review sequentially, queuing one mutation per successful
  * review (a draft when the AI's output differs from the existing doc, base-only
- * when it doesn't). Sleeps between calls to keep us under the Anthropic
- * input-tokens per minute rate limit. Failures are recorded to the sink and
- * skipped — no mutation queued.
+ * when it doesn't). Every Anthropic call is paced by `AI_REVIEW_MIN_GAP_MS`.
+ * Failures are recorded to the sink and skipped — no mutation queued. Stops
+ * starting new reviews once `deadline` has passed, so the caller always has
+ * time to commit and flush; unstarted docs are left untouched for next cycle.
  */
 async function runAiReviews(
   env: Env,
   reviewInputs: ReviewInput[],
   taxonomyDocs: Record<string, RefDoc[]>,
   sink: ReviewReportSink,
+  deadline: number,
 ): Promise<SanityMutationDescriptor[]> {
   const mutations: SanityMutationDescriptor[] = [];
+  const pacer = createCallPacer(env.AI_REVIEW_MIN_GAP_MS);
 
   for (let i = 0; i < reviewInputs.length; i++) {
-    const startedAt = performance.now();
-    const reviewInput = reviewInputs[i];
+    if (performance.now() > deadline) {
+      logger.warn(
+        "runAiReviews",
+        `deadline reached, deferring ${reviewInputs.length - i} review(s) to next cycle`,
+      );
+      break;
+    }
 
-    const mutation = await reviewDoc(env, reviewInput, taxonomyDocs, sink);
+    const mutation = await reviewDoc(
+      env,
+      reviewInputs[i],
+      taxonomyDocs,
+      sink,
+      pacer,
+    );
     if (mutation) {
       mutations.push(mutation);
     }
-
-    await throttleBetweenReviews(
-      i,
-      reviewInputs.length,
-      startedAt,
-      env.AI_REVIEW_MIN_GAP_MS,
-    );
   }
 
   return mutations;
@@ -366,12 +429,13 @@ async function commitMutations(
  * on the eligible ones, and commits all resulting mutations in one batch. Docs
  * reached by skip/disable/review-success paths get a mutation (at minimum a
  * stamp-only patch that also clears `flaggedForAiReview`), which bumps
- * `_updatedAt` and rotates them to the back of the oldest-first queue. Failure
- * paths (content-fetch and AI-review) deliberately produce no mutation, so
- * those docs stay near the head and get retried next cycle — transient
- * failures self-heal, persistent ones surface as recurring entries in the
- * per-cycle report written to the `AI_REVIEW_REPORTS` KV namespace, prompting
- * a human to set `skipLinkCheck` or fix the doc.
+ * `_updatedAt` and rotates them to the back of the oldest-first queue. Skip
+ * covers problems with the target page (HTTP errors, timeouts, too little
+ * content). Failure paths — the content fetcher itself failing (`retry`), AI
+ * review failing, or scoring failing — deliberately produce no mutation, so
+ * those docs stay near the head and get retried next cycle. Transient
+ * failures self-heal; persistent ones surface as recurring entries in the
+ * per-cycle report written to the `AI_REVIEW_REPORTS` KV namespace.
  *
  * @param env
  * @param resourceDocs
@@ -386,6 +450,7 @@ export async function runAiContentReview(
     return;
   }
 
+  const deadline = performance.now() + reviewDeadlineMs;
   const sink = new ReviewReportSink();
 
   const contentResults = await Promise.allSettled(
@@ -425,7 +490,13 @@ export async function runAiContentReview(
   );
 
   const taxonomyDocs = await getReferenceTaxonomies(env);
-  const reviewMutations = await runAiReviews(env, toReview, taxonomyDocs, sink);
+  const reviewMutations = await runAiReviews(
+    env,
+    toReview,
+    taxonomyDocs,
+    sink,
+    deadline,
+  );
 
   // Make sure sink.flush always runs
   try {

@@ -39,6 +39,21 @@ export type ReportLine = {
 
 const TTL_SECONDS = 90 * 24 * 60 * 60;
 
+export type CycleSummary = {
+  outcomes: Partial<Record<ReviewOutcome, number>>;
+  scoreOutcomes: Partial<Record<ScoreOutcome, number>>;
+};
+
+function countBy<K extends string>(values: Array<K | undefined>) {
+  const counts: Partial<Record<K, number>> = {};
+  for (const value of values) {
+    if (value !== undefined) {
+      counts[value] = (counts[value] ?? 0) + 1;
+    }
+  }
+  return counts;
+}
+
 export class ReviewReportSink {
   readonly cycleId = generateSanityDocKey();
   readonly startedAt = new Date().toISOString();
@@ -64,14 +79,48 @@ export class ReviewReportSink {
     this.lines.push(line);
   }
 
+  summarize(): CycleSummary {
+    return {
+      outcomes: countBy(this.lines.map((l) => l.outcome)),
+      scoreOutcomes: countBy(this.lines.map((l) => l.scoreOutcome)),
+    };
+  }
+
+  /**
+   * Logs the cycle summary, escalating to an error when the cycle did no
+   * useful work (no review produced a mutation) or most docs failed to fetch —
+   * the signature of a provider outage that would otherwise only show in KV.
+   */
+  private logSummary(summary: CycleSummary): void {
+    const docCount = this.lines.length;
+    const { outcomes } = summary;
+    const failedFetches =
+      (outcomes.skipped ?? 0) + (outcomes.content_fetch_failed ?? 0);
+    // `ai_success` lines with `success: false` are reviews dropped for a
+    // failed score, so they don't count as useful work
+    const committedReviews = this.lines.filter(
+      (l) => l.outcome === "ai_success" && l.success,
+    ).length;
+    const message = { cycleId: this.cycleId, docCount, ...summary };
+
+    if (committedReviews === 0 || failedFetches * 2 > docCount) {
+      logger.error("reviewReportSink:unhealthy_cycle", message);
+      return;
+    }
+    logger.info("reviewReportSink:summary", message);
+  }
+
   async flush(kv: KVNamespace): Promise<void> {
     const endedAt = new Date().toISOString();
     const key = `cycle:${this.startedAt}:${this.cycleId}`;
+    const summary = this.summarize();
+    this.logSummary(summary);
     const payload = {
       cycleId: this.cycleId,
       startedAt: this.startedAt,
       endedAt,
       docCount: this.lines.length,
+      summary,
       lines: this.lines,
     };
 
