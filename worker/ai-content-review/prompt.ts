@@ -9,7 +9,7 @@ const fieldGuidelines: Record<AiReviewFieldKey, string> = {
   title:
     "this will usually be the actual title of the resource. If the existing title is too vague when viewed out of context (if it were syndicated for example), then try to improve it.",
   description:
-    "~30 words, plain-English web copy. Convey what the resource is about and why a bereaved user, supporter, or professional might find it useful.",
+    "~30 words, plain-English web copy. Convey what the resource is about and why a bereaved user, supporter, or professional might find it useful. When the resource centres on a specific relationship or cause of death, name it (e.g. ‘a father writes about his daughter’s suicide’). The description is how users decide whether a resource fits their loss.",
   availableLanguages: `- availableLanguages: detect languages from any of:
   - a language toggle/switcher in site navigation (e.g. "En Español")
   - sections of the page rendered in that language
@@ -31,16 +31,16 @@ const fieldGuidelines: Record<AiReviewFieldKey, string> = {
 Default to a single value — the audience the content is most clearly addressed to. Only assign multiple values when the resource has distinct sections written for different audiences (e.g. a guide with a "for the bereaved" section and a "for those supporting them" section). The fact that a resource "could be useful" to another audience does NOT justify adding them`,
   supportedGriever: `- supportedGriever: describes attributes of the bereaved person being supported. Allowed: "child", "teen". Only applies when audienceRole includes "supporter" or "professional" — i.e. the content is addressed to someone helping a bereaved person. Apply a tag only when the content specifically addresses supporting a bereaved person of that age group (e.g. "helping a grieving child", "supporting a teen through loss"). Leave empty if audienceRole is only "bereaved", or if the supporter/professional content does not specifically focus on supporting a child or teen.`,
   lossRelationships:
-    "The relationship to the person, being, or aspect of self that has been lost (e.g. parent, spouse, pet). Apply a tag only when the content specifically addresses that relationship; do not apply when it is only mentioned in passing or used as one example among many.",
+    "Apply only when the resource is written for, or centred on, people bereaved in this relationship across most of its content. A dedicated passage inside a broader resource does not qualify.",
   causesOfDeath:
-    "The cause of a death that has been experienced (e.g. suicide, cancer, sudden / traumatic). Apply a tag only when the content specifically addresses bereavement shaped by that cause; do not apply to passing mentions or to deaths where a more specific cause fits.",
+    "Apply only when the cause shapes the resource as a whole. Prefer the most specific cause; do not add Sudden Traumatic alongside a specific cause that already fits.",
   themes:
     "A subject matter or theme covered by a resource (e.g. anger, self-care, funerals & memorials). Most resources warrant 0–2 themes. Apply only when the theme is the subject of a dedicated section — a paragraph or more discussing it in its own right — not introduced as example, modifier, or one item among many.",
-  griefPhases: `The stages individuals often experience after a significant loss, based on contemporary grief research — a custom list, not the Kübler-Ross 5 stages. Most resources warrant 0–1 phases. Apply only when a phase is the resource's organizing frame across multiple sections; a passing reference to growing, searching, or integrating does not qualify.`,
+  griefPhases: `The stages individuals often experience after a significant loss, based on contemporary grief research — a custom list, not the Kübler-Ross 5 stages. Most resources warrant 0–1 phases. Apply only when a phase is the resource's organizing frame across multiple sections; a passing reference to early grief, adapting, or integrating.`,
   griefTypes:
-    "Type of grief experience (e.g. disenfranchised, anticipatory, complicated). Some overlap with phase and cause is fine — types describe a kind of experience rather than a moment in time or a cause. Apply a tag only when the resource explicitly names the type or substantively addresses it across the content.",
+    "Type of grief experience. Some overlap with phase and cause is fine — types describe a kind of experience rather than a moment in time or a cause. Apply a tag only when the resource explicitly names the type or substantively addresses it across the content.",
   contentFunctions:
-    "The primary job(s) the resource does — what the reader is trying to accomplish when this resource serves them well. Validation and Psychoeducation are NOT additive by default. Pick the one that names the primary job (Psychoeducation when the resource explains; Validation when it normalizes), and add the second only when the resource has substantive passages devoted to each.",
+    "The primary job(s) the resource does — what the reader is trying to accomplish when this resource serves them well. Validation and Educational are NOT additive by default. Pick the one that names the primary job (Educational when the resource explains; Validation when it normalizes), and add the second only when the resource has substantive passages devoted to each.",
   emotionalStates:
     "Most resources warrant 0 emotional states. Apply only when the resource is structured around the state — a section devoted to it, repeated discussion, or the state named in headings. A passing mention of guilt, anger, etc. as one feeling among others does not qualify.",
   demographics:
@@ -72,22 +72,23 @@ You are a content editor knowledgeable in grief. You audit curated "internet res
 
 ## Existing values vs empty fields
 
-**Existing values.** Treat the existing value as a previous editor's judgement. Keep it unless the fetched content gives you a specific, citable reason to change it — a sentence or section you can point to that contradicts the existing value. Return null for nullable scalars (meaning "no change") and re-emit existing reference arrays unchanged.
+**Existing values:** Treat existing values as a previous editor’s judgement, but not as exempt from review. Every reference tag in your output, existing or new, must pass the inclusion test below. Remove an existing tag when no passage in the content supports it. Keep an existing tag without a supporting passage only when the fetched content is clearly incomplete (truncated, mostly navigation, or failed to load the main body). For nullable scalars, return null to mean “no change”.
 
-**Empty reference fields.** Empty is NOT a default-to-fill signal. Each field has its own base rate, given in the field guidelines below — for most optional taxonomies, empty is the most common correct state. Add a tag only when it passes the inclusion test below.
+**Empty reference fields:** Empty is NOT a default-to-fill signal. Each field has its own base rate, given in the field guidelines below — for most optional taxonomies, empty is the most common correct state. Add a tag only when it passes the inclusion test below.
 
-Over-tagging optional taxonomies (themes, emotionalStates, demographics, supportedGriever, contentFunctions, griefPhases) is a worse failure mode than under-tagging — false positives surface in search and faceted browse and erode user trust.
+Over-tagging is a worse failure mode than under-tagging for every reference field. It is most damaging for lossRelationships and causesOfDeath, because users combine these as filters and a single wrong tag puts a resource in front of someone it wasn't written for.
 
 ## Reference Fields — inclusion test
 
 For each reference field, return an array of _id strings drawn from the taxonomies below. For each candidate tag, both gates must pass:
 
 1. **Quote gate.** Identify the single strongest continuous passage in the content where the candidate concept appears.
-2. **Primary-subject gate.** In that passage, is the concept the *subject* of at least one sentence — the thing being discussed in its own right, not the example, modifier, or one item in a list? If you deleted every sentence containing the concept, would the resource's purpose change?
+2. Resource-level gate. If you removed every passage about this concept, would the resource’s purpose or main audience change? A concept that is the subject of one paragraph inside a resource about something else fails this gate.
+3. Reader gate (lossRelationships and causesOfDeath only). Would a reader who lost this person, or lost someone in this way, recognise the resource as being about their loss? Content that discusses the loss as context, history, or one case among many does not pass.
 
 Both yes → include. Either no → leave it out.
 
-When the resource enumerates discrete sub-items — "we offer groups for stillbirth, miscarriage, neonatal loss, infant loss" — every item that maps to a taxonomy term should be included. Under-tagging an explicit enumeration is a clear miss, not caution.
+When the resource enumerates discrete sub-items — "we offer groups for stillbirth, miscarriage, neonatal loss, pregnancy termination" — every item that maps to a taxonomy term should be included. Under-tagging an explicit enumeration is a clear miss, not caution.
 
 A reference does NOT apply if the resource only:
 - mentions the concept in passing
@@ -95,6 +96,7 @@ A reference does NOT apply if the resource only:
 - could plausibly be filed under it
 - uses it as background context
 - uses it as one example illustrating a different point
+- the concept appears only in an author bio, byline, ‘about us’ section or founding story. Tag what the resource is about, not who wrote or founded it.
 
 ## Field Guidelines
 
@@ -105,7 +107,8 @@ ${allFieldKeys.map((fKey) => `${fKey}: ${fieldGuidelines[fKey as AiReviewFieldKe
 - A resource that mentions anniversary reactions on birthdays and holidays once, as an example of a broader point (e.g. how absences feel sharper at life milestones), does NOT earn \`theme:Holidays and Significant Dates\`. The theme requires holidays/dates to be the subject of a dedicated section.
 - A resource that notes loss can "trigger guilt over unresolved issues" in a single sentence does NOT earn \`emotionalState:Guilt and Regret\`. Emotional state tags require the state to be the organizing focus of a section.
 - A resource that says "grow through rather than get over" once does NOT earn \`griefPhase:Integrating\` unless integration is the resource's frame across multiple sections.
-- A psychoeducational resource that includes a few "this is natural" or "you're not alone" beats does NOT additionally earn \`contentFunction:Validation\`. Validation requires substantive passages devoted to normalizing the reader's experience.
+- A Educationalal resource that includes a few "this is natural" or "you're not alone" beats does NOT additionally earn \`contentFunction:Validation\`. Validation requires substantive passages devoted to normalizing the reader's experience.
+- An essay about loved ones killed by violence that never centres on a particular relationship does NOT earn a lossRelationship tag, even if one of the examples is a son or daughter.
 
 ## Reference Field Documents by Field
 
@@ -115,7 +118,7 @@ ${Object.entries(refDocs)
     const docBlocks = docs
       .map(
         (doc) =>
-          `- _id: ${doc._id}\n- title: ${doc.title}\n- description: ${doc.aiPromptHint ?? ""}\n---`,
+          `- _id: ${doc._id}\n- title: ${doc.title}\n- tagging guidance: ${doc.aiPromptHint ?? ""}\n---`,
       )
       .join("\n");
 
